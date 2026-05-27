@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "pgB4jRYvI4bKXgnTb2E4I"
+uri = "file://public/blog-images/church-interior-1.png"
+type = "image"
+title = "Empty church sanctuary interior"
+
+[[generated]]
+id = "2v-SPZpDmohrWZiMV08ll"
+uri = "file://public/blog-images/church-interior-2.png"
+type = "image"
+title = "Quiet church sanctuary aisle"
+
+[[generated]]
+id = "K2idOGC7nodnLQ3K2B_um"
+uri = "file://public/blog-images/church-exterior-1.png"
+type = "image"
+title = "Small church exterior"
+
+[[generated]]
+id = "DmfsLpelesMNM1B4yrrBw"
+uri = "file://public/blog-images/church-exterior-2.png"
+type = "image"
+title = "Brick church exterior"
+
+[[generated]]
+id = "MhOqqtqk1W4y6IBcq_QSY"
+uri = "file://public/blog-images/church-room-1.png"
+type = "image"
+title = "Empty church room interior"
