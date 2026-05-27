@@ -1,10 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import type { Song } from '../../../types/song';
 import { formatTheme } from '../../../types/song';
-import songsData from '../../../../public/songs.json';
-
-const songs: Song[] = songsData as Song[];
+import { songs } from '../../../lib/songs';
 
 const themeCounts: Record<string, number> = {};
 const tagCounts: Record<string, number> = {};

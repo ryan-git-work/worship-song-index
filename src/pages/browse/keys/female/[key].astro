@@ -1,15 +1,13 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
 import SongCard from '../../../../components/SongCard.astro';
-import type { Song } from '../../../../types/song';
 import { getTempoLabel } from '../../../../types/song';
-import songsData from '../../../../../public/songs.json';
+import { songs } from '../../../../lib/songs';
 import { getKeyDescription } from '../../../../lib/keyDescriptions';
 import editorialsData from '../../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
 export async function getStaticPaths() {
-  const songs: Song[] = songsData as Song[];
   const allKeys = [...new Set(songs.map(s => s.default_female_key))];
 
   return allKeys.map(key => ({
@@ -21,7 +19,6 @@ export async function getStaticPaths() {
 const { key } = Astro.props;
 const keySlug = Astro.params.key;
 const keyDescription = getKeyDescription(keySlug);
-const songs: Song[] = songsData as Song[];
 const filteredSongs = songs.filter(s => s.default_female_key === key).sort((a, b) => a.title.localeCompare(b.title));
 
 const isKeyF = key === 'F';

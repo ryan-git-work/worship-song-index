@@ -5,6 +5,7 @@ import RelatedDevotionals from '../../components/RelatedDevotionals.astro';
 import type { Song } from '../../types/song';
 import { getTempoLabel, formatTheme, getYouTubeVideoId } from '../../types/song';
 import { getDevotionalsBySongSlug } from '../../lib/devotionalIndex';
+import { songs } from '../../lib/songs';
 import { marked } from 'marked';
 
 export interface Props {
@@ -12,9 +13,6 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  const songsData = await import('../../../public/songs.json');
-  const songs: Song[] = songsData.default;
-
   return songs.map((song) => ({
     params: { slug: song.slug },
     props: { song },
@@ -70,9 +68,10 @@ function getEditorialDescription(md: string | undefined): string {
 function buildSongDescription(song: Song, editorialDesc: string): string {
   const rawSummary = song.summary_theology || '';
   const normalizedSummary = rawSummary.trim();
-  const weakSummaryPattern = /^(the song|this song)(\b|['’])/i;
+  const weakSummaryPattern = /^(the|this) song[\s.,;:!?]*$/i;
+  const weakEditorialPattern = /^(the song|this song)(\b|['’])/i;
   const isWeakSummary = normalizedSummary.length < 40 || weakSummaryPattern.test(normalizedSummary);
-  const isWeakEditorial = weakSummaryPattern.test(editorialDesc.trim());
+  const isWeakEditorial = weakEditorialPattern.test(editorialDesc.trim());
 
   if (editorialDesc && !isWeakEditorial) return editorialDesc;
   if (!isWeakSummary) return trimToSentence(rawSummary, 155);

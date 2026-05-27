@@ -1,5 +1,5 @@
 ---
-import songsData from '../../public/songs.json';
+import { songs as allSongs } from '../lib/songs';
 
 interface Props {
   songSlugs: string[];
@@ -15,7 +15,7 @@ function humanize(slug: string): string {
 }
 
 const songs = songSlugs.map((slug) => {
-  const match = (songsData as any[]).find((s) => s.slug === slug);
+  const match = allSongs.find((s) => s.slug === slug);
   return match
     ? { slug: match.slug, title: match.title, artist: match.primary_artist }
     : { slug, title: humanize(slug), artist: null };

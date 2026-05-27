@@ -1,9 +1,8 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
-import type { Song } from '../../../types/song';
 import { getTempoLabel } from '../../../types/song';
-import songsData from '../../../../public/songs.json';
+import { songs } from '../../../lib/songs';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -18,7 +17,6 @@ const slugify = (artist: string): string => {
 };
 
 export function getStaticPaths() {
-  const songs: Song[] = songsData as Song[];
   const allArtists = [...new Set(songs.map(s => s.primary_artist))];
 
   const toSlug = (artist: string): string => {
@@ -38,7 +36,6 @@ export function getStaticPaths() {
 }
 
 const { artist } = Astro.props;
-const songs: Song[] = songsData as Song[];
 const artistLower = artist.toLowerCase();
 const filteredSongs = songs.filter(s => {
   const songArtist = (s.primary_artist || '').toLowerCase();

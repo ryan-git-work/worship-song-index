@@ -2,9 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import SongCard from '../../components/SongCard.astro';
 import blogData from '../../../public/blog-posts.json';
-import songsData from '../../../public/songs.json';
 import type { Song } from '../../types/song';
 import { getTempoLabel } from '../../types/song';
+import { songs } from '../../lib/songs';
 
 export async function getStaticPaths() {
   return blogData.map(post => ({
@@ -14,7 +14,6 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const songs: Song[] = songsData as Song[];
 const linkedSongs = (post.songLinks || [])
   .map((slug: string) => songs.find(s => s.slug === slug))
   .filter(Boolean) as Song[];

@@ -1,9 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import type { Song } from '../../types/song';
-import songsData from '../../../public/songs.json';
-
-const songs: Song[] = songsData;
+import { songs } from '../../lib/songs';
 
 const artistCount = [...new Set(songs.map(s => s.primary_artist))].length;
 const themeCount = [...new Set(songs.flatMap(s => s.themes))].length;

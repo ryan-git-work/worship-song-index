@@ -1,14 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
-import type { Song } from '../../../types/song';
 import { getTempoLabel } from '../../../types/song';
-import songsData from '../../../../public/songs.json';
+import { songs } from '../../../lib/songs';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
 export async function getStaticPaths() {
-  const songs: Song[] = songsData as Song[];
   const allSignatures = [...new Set(songs.map(s => s.time_signature))];
 
   return allSignatures.map(sig => ({
@@ -18,7 +16,6 @@ export async function getStaticPaths() {
 }
 
 const { signature } = Astro.props;
-const songs: Song[] = songsData as Song[];
 const filteredSongs = songs.filter(s => s.time_signature === signature).sort((a, b) => a.title.localeCompare(b.title));
 
 const is68 = signature === '6/8';
