@@ -1,0 +1,63 @@
+I need to add editorial content storage for browse pages on worshipsongindex.com. The browse routes are:
+- /browse/time-signatures/[signature]/
+- /browse/themes/[theme]/
+- /browse/keys/male/[key]/
+- /browse/keys/female/[key]/
+- /browse/artists/[artist]/
+- /browse/tags/[tag]/
+- /browse/tempo/[tempo]/
+
+Each browse page should be able to render an editorial intro (markdown, 700-1200 words) above its song grid. Most pages won't have one. The few that do (~5 to start, more over time) should be rendered when present.
+
+Please:
+
+1. Create a new file at `public/browse-editorials.json` with this shape:
+
+```json
+{
+  "time-signatures": {
+    "6-8": {
+      "title": "Worship Songs in 6/8 Time",
+      "editorial_markdown": "..."
+    }
+  },
+  "themes": {
+    "obedience": {
+      "title": "Worship Songs About Obedience",
+      "editorial_markdown": "..."
+    }
+  },
+  "keys-female": {
+    "C": {
+      "title": "Worship Songs in C for Female Vocalists",
+      "editorial_markdown": "..."
+    }
+  },
+  "artists": {
+    "elevation-worship": {
+      "title": "Worship Songs by Elevation Worship",
+      "editorial_markdown": "..."
+    },
+    "hillsong-worship": {
+      "title": "Worship Songs by Hillsong Worship",
+      "editorial_markdown": "..."
+    }
+  }
+}
+```
+
+Initialize the file with these five entries (I'll provide the markdown content separately). Use empty strings as placeholders for now.
+
+2. Update each browse route template (`src/pages/browse/time-signatures/[signature].astro`, etc.) to:
+   - Import the new `browse-editorials.json` file
+   - Look up the entry for the current page (e.g., `editorials["time-signatures"]["6-8"]`)
+   - If an entry exists and `editorial_markdown` is non-empty, render it as markdown above the song grid using Astro's markdown rendering
+   - If no entry exists or markdown is empty, render the page as it does today (no editorial section)
+
+3. For markdown rendering inside Astro, use the `marked` package if it's not already installed (`npm install marked`), or use whatever the project already uses for markdown.
+
+4. Confirm: build the project, navigate to /browse/time-signatures/6-8/, and confirm the empty editorial field renders nothing (i.e., the page looks identical to today). Also confirm /browse/themes/obedience/ behaves the same way.
+
+After this is wired, I'll paste in the 5 editorials and you can populate the JSON.
+
+Stop and confirm when this scaffold is built and rendering correctly with empty placeholders.

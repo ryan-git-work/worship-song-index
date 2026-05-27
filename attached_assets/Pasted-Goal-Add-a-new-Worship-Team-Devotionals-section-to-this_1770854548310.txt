@@ -1,0 +1,128 @@
+Goal
+Add a new Worship Team Devotionals section to this Astro site, with a scalable content structure and consistent templates.
+
+Constraints
+- Do not modify existing themes or tags or /browse pages.
+- Keep the existing site layout, header, footer, and styling consistent with current pages.
+- Song detail URLs already exist at /songs/[slug]. Use that for internal linking from devotionals.
+- The new section must live at /worship-team-devotionals/ and be built for long-term scale (100 to 300 devotionals).
+
+Deliverables
+1) New routes
+- /worship-team-devotionals/ (top hub)
+- /worship-team-devotionals/[pillar]/ (pillar hubs)
+- /worship-team-devotionals/[pillar]/[slug]/ (devotional pages)
+
+2) Content collections with schema enforcement
+Create Astro content collections for:
+- devotionalHubs (8 entries: top hub plus 7 pillar hubs)
+- devotionals (individual devotionals)
+
+Use a Zod schema that enforces:
+- pillar must be one of the 7 allowed pillar slugs
+- verseRef is required
+- description is required
+- songSlugs is optional but if present must be an array of strings
+- discussionQuestions is optional but if present must be an array of strings
+- prayer is optional string
+- podcastUrl is optional string
+- tccUrl is optional string
+
+Pillar slugs (must match exactly)
+- heart-and-motives
+- team-culture-and-unity
+- sustainable-ministry
+- excellence-and-craft
+- pastoral-leadership
+- congregational-worship
+- presence-and-prayer
+
+3) Templates and components
+Create reusable components so all devotional pages look consistent:
+- DevotionalHubLayout.astro (renders hub MDX plus lists devotionals for that pillar)
+- DevotionalLayout.astro (renders devotional MDX and the structured fields)
+- PillarCards.astro (renders the 7 pillars as cards with title and short description)
+- RelatedSongs.astro (renders song links using /songs/[slug])
+- RelatedLinks.astro (renders optional Formation to Transformation link and TCC link)
+
+Important rendering behavior
+- On devotional pages, show: verseRef, then the MDX body, then discussion questions, prayer, related songs, optional related links.
+- Related songs should link to /songs/{slug}. If you can find an existing songs dataset in the repo (JSON, TS, etc), display song titles. If not, display a humanized slug (replace hyphens with spaces and Title Case).
+- Add canonical meta tags and basic Open Graph tags for the new pages.
+
+4) Navigation
+Add a top nav link labeled "Devotionals" that points to /worship-team-devotionals/.
+Do not change other nav items.
+
+5) Starter content files
+Create content files for the hub pages now as MDX entries in the devotionalHubs collection:
+- index (top hub)
+- one file for each of the 7 pillars with placeholder copy (short intro plus what it covers)
+
+For the top hub page content, use this exact copy in the MDX body (no bold, no italics):
+
+Title: Worship Team Devotionals
+Description: Short 5 to 10 minute worship team devotionals anchored in Scripture for rehearsal and Sunday call time.
+
+Body content:
+Most worship teams do not need more content. They need clarity.
+
+These worship team devotionals are short, Scripture anchored moments designed for before rehearsal, before soundcheck, or before Sunday. Each one is built around a single key verse, a tight reflection, and discussion questions that actually work in a room full of volunteers.
+
+If your team is tired, distracted, or stuck in the Sunday machine, this is a way back to the center.
+
+How to use these
+Option 1: Pre rehearsal (5 minutes)
+Read the verse, read the devotional, ask one question, pray.
+
+Option 2: Team formation (10 minutes)
+Read the verse, read the devotional, discuss two questions, then connect it to the set you are about to lead.
+
+Option 3: Sunday reset (2 minutes)
+Read the verse and one paragraph. Let it reframe your posture before you lead.
+
+How these connect to songs and training
+These devotionals are not separate from the song library. They are meant to work together.
+
+Many devotionals include suggested songs that fit the theme and the verse.
+Many song pages can point back to devotionals that help your team lead that song with theological clarity and pastoral intention.
+When a devotional connects to a Formation to Transformation episode, link it so teams can go deeper.
+
+Browse devotionals by pillar
+Include the 7 pillar cards with these titles and one sentence descriptions:
+- Heart and Motives: Humility, obedience, purity of heart, and staying anchored when the room is watching.
+- Team Culture and Unity: Communication, conflict, honor, and building trust in real teams.
+- Sustainable Ministry: Pace, sabbath, boundaries, anxiety, and serving from health.
+- Excellence and Craft: Preparation, musicianship, and doing excellent work without feeding ego.
+- Pastoral Leadership: Discipling volunteers, raising leaders, feedback, and shepherding people.
+- Congregational Worship: Participation, clarity, song selection, and helping the room sing.
+- Presence and Prayer: Prayer, listening, Word and Spirit, and leading as ministry not presentation.
+
+Call to action section at the bottom:
+Pick one devotional.
+Use it this week.
+Let ten minutes reshape your culture over time.
+
+Also create one sample devotional entry in the devotionals collection so the routing works end to end. Use a safe generic example:
+- title: The Turn
+- pillar: heart-and-motives
+- verseRef: John 20:14
+- description: A short devotional about turning toward Jesus in confusion.
+- songSlugs: ["way-maker"]
+- discussionQuestions: 3 questions
+- prayer: 2 to 4 sentences
+- podcastUrl: optional placeholder (leave empty if you prefer)
+
+6) Build and verify
+After implementation, ensure:
+- /worship-team-devotionals/ loads and shows the hub copy plus the pillar cards.
+- /worship-team-devotionals/heart-and-motives/ loads and lists the sample devotional.
+- /worship-team-devotionals/heart-and-motives/the-turn/ renders correctly with related songs linking to /songs/way-maker.
+- No existing routes are broken.
+
+Implementation notes
+- Use Astro content collections under src/content and define schemas in src/content.config.ts.
+- If MDX support is not installed, add @astrojs/mdx and configure it in astro.config.mjs.
+- Reuse the existing site layout component used across the site for consistent header/footer and styling.
+
+Proceed to implement all files and changes in one cohesive commit.

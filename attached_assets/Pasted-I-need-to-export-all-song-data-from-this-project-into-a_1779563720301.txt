@@ -1,0 +1,42 @@
+I need to export all song data from this project into a single JSON file I'll use for content enrichment work. The export should include every field for every song, sorted in a useful priority order.
+
+Please do the following:
+
+1. Read all songs from `public/songs.json`.
+
+2. Write a new file at the project root called `songs-export-for-enrichment.json` containing all songs as a JSON array. Each song object should include ALL fields that exist in the source data, including (but not limited to):
+   - slug
+   - title
+   - primary_artist
+   - default_male_key
+   - default_female_key
+   - tempo_bpm
+   - time_signature
+   - themes (array)
+   - scripture_refs (array)
+   - summary_theology (existing prose, if any)
+   - practical_worship_leadership (existing prose, if any)
+   - arrangement_tips (existing prose, if any)
+   - tags (array)
+   - Any other fields I haven't listed — include them all. Do not drop fields.
+
+3. Add a `url` field to each song with the full live URL: `https://worshipsongindex.com/songs/{slug}/`.
+
+4. Sort the export by priority, in this preference order:
+   - If you can join against any Google Search Console export, performance data, or analytics file in the project that has per-page impressions, sort by impressions descending (most-impressions first).
+   - If no GSC data is available in the project, sort by these proxies in order: (a) songs tagged "ccli_top" first, (b) then songs with all four of (key, BPM, time signature, themes) populated, (c) then alphabetical by title.
+   - Tell me which sort method you used.
+
+5. Output a report to me with:
+   - Total song count
+   - How many songs have `summary_theology` populated vs empty
+   - How many have `practical_worship_leadership` populated vs empty
+   - How many have `arrangement_tips` populated vs empty
+   - How many have `themes` populated (array length > 0)
+   - How many have `scripture_refs` populated (array length > 0)
+   - How many have all four of (key, BPM, time signature, themes) populated
+   - Any common field-completeness gaps worth flagging
+
+6. Confirm the file is at the project root (`./songs-export-for-enrichment.json`) and tell me the file size in MB.
+
+DO NOT generate any new content. DO NOT modify `public/songs.json` or any other file. Only read and export.

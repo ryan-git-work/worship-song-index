@@ -1,0 +1,284 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SongCard from '../components/SongCard.astro';
+import SongListItem from '../components/SongListItem.astro';
+import type { Song } from '../types/song';
+import { getTempoLabel } from '../types/song';
+
+import songsData from '../../public/songs.json';
+import blogData from '../../public/blog-posts.json';
+const songs: Song[] = songsData;
+const recentPosts = blogData.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()).slice(0, 3);
+
+const title = "Worship Song Index - Find Songs for Your Worship Service";
+const description = "Browse our collection of 3,470+ worship songs with keys, tempo, BPM, scripture references, and leadership tips. Find the perfect songs for your church worship service.";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Worship Song Index",
+  "description": description,
+  "url": "https://worshipsongindex.com"
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <div class="mb-12">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: var(--font-serif); color: var(--color-text-primary); line-height: 1.15;">
+      Worship Song Index
+    </h1>
+    <p class="text-lg leading-relaxed max-w-3xl mb-4" style="color: var(--color-text-secondary);">
+      Worship Song Index exists to serve worship leaders by making song selection and service planning simpler and more intentional.
+    </p>
+    <p class="text-lg leading-relaxed max-w-3xl mb-4" style="color: var(--color-text-secondary);">
+      This searchable worship song database helps you explore modern worship songs by key, tempo, BPM, and time signature so you can build worship sets that flow well and serve your congregation.
+    </p>
+    <p class="text-lg leading-relaxed max-w-3xl mb-8" style="color: var(--color-text-secondary);">
+      Now you can also use <a href="/worship-team-devotionals/" class="text-primary-600 hover:text-primary-800 font-medium underline underline-offset-2 decoration-primary-300">Worship Team Devotionals</a>, short 5 to 10 minute Scripture anchored moments with discussion questions, built for before rehearsal or before Sunday. The goal is the same: thoughtful, pastoral worship leadership that forms people, not just moments.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/browse/" class="inline-flex items-center px-6 py-2.5 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors">
+        Browse Songs
+      </a>
+      <a href="/worship-team-devotionals/" class="inline-flex items-center px-6 py-2.5 font-medium rounded-lg border border-primary-300 text-primary-700 hover:bg-primary-50 transition-colors">
+        Worship Team Devotionals
+      </a>
+    </div>
+  </div>
+
+  <section class="mb-20">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold" style="color: var(--color-text-primary);">
+          Worship Leader Guides
+        </h2>
+        <p class="text-sm mt-1" style="color: var(--color-text-muted);">
+          Practical help for keys, tempos, set planning, and seasonal worship
+        </p>
+      </div>
+      <a href="/blog" class="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors">
+        View all guides →
+      </a>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {recentPosts.map(post => (
+        <a href={`/blog/${post.slug}`} class="block p-5 rounded-xl border transition-shadow hover:shadow-md" style="background: var(--color-bg-card); border-color: var(--color-border);">
+          <div class="text-xs uppercase tracking-wide font-semibold mb-2" style="color: var(--color-primary-500);">
+            {post.category.replace(/-/g, ' ')}
+          </div>
+          <h3 class="font-bold leading-snug mb-2" style="color: var(--color-text-primary);">
+            {post.title}
+          </h3>
+          <p class="text-sm line-clamp-3" style="color: var(--color-text-muted);">
+            {post.excerpt}
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <div class="border-t pt-10 mb-6" style="border-color: var(--color-border);">
+    <div class="relative max-w-xl">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search songs by title, artist, theme, or tag..."
+        class="w-full px-4 py-3 pl-11 rounded-lg text-base transition-colors"
+        style="border: 1px solid var(--color-border); background: var(--color-surface-card); color: var(--color-text-primary); outline: none;"
+        onfocus="this.style.borderColor='#6B7F6A'; this.style.boxShadow='0 0 0 3px rgba(107,127,106,0.1)'"
+        onblur="this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'"
+      />
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3.5 top-1/2 -translate-y-1/2" style="color: var(--color-text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <p class="text-sm" style="color: var(--color-text-muted);">
+      Showing <span id="songCount" class="font-semibold" style="color: var(--color-text-primary);">{songs.length}</span> songs
+    </p>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <div class="flex items-center rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
+        <button id="cardViewBtn" class="view-toggle px-3 py-2 flex items-center gap-1.5 text-sm font-medium bg-primary-600 text-white" title="Card View">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <span class="hidden sm:inline">Cards</span>
+        </button>
+        <button id="listViewBtn" class="view-toggle px-3 py-2 flex items-center gap-1.5 text-sm font-medium" title="List View" style="background: var(--color-surface-card); color: var(--color-text-secondary);">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          <span class="hidden sm:inline">List</span>
+        </button>
+      </div>
+
+      <a href="/browse" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+        </svg>
+        Browse by Category
+      </a>
+
+      <div class="flex items-center gap-2">
+        <label for="sortSelect" class="text-sm" style="color: var(--color-text-muted);">Sort:</label>
+        <select id="sortSelect" class="px-3 py-2 rounded-lg text-sm" style="border: 1px solid var(--color-border); background: var(--color-surface-card); color: var(--color-text-primary);">
+          <option value="default">Default</option>
+          <option value="alpha-asc">A to Z</option>
+          <option value="alpha-desc">Z to A</option>
+          <option value="bpm-asc">BPM (Low to High)</option>
+          <option value="bpm-desc">BPM (High to Low)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="songsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {songs.map((song) => (
+      <div class="song-card" data-title={song.title} data-artist={song.primary_artist} data-themes={song.themes.join(' ')} data-tags={song.tags.join(' ')} data-bpm={song.tempo_bpm}>
+        <SongCard title={song.title} artist={song.primary_artist} maleKey={song.default_male_key} femaleKey={song.default_female_key} tempo={getTempoLabel(song.tempo_bpm)} bpm={song.tempo_bpm} timeSignature={song.time_signature} slug={song.slug} />
+      </div>
+    ))}
+  </div>
+
+  <div id="songsList" class="hidden rounded-lg overflow-hidden border" style="background: var(--color-surface-card); border-color: var(--color-border);">
+    <div class="hidden md:flex items-center gap-4 py-2.5 px-4 border-b text-xs font-semibold uppercase tracking-wider" style="background: var(--color-border-light); border-color: var(--color-border); color: var(--color-text-muted);">
+      <div class="flex-1">Song / Artist</div>
+      <div class="hidden sm:block w-24 text-center">Keys</div>
+      <div class="hidden md:flex items-center gap-3">
+        <span class="w-16 text-right">Tempo</span>
+        <span class="w-16 text-right">BPM</span>
+        <span class="w-12 text-center">Time</span>
+      </div>
+      <div class="w-4"></div>
+    </div>
+    {songs.map((song) => (
+      <div class="song-item" data-title={song.title} data-artist={song.primary_artist} data-themes={song.themes.join(' ')} data-tags={song.tags.join(' ')} data-bpm={song.tempo_bpm}>
+        <SongListItem title={song.title} artist={song.primary_artist} maleKey={song.default_male_key} femaleKey={song.default_female_key} tempo={getTempoLabel(song.tempo_bpm)} bpm={song.tempo_bpm} timeSignature={song.time_signature} slug={song.slug} />
+      </div>
+    ))}
+  </div>
+
+  {songs.length === 0 && (
+    <div class="text-center py-12">
+      <p class="text-lg" style="color: var(--color-text-muted);">No songs found. Add songs to public/songs.json to get started.</p>
+    </div>
+  )}
+</Layout>
+
+<script>
+  const sortSelect = document.getElementById('sortSelect') as HTMLSelectElement;
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  const songsGrid = document.getElementById('songsGrid');
+  const songsList = document.getElementById('songsList');
+  const songCount = document.getElementById('songCount');
+  const cardViewBtn = document.getElementById('cardViewBtn');
+  const listViewBtn = document.getElementById('listViewBtn');
+
+  let currentView = localStorage.getItem('songViewPreference') || 'card';
+
+  function setView(view: 'card' | 'list') {
+    currentView = view;
+    localStorage.setItem('songViewPreference', view);
+
+    if (view === 'card') {
+      songsGrid?.classList.remove('hidden');
+      songsList?.classList.add('hidden');
+      cardViewBtn?.classList.add('bg-primary-600', 'text-white');
+      cardViewBtn?.removeAttribute('style');
+      listViewBtn?.classList.remove('bg-primary-600', 'text-white');
+      listViewBtn?.setAttribute('style', 'background: var(--color-surface-card); color: var(--color-text-secondary);');
+    } else {
+      songsGrid?.classList.add('hidden');
+      songsList?.classList.remove('hidden');
+      listViewBtn?.classList.add('bg-primary-600', 'text-white');
+      listViewBtn?.removeAttribute('style');
+      cardViewBtn?.classList.remove('bg-primary-600', 'text-white');
+      cardViewBtn?.setAttribute('style', 'background: var(--color-surface-card); color: var(--color-text-secondary);');
+    }
+  }
+
+  setView(currentView as 'card' | 'list');
+
+  cardViewBtn?.addEventListener('click', () => setView('card'));
+  listViewBtn?.addEventListener('click', () => setView('list'));
+
+  function updateVisibleCount() {
+    const container = currentView === 'card' ? songsGrid : songsList;
+    const selector = currentView === 'card' ? '.song-card' : '.song-item';
+    if (container && songCount) {
+      const visibleItems = container.querySelectorAll(`${selector}:not([style*="display: none"])`);
+      songCount.textContent = visibleItems.length.toString();
+    }
+  }
+
+  function filterSongs(query: string) {
+    const searchTerms = query.toLowerCase().trim().split(/\s+/);
+
+    const filterContainer = (container: Element | null, selector: string) => {
+      if (!container) return;
+      const items = container.querySelectorAll(selector) as NodeListOf<HTMLElement>;
+
+      items.forEach(item => {
+        const title = (item.dataset.title || '').toLowerCase();
+        const artist = (item.dataset.artist || '').toLowerCase();
+        const themes = (item.dataset.themes || '').toLowerCase();
+        const tags = (item.dataset.tags || '').toLowerCase();
+        const searchText = `${title} ${artist} ${themes} ${tags}`;
+
+        const matches = searchTerms.every(term => searchText.includes(term));
+        item.style.display = matches ? '' : 'none';
+      });
+    };
+
+    filterContainer(songsGrid, '.song-card');
+    filterContainer(songsList, '.song-item');
+
+    updateVisibleCount();
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      filterSongs(searchInput.value);
+    });
+  }
+
+  function sortItems() {
+    const sortContainer = (container: Element | null, selector: string) => {
+      if (!container || !sortSelect) return;
+      const items = Array.from(container.querySelectorAll(selector)) as HTMLElement[];
+
+      items.sort((a, b) => {
+        const titleA = a.dataset.title || '';
+        const titleB = b.dataset.title || '';
+        const bpmA = parseInt(a.dataset.bpm || '0');
+        const bpmB = parseInt(b.dataset.bpm || '0');
+
+        switch (sortSelect.value) {
+          case 'alpha-asc':
+            return titleA.localeCompare(titleB);
+          case 'alpha-desc':
+            return titleB.localeCompare(titleA);
+          case 'bpm-asc':
+            return bpmA - bpmB;
+          case 'bpm-desc':
+            return bpmB - bpmA;
+          default:
+            return 0;
+        }
+      });
+
+      items.forEach(item => container.appendChild(item));
+    };
+
+    sortContainer(songsGrid, '.song-card');
+    sortContainer(songsList, '.song-item');
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', sortItems);
+  }
+</script>

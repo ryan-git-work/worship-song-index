@@ -1,0 +1,141 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import SongCard from '../../../components/SongCard.astro';
+import type { Song } from '../../../types/song';
+import { getTempoLabel } from '../../../types/song';
+import songsData from '../../../../public/songs.json';
+import editorialsData from '../../../../public/browse-editorials.json';
+import { marked } from 'marked';
+
+const slugify = (artist: string): string => {
+  return artist
+    .toLowerCase()
+    .replace(/[\/\\]/g, '-')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+};
+
+export function getStaticPaths() {
+  const songs: Song[] = songsData as Song[];
+  const allArtists = [...new Set(songs.map(s => s.primary_artist))];
+
+  const toSlug = (artist: string): string => {
+    return artist
+      .toLowerCase()
+      .replace(/[\/\\]/g, '-')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  };
+
+  return allArtists.map(artist => ({
+    params: { artist: toSlug(artist) },
+    props: { artist }
+  }));
+}
+
+const { artist } = Astro.props;
+const songs: Song[] = songsData as Song[];
+const artistLower = artist.toLowerCase();
+const filteredSongs = songs.filter(s => {
+  const songArtist = (s.primary_artist || '').toLowerCase();
+  return songArtist === artistLower || songArtist.includes(artistLower);
+}).sort((a, b) => a.title.localeCompare(b.title));
+
+const artistSlug = slugify(artist);
+const title = `${artist} Worship Songs | BPM, Tempo & Keys — Worship Song Index`;
+const description = `Browse ${filteredSongs.length} worship songs by ${artist}. Find chords, keys, and worship leader tips for ${artist} songs.`;
+
+const editorialEntry = (editorialsData as any)["artists"]?.[artistSlug || ''];
+const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+
+const collectionPage = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `${artist} Worship Songs`,
+  "description": description,
+  "url": `https://worshipsongindex.com/browse/artists/${artistSlug}`,
+  "numberOfItems": filteredSongs.length,
+  "about": {
+    "@type": "MusicGroup",
+    "name": artist
+  }
+};
+
+const itemList = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": `${artist} Worship Songs`,
+  "description": `${filteredSongs.length} worship songs by ${artist}, with keys, BPM, and tempo for each.`,
+  "numberOfItems": filteredSongs.length,
+  "itemListElement": filteredSongs.slice(0, 30).map((song, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `https://worshipsongindex.com/songs/${song.slug}`,
+    "name": song.title
+  }))
+};
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" },
+    { "@type": "ListItem", "position": 3, "name": "Artists", "item": "https://worshipsongindex.com/browse/artists" },
+    { "@type": "ListItem", "position": 4, "name": artist, "item": `https://worshipsongindex.com/browse/artists/${artistSlug}` }
+  ]
+};
+
+const structuredData = [collectionPage, breadcrumb, itemList];
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 transition-colors">Browse</a>
+    <span class="mx-2">/</span>
+    <a href="/browse/artists" class="text-primary-600 hover:text-primary-800 transition-colors">Artists</a>
+    <span class="mx-2">/</span>
+    <span>{artist}</span>
+  </nav>
+
+  <div class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      {artist}
+    </h1>
+    <p style="color: var(--color-text-muted);">Showing {filteredSongs.length} songs</p>
+  </div>
+
+  {editorialHtml && (
+    <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
+  )}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {filteredSongs.map(song => (
+      <SongCard
+        title={song.title}
+        artist={song.primary_artist}
+        maleKey={song.default_male_key}
+        femaleKey={song.default_female_key}
+        tempo={getTempoLabel(song.tempo_bpm)}
+        bpm={song.tempo_bpm}
+        timeSignature={song.time_signature}
+        slug={song.slug}
+      />
+    ))}
+  </div>
+
+  <div class="mt-12">
+    <a href="/browse/artists" class="text-primary-600 hover:text-primary-800 font-medium flex items-center gap-1 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to All Artists
+    </a>
+  </div>
+</Layout>

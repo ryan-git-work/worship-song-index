@@ -1,0 +1,101 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import type { Song } from '../../../types/song';
+import { formatTheme } from '../../../types/song';
+import songsData from '../../../../public/songs.json';
+
+const songs: Song[] = songsData as Song[];
+
+const themeCounts: Record<string, number> = {};
+const tagCounts: Record<string, number> = {};
+
+const allThemes = [...new Set(songs.flatMap(s => s.themes))].sort();
+const allTags = [...new Set(songs.flatMap(s => s.tags))].sort();
+
+allThemes.forEach(theme => {
+  themeCounts[theme] = songs.filter(s => s.themes.includes(theme)).length;
+});
+
+allTags.forEach(tag => {
+  tagCounts[tag] = songs.filter(s => s.tags.includes(tag)).length;
+});
+
+const title = "Browse by Category - Worship Song Index";
+const description = `Browse worship songs by ${allThemes.length} themes and ${allTags.length} tags. Find songs about praise, worship, hope, faith, and more.`;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Browse Worship Songs by Category",
+  "description": description,
+  "url": "https://worshipsongindex.com/browse/categories",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+      { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" },
+      { "@type": "ListItem", "position": 3, "name": "Categories", "item": "https://worshipsongindex.com/browse/categories" }
+    ]
+  }
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 transition-colors">Browse</a>
+    <span class="mx-2">/</span>
+    <span>Categories</span>
+  </nav>
+
+  <div class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse by Category</h1>
+    <p class="text-lg" style="color: var(--color-text-secondary);">Find worship songs by theme or tag.</p>
+  </div>
+
+  <div class="space-y-12">
+    <section>
+      <h2 class="text-2xl font-semibold mb-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">Themes</h2>
+      <p class="text-sm mb-5" style="color: var(--color-text-secondary);">Browse songs by their primary theological or topical themes.</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {allThemes.map(theme => (
+          <a
+            href={`/browse/themes/${theme.toLowerCase().replace(/\s+/g, '-')}`}
+            class="p-3 rounded-lg border transition-all duration-200 hover:shadow-md hover:border-primary-300 flex justify-between items-center"
+            style="background: var(--color-surface-card); border-color: var(--color-border);"
+          >
+            <span class="font-medium text-sm" style="color: var(--color-text-primary);">{formatTheme(theme)}</span>
+            <span class="text-xs px-2 py-0.5 rounded-md bg-primary-100 text-primary-700">{themeCounts[theme]}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">Tags</h2>
+      <p class="text-sm mb-5" style="color: var(--color-text-secondary);">Browse songs by style, era, or usage tags.</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {allTags.map(tag => (
+          <a
+            href={`/browse/tags/${tag}`}
+            class="p-3 rounded-lg border transition-all duration-200 hover:shadow-md hover:border-primary-300 flex justify-between items-center"
+            style="background: var(--color-surface-card); border-color: var(--color-border);"
+          >
+            <span class="font-medium text-sm" style="color: var(--color-text-primary);">{formatTheme(tag)}</span>
+            <span class="text-xs px-2 py-0.5 rounded-md bg-accent-100 text-accent-700">{tagCounts[tag]}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <div class="mt-12">
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 font-medium flex items-center gap-1 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Browse
+    </a>
+  </div>
+</Layout>

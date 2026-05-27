@@ -1,0 +1,61 @@
+Add automatic "Related Devotionals" backlinks on song detail pages based on devotional frontmatter `songSlugs`.
+
+Constraints
+- Do not change existing routes or refactor unrelated files.
+- Do not add new content types.
+- Use the existing devotionals content collection as the source of truth.
+- Only show the section if at least one devotional references the current song slug.
+- Each item should link to the devotional URL using the existing devotional route pattern.
+- Keep styling consistent with the site (reuse existing classes/components if present).
+
+Implementation plan
+1) Create a helper module that builds a cached reverse index from devotionals:
+   - File: src/lib/devotionalIndex.ts
+   - It should call getCollection('devotionals') once and cache results.
+   - It should return a Map keyed by songSlug with an array of devotional entries.
+
+2) Create a small UI component for reuse:
+   - File: src/components/RelatedDevotionals.astro
+   - Props: devotionals (array)
+   - Render a heading like "Worship Team Devotionals"
+   - Render a short description line
+   - Render a list of links (title and verseRef if available)
+   - Optional: show the pillar label in small text
+
+3) Update the song detail page template to include this section:
+   - Find the song page file (likely src/pages/songs/[slug].astro or similar).
+   - Get the current song slug from Astro.params.
+   - Load the devotional reverse index and look up related devotionals for the slug.
+   - Render <RelatedDevotionals devotionals={related} /> near the bottom of the song page, after the main song content.
+
+URL rules
+- Devotional URL should be: `/worship-team-devotionals/${entry.data.pillar}/${entry.slug}/`
+
+Code details to use
+
+A) src/lib/devotionalIndex.ts
+- Export: async function getDevotionalsBySongSlug(songSlug: string)
+- Internally:
+  - cache getCollection('devotionals') results
+  - build a Map<string, array>
+  - for each devotional entry:
+    - read entry.data.songSlugs (array of strings)
+    - for each slug, push this entry into the map
+
+B) src/components/RelatedDevotionals.astro
+- Render list items using:
+  - title: entry.data.title
+  - verseRef: entry.data.verseRef
+  - href: `/worship-team-devotionals/${entry.data.pillar}/${entry.slug}/`
+
+C) Song page
+- Example pseudocode:
+  - import { getDevotionalsBySongSlug } from '@/lib/devotionalIndex'
+  - const { slug } = Astro.params
+  - const related = await getDevotionalsBySongSlug(slug)
+  - if (related.length) render component
+
+Finally
+- Run npm run dev
+- Open a few song pages known to be referenced (build-my-life, goodness-of-god, make-room).
+- Confirm each shows the related devotionals section with working links.

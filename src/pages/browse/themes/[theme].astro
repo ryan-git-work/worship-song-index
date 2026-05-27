@@ -1,0 +1,124 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import SongCard from '../../../components/SongCard.astro';
+import type { Song } from '../../../types/song';
+import { getTempoLabel } from '../../../types/song';
+import songsData from '../../../../public/songs.json';
+import { getThemeDescription } from '../../../lib/themeDescriptions';
+import editorialsData from '../../../../public/browse-editorials.json';
+import { marked } from 'marked';
+
+export async function getStaticPaths() {
+  const songs: Song[] = songsData as Song[];
+  const allThemes = new Set<string>();
+  
+  songs.forEach(song => {
+    song.themes?.forEach(theme => {
+      allThemes.add(theme.toLowerCase().replace(/\s+/g, '-'));
+    });
+  });
+
+  return Array.from(allThemes).map(theme => ({
+    params: { theme },
+    props: { theme }
+  }));
+}
+
+const { theme: themeProp } = Astro.props;
+const themeSlug = Astro.params.theme;
+const themeDescription = getThemeDescription(themeSlug);
+const songs: Song[] = songsData as Song[];
+
+// Normalize theme for comparison
+const normalizedTheme = themeSlug.replace(/-/g, ' ');
+const filteredSongs = songs
+  .filter(s => 
+    s.themes?.some(t => t.toLowerCase().replace(/\s+/g, '-') === themeSlug)
+  )
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+// Format theme name for display
+const displayTheme = themeSlug
+  .split('-')
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(' ');
+
+const title = `Worship Songs About ${displayTheme} | Worship Song Index`;
+const description = `Browse ${filteredSongs.length} worship songs about ${normalizedTheme}, with complete song data, BPM, keys, and theological insights for every song.`;
+
+const editorialEntry = (editorialsData as any)["themes"]?.[themeSlug || ''];
+const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+
+const itemList = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": `Worship Songs About ${displayTheme}`,
+  "description": `${filteredSongs.length} worship songs on the theme of ${normalizedTheme}, with keys, BPM, and tempo for each.`,
+  "numberOfItems": filteredSongs.length,
+  "itemListElement": filteredSongs.slice(0, 30).map((song, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `https://worshipsongindex.com/songs/${song.slug}`,
+    "name": song.title
+  }))
+};
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" },
+    { "@type": "ListItem", "position": 3, "name": "Categories", "item": "https://worshipsongindex.com/browse/categories" },
+    { "@type": "ListItem", "position": 4, "name": displayTheme, "item": `https://worshipsongindex.com${Astro.url.pathname}` }
+  ]
+};
+
+const structuredData = [itemList, breadcrumb];
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 transition-colors">Browse</a>
+    <span class="mx-2">/</span>
+    <a href="/browse/categories" class="text-primary-600 hover:text-primary-800 transition-colors">Categories</a>
+    <span class="mx-2">/</span>
+    <span>Theme: {displayTheme}</span>
+  </nav>
+
+  <div class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      Theme: {displayTheme}
+    </h1>
+    <p style="color: var(--color-text-muted);">Showing {filteredSongs.length} songs</p>
+  </div>
+
+  {themeDescription && (
+    <div class="mb-8 max-w-3xl">
+      <p class="text-base leading-relaxed" style="color: var(--color-text-muted);">
+        {themeDescription}
+      </p>
+    </div>
+  )}
+
+  {editorialHtml && (
+    <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
+  )}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {filteredSongs.map((song) => (
+      <SongCard
+        title={song.title}
+        artist={song.primary_artist}
+        maleKey={song.default_male_key}
+        femaleKey={song.default_female_key}
+        tempo={getTempoLabel(song.tempo_bpm)}
+        bpm={song.tempo_bpm}
+        timeSignature={song.time_signature}
+        slug={song.slug}
+      />
+    ))}
+  </div>
+</Layout>

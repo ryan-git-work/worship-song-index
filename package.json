@@ -1,0 +1,21 @@
+{
+  "name": "worship-song-directory",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/sitemap": "^3.6.0",
+    "@replit/connectors-sdk": "^0.4.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.17",
+    "astro": "^5.16.5",
+    "marked": "^18.0.4",
+    "tailwindcss": "^4.1.17"
+  }
+}

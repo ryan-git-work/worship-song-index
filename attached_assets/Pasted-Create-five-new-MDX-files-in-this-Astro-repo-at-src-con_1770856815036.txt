@@ -1,0 +1,235 @@
+Create five new MDX files in this Astro repo at: src/content/devotionals/
+
+Do not modify any existing code. Just add these five files with the exact contents below.
+
+1) File: src/content/devotionals/keep-the-unity.mdx
+Paste exactly:
+---
+title: Keep the Unity
+pillar: team-culture-and-unity
+description: A short devotional about protecting unity like it is part of your ministry, not a side effect of it.
+verseRef: Ephesians 4:3
+songSlugs:
+  - the-blessing
+  - same-god
+  - build-my-life
+discussionQuestions:
+  - What is currently threatening unity on our team, even if we have not named it out loud.
+  - Where do we tend to protect preferences more than we protect people.
+  - What is one practical thing we can do this week to pursue peace instead of avoiding tension.
+prayer: Spirit of God, make us people of peace. Help us guard unity with humility and courage. Teach us to speak the truth with love and to refuse division as normal.
+---
+
+Paul does not say, “Enjoy unity when it happens.”
+
+He says, “Be eager to maintain it.”
+
+That word maintain means unity is not automatic. It is not guaranteed. It is something you protect on purpose.
+
+Most worship teams do not fall apart because someone missed a chord change. They drift because little fractures go unattended. Side comments. Comparisons. Unspoken frustration. Passive silence. A group text that gets spicy. A tone that shifts in rehearsal.
+
+And then we tell ourselves it is fine.
+
+Unity is not pretending nothing is wrong. Unity is caring enough to do the work of peace.
+
+Ephesians says unity is held together by a bond. A bond is relational. It is chosen. It is strengthened over time. It is also fragile if you treat it casually.
+
+If you want to lead a church into worship, you cannot normalize division on your platform. The team is the message before the song is.
+
+So this week, do not just rehearse notes.
+Rehearse honor.
+Rehearse trust.
+Rehearse forgiveness.
+
+Be eager to maintain unity. Not because you are trying to be a nice team, but because the Spirit has made you one.
+
+2) File: src/content/devotionals/honor-is-the-soundcheck.mdx
+Paste exactly:
+---
+title: Honor Is the Soundcheck
+pillar: team-culture-and-unity
+description: A short devotional about creating a culture where honor comes before excellence.
+verseRef: Romans 12:10
+songSlugs:
+  - gratitude
+  - goodness-of-god
+  - build-your-kingdom-here
+discussionQuestions:
+  - What does honor look like on our team when we disagree or get frustrated.
+  - Where do we tend to treat people like problems to solve instead of people to love.
+  - Who do you want to honor today, and what do you want to say to them.
+prayer: Father, teach us to love like family. Help us outdo one another in honor. Make our team a safe place where people grow, serve, and belong.
+---
+
+Soundcheck is where most teams reveal who they really are.
+
+Not because it is spiritual.
+Because it is stressful.
+
+Time is tight. The mix is off. Something is not working. Someone is late. Someone forgot a part. And suddenly you see the culture.
+
+Romans says, “Love one another with brotherly affection. Outdo one another in showing honor.”
+
+That is not cute. That is a leadership command.
+
+Honor is how you treat someone when they are not at their best.
+Honor is how you talk about someone when they are not in the room.
+Honor is how you correct without humiliating.
+Honor is how you lead without controlling.
+
+A team can be excellent and still be unsafe.
+A team can be talented and still be harsh.
+
+Honor makes excellence sustainable.
+
+Before you check levels today, check the temperature of your heart. If you want the room to experience the love of God, your team has to practice it first.
+
+Outdo one another in honor.
+
+That means you go first.
+You lower your tone.
+You choose warmth.
+You assume the best.
+You refuse sarcasm as a leadership tool.
+
+Honor is the soundcheck that makes the worship believable.
+
+3) File: src/content/devotionals/quick-to-listen.mdx
+Paste exactly:
+---
+title: Quick to Listen
+pillar: team-culture-and-unity
+description: A short devotional about slowing down our words so we can actually hear each other.
+verseRef: James 1:19
+songSlugs:
+  - holy-spirit
+  - make-room
+  - here-again
+discussionQuestions:
+  - Where do we tend to speak fast instead of listen well on this team.
+  - What is one conversation we have been avoiding that needs clarity.
+  - What would change if we assumed people are trying, even when they miss it.
+prayer: Jesus, slow us down. Make us quick to listen and slow to speak. Guard our team from careless words and give us patience with one another.
+---
+
+James gives a simple order.
+
+Quick to listen.
+Slow to speak.
+Slow to anger.
+
+Most team conflict is not about theology. It is about speed.
+
+We speak too fast.
+We assume too much.
+We react before we understand.
+
+In rehearsals, this shows up as sharp comments and rushed correction. In planning, it shows up as frustration and feeling unheard. In communication, it shows up as people who stop contributing because it is safer to be quiet.
+
+James is not saying never speak. He is saying listen first.
+
+Listening is leadership.
+
+When someone is struggling, do not jump to blame. Ask a question.
+When someone gives feedback, do not defend. Receive it.
+When someone feels overlooked, do not minimize. Understand it.
+
+The moment you become quick to listen, you become safer. And when a team becomes safe, unity stops being a slogan and starts being real.
+
+Before you sing together today, practice listening together.
+
+Sometimes the most spiritual thing you can do as a worship leader is slow your mouth down and love people enough to hear them.
+
+4) File: src/content/devotionals/words-that-build.mdx
+Paste exactly:
+---
+title: Words That Build
+pillar: team-culture-and-unity
+description: A short devotional about using your words to strengthen the team, not drain it.
+verseRef: Ephesians 4:29
+songSlugs:
+  - give-us-clean-hands
+  - build-my-life
+  - the-heart-of-worship
+discussionQuestions:
+  - What kind of words have been most common on our team lately, and what has that produced.
+  - Where do we slip into sarcasm or criticism that sounds normal but does damage.
+  - What is one sentence you could say today that would build someone up.
+prayer: Holy Spirit, put a guard over our mouths. Teach us to speak words that give grace and build faith. Make our team a place where people leave stronger than they arrived.
+---
+
+Ephesians says, “Let no corrupt communication come out of your mouth.”
+
+That sounds intense, but it is practical.
+
+Corrupt words are words that decay the room.
+
+They do not have to be hateful to be harmful. They can be subtle. They can be disguised as humor. They can be spiritualized critique. They can be the habit of always pointing out what is wrong.
+
+Paul gives the alternative.
+
+Speak what is good for building up.
+Speak what fits the moment.
+Speak what gives grace.
+
+That is a culture decision.
+
+A worship leader sets the tone by what they tolerate and what they repeat. If every rehearsal is mostly correction, people will eventually protect themselves. They will play safe. They will disengage. They will stop bringing their whole heart.
+
+But if your words build, people grow.
+
+You can still correct. You can still pursue excellence. But you do it with grace. You do it with care. You do it like you are shepherding people, not managing parts.
+
+Before you speak today, ask one question.
+
+Will this build up, or will this break down.
+
+Let your words give grace.
+
+5) File: src/content/devotionals/the-lower-seat.mdx
+Paste exactly:
+---
+title: The Lower Seat
+pillar: team-culture-and-unity
+description: A short devotional about choosing humility so ego does not quietly become the culture.
+verseRef: Philippians 2:3-4
+songSlugs:
+  - nothing-else
+  - i-surrender
+  - refiners-fire
+discussionQuestions:
+  - Where are we most tempted to compete with each other instead of care for each other.
+  - What is one preference you need to release for the good of the team and the church.
+  - What would it look like to consider others better than yourself in a practical way this week.
+prayer: Jesus, form Your humility in us. Free us from needing to be noticed. Make us a team that serves with joy and values people more than position.
+---
+
+Philippians does not say, “Avoid pride when you feel spiritual.”
+
+It says, “Do nothing from selfish ambition or conceit.”
+
+Nothing.
+
+That is not about personality. That is about posture.
+
+Worship teams can become quietly competitive. Not always out loud, but in the heart. Who gets featured. Who gets noticed. Who gets the mic. Who gets thanked. Who is trusted. Who feels overlooked.
+
+Unity cannot survive when ego is driving.
+
+Paul gives a different way.
+
+In humility, count others more significant than yourselves.
+
+That does not mean you think less of yourself. It means you think of yourself less. It means you choose the lower seat. You celebrate other people. You make space. You do not cling to your preference like it is spiritual.
+
+A team becomes healthy when leaders model humility first.
+
+Before you lead worship this week, ask yourself a simple question.
+
+Where am I grasping.
+
+Then release it.
+
+Choose the lower seat, not as a loss, but as worship. Jesus did. And your team will feel the difference.
+
+After creating the files, run the dev server and confirm they render on the Team Culture and Unity pillar page and each devotional page.

@@ -1,0 +1,20 @@
+---
+const pillars = [
+  { slug: "heart-and-motives", title: "Heart and Motives", description: "Humility, obedience, purity of heart, and staying anchored when the room is watching." },
+  { slug: "team-culture-and-unity", title: "Team Culture and Unity", description: "Communication, conflict, honor, and building trust in real teams." },
+  { slug: "sustainable-ministry", title: "Sustainable Ministry", description: "Pace, sabbath, boundaries, anxiety, and serving from health." },
+  { slug: "excellence-and-craft", title: "Excellence and Craft", description: "Preparation, musicianship, and doing excellent work without feeding ego." },
+  { slug: "pastoral-leadership", title: "Pastoral Leadership", description: "Discipling volunteers, raising leaders, feedback, and shepherding people." },
+  { slug: "congregational-worship", title: "Congregational Worship", description: "Participation, clarity, song selection, and helping the room sing." },
+  { slug: "presence-and-prayer", title: "Presence and Prayer", description: "Prayer, listening, Word and Spirit, and leading as ministry not presentation." }
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {pillars.map((pillar) => (
+    <a href={`/worship-team-devotionals/${pillar.slug}/`} class="block rounded-lg border p-6 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-primary-300" style="background: var(--color-surface-card); border-color: var(--color-border);">
+      <h3 class="text-lg font-semibold text-primary-700 mb-2" style="font-family: var(--font-serif);">{pillar.title}</h3>
+      <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">{pillar.description}</p>
+    </a>
+  ))}
+</div>

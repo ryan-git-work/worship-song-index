@@ -1,0 +1,240 @@
+Create five new MDX files in this Astro repo at: src/content/devotionals/
+
+Do not modify any existing code. Just add these five files with the exact contents below.
+
+1) File: src/content/devotionals/play-skillfully.mdx
+Paste exactly:
+---
+title: Play Skillfully
+pillar: excellence-and-craft
+description: A short devotional about skill as worship, not as ego.
+verseRef: Psalm 33:3
+songSlugs:
+  - the-heart-of-worship
+  - build-my-life
+  - make-room
+discussionQuestions:
+  - Where do you feel the tension between excellence and performance most often.
+  - What is one part of your craft you need to steward more faithfully this week.
+  - What would it look like for skill to serve worship instead of spotlight.
+prayer: God, thank You for the gifts You have placed in this team. Teach us to practice with joy and humility. Let our excellence be an offering, not a demand for attention.
+---
+
+“Sing to him a new song. Play skillfully with a shout of joy!”
+
+That is not a verse about showing off. It is a verse about offering.
+
+Skill is not the enemy of worship. Skill is a tool. It is stewardship. It is love made practical. When you practice, you are caring for the people who will try to sing. When you prepare, you are removing distractions. When you tighten a transition, you are serving the room.
+
+But skill has a shadow side.
+
+If skill becomes identity, you will protect it.
+If skill becomes control, you will fear mistakes.
+If skill becomes your worth, you will start performing instead of leading.
+
+Psalm 33 gives a better posture.
+
+Play skillfully.
+Do it with joy.
+Offer it to God.
+
+This week, let practice be worship.
+
+Not because you are trying to be impressive.
+Because you are trying to be faithful.
+
+2) File: src/content/devotionals/work-heartily.mdx
+Paste exactly:
+---
+title: Work Heartily
+pillar: excellence-and-craft
+description: A short devotional about preparation as a form of discipleship.
+verseRef: Colossians 3:23
+songSlugs:
+  - build-my-life
+  - yes-i-will
+  - gratitude
+discussionQuestions:
+  - Where do you tend to cut corners because no one will notice.
+  - What is one rehearsal habit that would make our team healthier and stronger.
+  - How could preparation become an act of love for our church instead of pressure on ourselves.
+prayer: Jesus, teach us to work from the heart. Free us from people pleasing and fear. Make our preparation steady, humble, and filled with love for You and for the people we serve.
+---
+
+“And whatever you do, work heartily, as for the Lord, and not for men,”
+
+That verse hits different when you are tired.
+
+It is easy to treat preparation like a necessary evil. Something you do to avoid embarrassment. Something you rush through because life is full. Something you skip because you can wing it.
+
+But worship leaders know the truth.
+
+What happens on a platform starts in the unseen places.
+In the planning.
+In the practice.
+In the honesty about what needs work.
+
+Preparation is not just technical. It is pastoral.
+
+When you prepare, you are creating clarity for your team.
+You are building confidence for volunteers.
+You are making space for worship instead of confusion.
+
+Work heartily.
+
+Not for applause.
+Not to protect your reputation.
+Not to prove you belong.
+
+For the Lord.
+
+This week, let your preparation be worship.
+Let your craft be a yes to God.
+
+3) File: src/content/devotionals/decency-and-order.mdx
+Paste exactly:
+---
+title: Decency and Order
+pillar: excellence-and-craft
+description: A short devotional about order as a way to serve people, not control them.
+verseRef: 1 Corinthians 14:40
+songSlugs:
+  - holy-spirit
+  - make-room
+  - here-again
+discussionQuestions:
+  - Where do we confuse being Spirit led with being unprepared.
+  - What is one simple system that would make rehearsal calmer and more productive.
+  - How can we create order without becoming rigid or controlling.
+prayer: Holy Spirit, lead us with peace. Teach us to serve the room with clarity. Give us wisdom to plan well and humility to adjust quickly when You prompt us.
+---
+
+“Let all things be done decently and in order.”
+
+That verse gets misunderstood.
+
+Some people hear it and think it means control.
+Some people hear it and think it means rigidity.
+Some people ignore it because it sounds too practical.
+
+But Paul is talking about love.
+
+Order helps people engage.
+Order reduces distraction.
+Order creates space for the room to participate.
+
+Chaos is not spiritual. Chaos is confusing. And confusion usually does not lead to faith. It leads to spectators.
+
+This is why excellence matters.
+
+Not because God is impressed by clean transitions.
+Because people are helped by clarity.
+
+Order is a servant.
+
+It serves the congregation.
+It serves the band.
+It serves the tech team.
+It serves the Spirit’s movement by removing noise.
+
+This week, do not chase perfection.
+Chase clarity.
+
+Let all things be done decently and in order.
+
+4) File: src/content/devotionals/stand-before-kings.mdx
+Paste exactly:
+---
+title: Stand Before Kings
+pillar: excellence-and-craft
+description: A short devotional about diligence, growth, and earning trust over time.
+verseRef: Proverbs 22:29
+songSlugs:
+  - goodness-of-god
+  - build-my-life
+  - i-surrender
+discussionQuestions:
+  - What area of your craft needs steady growth right now.
+  - Where do you want results quickly instead of building slowly.
+  - What is one practice you can commit to for the next month that will make you better and healthier.
+prayer: God, give us patience to grow. Teach us to honor You with diligence. Help us become trustworthy people who serve with consistency and joy.
+---
+
+“Do you see a man skilled in his work? He will serve kings.”
+
+Skill takes time.
+
+Most of the worship leaders you respect did not get there by accident. They got there through repetition. Through humility. Through being willing to be a beginner longer than their ego wanted to be.
+
+Diligence is spiritual when it is offered to God.
+
+Not because God loves grind culture.
+Because God loves growth.
+
+A worship team that pursues skill with humility becomes trustworthy. That trust creates freedom. When a team is prepared, you are not spending rehearsal time surviving. You are building culture. You are pastoring people. You are creating margin.
+
+This verse is not about being famous.
+
+It is about being faithful with what is in your hands.
+
+This week, choose diligence.
+Choose growth.
+Choose the long obedience.
+
+The room may never know the hours you put in.
+
+But God sees it.
+And your team will feel it.
+
+5) File: src/content/devotionals/good-managers.mdx
+Paste exactly:
+---
+title: Good Managers
+pillar: excellence-and-craft
+description: A short devotional about stewarding gifts for the sake of others.
+verseRef: 1 Peter 4:10
+songSlugs:
+  - build-my-life
+  - the-heart-of-worship
+  - new-wine
+discussionQuestions:
+  - What gift has God trusted to you that you need to steward more faithfully.
+  - Where do you feel tempted to use your gift for recognition instead of service.
+  - Who benefits when you show up prepared and humble.
+prayer: Father, make us good managers of Your grace. Keep our gifts rooted in love. Teach us to serve one another with humility, joy, and consistency.
+---
+
+“As each has received a gift, employ it in serving one another, as good managers of the grace of God in its various forms.”
+
+That word managers is a gift.
+
+You are not an owner.
+You are a steward.
+
+Your voice is not yours.
+Your skill is not yours.
+Your role is not yours.
+
+It is grace.
+And it was given for service.
+
+This changes how you approach excellence.
+
+Excellence is not about proving you belong.
+Excellence is about honoring what you have been entrusted with.
+Excellence is about serving your team and your church with care.
+
+A steward practices.
+A steward prepares.
+A steward shows up on time.
+A steward learns their part.
+A steward builds systems that help others succeed.
+
+Not because they are anxious.
+
+Because they are faithful.
+
+This week, lead like a manager of grace.
+Let your craft become love in action.
+
+After creating the files, run the dev server and confirm they render on the Excellence and Craft pillar page and each devotional page.

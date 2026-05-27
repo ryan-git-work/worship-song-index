@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  artist: string;
+  maleKey: string;
+  femaleKey: string;
+  tempo: string;
+  bpm: number;
+  timeSignature: string;
+  slug: string;
+}
+
+const { title, artist, maleKey, femaleKey, tempo, bpm, timeSignature, slug } = Astro.props;
+---
+
+<article class="rounded-lg border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5" style="background: var(--color-surface-card); border-color: var(--color-border);">
+  <div class="p-5">
+    <a href={`/songs/${slug}`} class="block mb-4">
+      <h2 class="text-lg font-semibold text-primary-800 hover:text-primary-600 transition-colors" style="font-family: var(--font-serif); font-size: 1.25rem;">
+        {title}
+      </h2>
+      <p class="mt-1 text-sm" style="color: var(--color-text-secondary);">
+        {artist}
+      </p>
+    </a>
+
+    <div class="flex flex-wrap gap-1.5 mb-3">
+      <a href={`/browse/keys/male/${maleKey.replace('#', '-sharp').toLowerCase()}`} class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-colors">
+        Male: {maleKey}
+      </a>
+      <a href={`/browse/keys/female/${femaleKey.replace('#', '-sharp').toLowerCase()}`} class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-accent-100 text-accent-800 hover:bg-accent-200 transition-colors">
+        Female: {femaleKey}
+      </a>
+      <a href={`/browse/time-signatures/${timeSignature.replace('/', '-')}`} class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium transition-colors" style="background: var(--color-border-light); color: var(--color-text-secondary);">
+        {timeSignature}
+      </a>
+    </div>
+
+    <div class="flex items-center gap-2 text-xs mb-4" style="color: var(--color-text-muted);">
+      <span>{tempo}</span>
+      <span style="color: var(--color-border);">&#183;</span>
+      <span>{bpm} BPM</span>
+    </div>
+
+    <a href={`/songs/${slug}`} class="text-primary-600 font-medium text-sm flex items-center gap-1 hover:text-primary-800 transition-colors">
+      View Details
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</article>

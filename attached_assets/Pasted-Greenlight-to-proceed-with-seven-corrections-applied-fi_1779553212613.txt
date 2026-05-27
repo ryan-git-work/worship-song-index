@@ -1,0 +1,119 @@
+Greenlight to proceed with seven corrections applied first, plus a validation pass before applying to the full site.
+
+# Correction 1 — Add @context to every top-level schema object
+
+In the proposed code, MusicComposition has `@context: "https://schema.org"` but BreadcrumbList does not. When passing an array of schemas through Layout's single <script type="application/ld+json"> block, each top-level object in the array needs its own @context. Add it to every BreadcrumbList, every ItemList, every CollectionPage — every schema object that ends up as an array element.
+
+# Correction 2 — Song-page breadcrumb must match the visible breadcrumb
+
+The visible breadcrumb on song pages currently reads "Home / [Song Title]" — two levels. Your proposed schema has three (Home / Browse / Song). Google requires the schema to match what's visible.
+
+Pick one fix and tell me which you applied:
+
+- **Option A (schema-only fix):** Drop the "Browse" middle item from the song-page BreadcrumbList. Two ListItems: Home, Song Title.
+- **Option B (UI + schema):** Update the visible breadcrumb on song-page templates to include "Browse" so it reads "Home / Browse / [Song Title]", then keep the three-level schema as proposed.
+
+Option B is better information architecture if it's a quick template change. Either way, visible and schema must match.
+
+# Correction 3 — Drop the `is68` conditional, use uniform name templating
+
+The proposed time-signatures ItemList code has:
+"name": is68 ? "Worship Songs in 6/8 Time" : Songs in ${signature} Time
+
+This gives 6/8 a polished name and every other time signature a generic fallback. Replace with uniform templating that uses a small helper to convert URL slug to display form.
+
+# Correction 4 — Add a `formatTimeSignature` helper for slash-vs-hyphen handling
+
+The URL slug for 6/8 is `6-8` (hyphen, because slashes break URL paths). Display should be `6/8`. The proposed code uses `signature` (the raw slug) in both URL and name fields, which prints things like "Time Signature: 6-8" instead of "Time Signature: 6/8".
+
+Add a helper (wherever utilities live):
+function formatTimeSignature(slug) {
+// "6-8" → "6/8", "12-8" → "12/8", "3-4" → "3/4"
+return slug.replace("-", "/");
+}
+
+Then enforce this principle everywhere in schema:
+
+- **URL fields** (`url`, `item` inside breadcrumb ListItems, canonical) → use the raw slug `${signature}`
+- **Display fields** (`name`, `description`, breadcrumb `name`) → use `${formatTimeSignature(signature)}`
+
+Final templated values:
+"name": Worship Songs in ${formatTimeSignature(signature)} Time,
+"description": ${filteredSongs.length} worship songs in ${formatTimeSignature(signature)} time signature, with keys, BPM, and tempo for each.,
+// in BreadcrumbList:
+{
+"@type": "ListItem",
+"position": 3,
+"name": Time Signature: ${formatTimeSignature(signature)},
+"item": https://worshipsongindex.com/browse/time-signatures/${signature}/
+}
+
+# Correction 5 — Check sharp-key slug convention and add `formatKey` helper
+
+Sharp keys (F#, C#, G#, A#, D#) have the same URL-encoding problem as 6/8 — the `#` character is the fragment separator in URLs, so a literal F# in a URL breaks. Before applying schema to `/browse/keys/male/[key]/` and `/browse/keys/female/[key]/`, inspect the project and tell me:
+
+- What slug convention does the project use for sharp keys? Likely candidates: `fs` / `cs` / `gs`, or `f-sharp` / `c-sharp`, or `f%23`, or the project doesn't generate sharp-key browse pages at all.
+- If sharp-key browse pages exist, mirror the time-signature pattern with a `formatKey(slug)` helper that converts URL slug back to display form (e.g., `fs` → `F#`, `c-sharp` → `C#`, whatever the convention is).
+
+Once you know the convention, apply the same URL-vs-display principle to the key browse pages and to the song-page MusicComposition `musicalKey` and `additionalProperty` fields if those ever reference sharp keys directly. Report the convention you found before applying.
+
+# Correction 6 — Handle missing or empty optional fields gracefully
+
+Before applying to 3,470 songs, add guard clauses so a song with an empty `themes` array, empty `scripture_refs`, empty `tags`, or null `summary_theology` doesn't render empty or malformed schema fields. Render the field only if it has content:
+const musicComposition = {
+"@context": "https://schema.org",
+"@type": "MusicComposition",
+"name": song.title,
+"url": canonicalURL,
+"musicalKey": song.default_male_key,
+"additionalProperty": [
+{ "@type": "PropertyValue", "name": "Recommended male key", "value": song.default_male_key },
+{ "@type": "PropertyValue", "name": "Recommended female key", "value": song.default_female_key }
+],
+"beatsPerMinute": song.tempo_bpm,
+"inLanguage": "en",
+"recordedAs": {
+"@type": "MusicRecording",
+"name": song.title,
+"byArtist": { "@type": "MusicGroup", "name": song.primary_artist }
+},
+...(song.themes?.length && {
+"about": song.themes.map(t => ({ "@type": "Thing", "name": t })),
+"keywords": [...song.themes, ...(song.tags || [])].join(", ")
+}),
+...(song.scripture_refs?.length && {
+"citation": song.scripture_refs
+}),
+...(song.summary_theology && {
+"description": song.summary_theology
+})
+};
+
+# Correction 7 — On tags/artists pages, KEEP existing CollectionPage AND ADD ItemList
+
+Don't replace CollectionPage with ItemList on the browse/tags and browse/artists pages. They complement each other — CollectionPage tells Google "this page IS a curated collection," ItemList tells Google "here are the items in it." Final structuredData array on those pages should be: [CollectionPage, BreadcrumbList, ItemList], each with its own @context.
+
+# Validation pass before applying to the full site
+
+Once the seven corrections above are in, build the project and validate ONE rendered page from each schema-bearing template through Google's Rich Results Test at https://search.google.com/test/rich-results. Specifically:
+
+1. One song page — use `/songs/so-be-it-elevation-worship`
+2. The 6/8 browse page — `/browse/time-signatures/6-8/`
+3. One female-key browse page — `/browse/keys/female/C/`
+4. One theme browse page — `/browse/themes/obedience/`
+5. One artist browse page — `/browse/artists/elevation-worship/` (this one already has CollectionPage + BreadcrumbList, so it tests the merge)
+6. One blog post — any one with `body` populated
+
+For each, report: which schemas validated cleanly, which had warnings (and what they say), which had errors. Show me the actual output of the Rich Results Test for each.
+
+# After validation reports clean
+
+Once the five sample pages validate clean, greenlight to apply the same pattern to:
+- All 4 unschema'd browse route templates (themes, keys/male, keys/female, time-signatures)
+- All 3,470 song pages
+- All blog posts
+- The merge into tags/artists existing schemas
+
+Then re-run the validation on a fresh sample of 3-5 pages from the full application to confirm consistency at scale.
+
+Start with corrections 1, 2, 3, 4, 6, 7 (these don't depend on the sharp-key investigation). Run correction 5 in parallel — tell me the sharp-key slug convention as soon as you find it, then apply correction 5 to key browse pages once we've confirmed the helper.

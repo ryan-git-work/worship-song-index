@@ -1,0 +1,133 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import SongCard from '../../../components/SongCard.astro';
+import type { Song } from '../../../types/song';
+import { getTempoLabel } from '../../../types/song';
+import songsData from '../../../../public/songs.json';
+import editorialsData from '../../../../public/browse-editorials.json';
+import { marked } from 'marked';
+
+export async function getStaticPaths() {
+  const songs: Song[] = songsData as Song[];
+  const allSignatures = [...new Set(songs.map(s => s.time_signature))];
+
+  return allSignatures.map(sig => ({
+    params: { signature: sig.replace('/', '-') },
+    props: { signature: sig }
+  }));
+}
+
+const { signature } = Astro.props;
+const songs: Song[] = songsData as Song[];
+const filteredSongs = songs.filter(s => s.time_signature === signature).sort((a, b) => a.title.localeCompare(b.title));
+
+const is68 = signature === '6/8';
+
+const title = is68
+  ? 'Worship Songs in 6/8 Time | Keys, BPM & Tempo — Worship Song Index'
+  : `Songs in ${signature} Time - Worship Song Index`;
+
+const description = is68
+  ? 'Browse worship songs in 6/8 time, complete with male and female keys, BPM, and tempo markings. Find the right songs for altar calls, communion, and set closers that breathe.'
+  : `Browse worship songs with ${signature} time signature`;
+
+function formatTimeSignature(slug: string): string {
+  return slug.replace('-', '/');
+}
+
+const displaySig = formatTimeSignature(signature);
+
+const editorialEntry = (editorialsData as any)["time-signatures"]?.[Astro.params.signature || ''];
+const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+
+const itemList = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": `Worship Songs in ${displaySig} Time`,
+  "description": `${filteredSongs.length} worship songs in ${displaySig} time signature, with keys, BPM, and tempo for each.`,
+  "numberOfItems": filteredSongs.length,
+  "itemListElement": filteredSongs.slice(0, 30).map((song, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "url": `https://worshipsongindex.com/songs/${song.slug}`,
+    "name": song.title
+  }))
+};
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" },
+    { "@type": "ListItem", "position": 3, "name": `Time Signature: ${displaySig}`, "item": `https://worshipsongindex.com${Astro.url.pathname}` }
+  ]
+};
+
+const structuredData = [itemList, breadcrumb];
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 transition-colors">Browse</a>
+    <span class="mx-2">/</span>
+    <span>Time Signature: {signature}</span>
+  </nav>
+
+  <div class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      {is68 ? 'Worship Songs in 6/8 Time' : `Time Signature: ${signature}`}
+    </h1>
+    <p style="color: var(--color-text-muted);">Showing {filteredSongs.length} songs</p>
+  </div>
+
+  {is68 && (
+    <p class="mb-10 text-base leading-relaxed max-w-3xl" style="color: var(--color-text-secondary);">
+      6/8 is one of the most expressive time signatures in worship music. Unlike the steady march of 4/4, it moves in two large beats per measure, each with a built-in triplet feel — giving songs a rolling, wave-like quality that feels both spacious and forward-moving. Songs like Goodness of God, Reckless Love, and Great Are You Lord all carry that characteristic lilt that congregations tend to sink into naturally. This time signature works especially well for tender moments of response, altar calls, and set closers where you want the music to breathe without losing momentum. Use the filters below to find 6/8 songs by key and tempo to build a set that flows.
+    </p>
+  )}
+
+  {editorialHtml && (
+    <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
+  )}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    {filteredSongs.map(song => (
+      <SongCard
+        title={song.title}
+        artist={song.primary_artist}
+        maleKey={song.default_male_key}
+        femaleKey={song.default_female_key}
+        tempo={getTempoLabel(song.tempo_bpm)}
+        bpm={song.tempo_bpm}
+        timeSignature={song.time_signature}
+        slug={song.slug}
+      />
+    ))}
+  </div>
+
+  <div class="mt-12">
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 font-medium flex items-center gap-1 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Browse All Categories
+    </a>
+  </div>
+
+  {is68 && (
+    <div class="mt-12 pt-8 border-t" style="border-color: var(--color-border);">
+      <p class="text-sm font-medium mb-3" style="color: var(--color-text-muted);">Looking for other time signatures?</p>
+      <p class="text-sm" style="color: var(--color-text-secondary);">
+        Browse songs in{' '}
+        <a href="/browse/time-signatures/3-4" class="text-primary-600 hover:text-primary-800 transition-colors">3/4</a>
+        {' · '}
+        <a href="/browse/time-signatures/4-4" class="text-primary-600 hover:text-primary-800 transition-colors">4/4</a>
+        {' · '}
+        <a href="/browse/time-signatures/12-8" class="text-primary-600 hover:text-primary-800 transition-colors">12/8</a>
+      </p>
+    </div>
+  )}
+</Layout>

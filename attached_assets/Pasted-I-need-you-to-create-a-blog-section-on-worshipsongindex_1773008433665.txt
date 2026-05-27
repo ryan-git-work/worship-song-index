@@ -1,0 +1,59 @@
+I need you to create a blog section on worshipsongindex.com and publish the following article as the first post. Follow these instructions carefully.
+
+1. CREATE THE BLOG SECTION
+Create a new blog section at /blog/. This should:
+
+Follow the same layout, navigation, header, and footer structure as the rest of the site
+Have an index page at /blog/ that lists all blog posts with title, excerpt, and date
+Use the same image integration pattern already in use on the Worship Team Devotionals section — pull from the existing image library already being used there, don't introduce any new image dependencies
+Add "Blog" to the main site navigation
+
+
+2. CREATE THE FIRST POST
+Create the post at /blog/best-6-8-worship-songs/
+Use this exact content for the post body:
+[PASTE THE FULL MARKDOWN FROM THE FILE HERE]
+Post metadata:
+
+Title: The Best 6/8 Worship Songs for Your Set (And How to Use Them Well)
+Meta description: A worship leader's guide to 6/8 time — what it feels like, when to use it, and the best 6/8 worship songs available right now with keys, BPM, and placement tips.
+Slug: best-6-8-worship-songs
+Category: Set Building
+Date: [today's date]
+
+
+3. WIRE UP THE INTERNAL LINKS
+The post contains links to individual song pages and browse pages. Make sure all of these resolve correctly within the site:
+Song page links follow the pattern /songs/[song-slug] — verify these slugs exist in the database and correct any that don't match:
+
+/songs/goodness-of-god
+/songs/great-are-you-lord
+/songs/reckless-love
+/songs/abide
+/songs/graves-into-gardens
+/songs/build-your-church
+/songs/he-will-hold-me-fast
+/songs/o-come-to-the-altar
+/songs/run-to-the-father
+/songs/promises-maverick
+/songs/youve-already-won
+
+Browse page links:
+
+/browse/time-signatures/6-8/
+/browse/ (keys)
+/browse/tags/mid_tempo (verify this tag exists, use the closest matching tag slug if not)
+/browse/ (themes)
+
+If any song slug doesn't exist in the database, flag it in a comment in the code but still publish the post — just remove the hyperlink for that song and leave it as plain text for now.
+
+4. IMAGES
+Use the same images already integrated into the Worship Team Devotionals section. Apply them to the blog index page and the post header using the same method already in place. Do not introduce new image sources or external dependencies.
+
+5. AFTER PUBLISHING
+Tell me:
+
+The live URL of the new blog index page
+The live URL of the new post
+Which song slugs were found vs. flagged as missing
+Which image(s) were applied and where

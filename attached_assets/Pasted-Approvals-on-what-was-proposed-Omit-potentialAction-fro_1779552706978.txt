@@ -1,0 +1,35 @@
+Approvals on what was proposed:
+
+✅ Omit potentialAction from WebSite schema. The current SearchAction URL is genuinely broken (points to a song slug route), and the site doesn't have a real /search?q= endpoint to legitimately wire it to. Add it back later if we build proper search. For now, just @type: WebSite with name + url.
+✅ Replace MusicRecording with MusicComposition on song pages, with MusicRecording nested inside as recordedAs. That's the correct schema.org modeling — the COMPOSITION is the song-as-work, the RECORDING is a specific performance of it. Both can coexist.
+✅ Merge the new ItemList into the existing CollectionPage + BreadcrumbList on tags/artists pages. Pass as an array in the same structuredData prop. The Layout's single script tag will JSON-stringify the array and Google reads it fine.
+
+Five clarifications and corrections to apply:
+1. Add Organization schema to the BASE LAYOUT, not just the homepage. This was in my original prompt but I want to make it explicit. Organization should render on every page of the site, in the base Layout.astro, alongside whatever other schema each individual page passes through. The easiest pattern: have Layout.astro automatically inject Organization regardless of what structuredData prop is passed in, and append the page-specific schema. So every page gets Organization plus its specific schemas. Logo path is confirmed as /generated-icon.png.
+2. Fix musicalKey on MusicComposition. I was sloppy in my original template. Schema.org expects musicalKey to be a single key string. Since WSI's data has default_male_key and default_female_key but no single "original" key, do this instead:
+json"musicalKey": "{song.default_male_key}",
+"additionalProperty": [
+  {
+    "@type": "PropertyValue",
+    "name": "Recommended male key",
+    "value": "{song.default_male_key}"
+  },
+  {
+    "@type": "PropertyValue",
+    "name": "Recommended female key",
+    "value": "{song.default_female_key}"
+  }
+]
+This puts the male key as the primary musicalKey (since that's typically what worship leaders search), and exposes both keys properly via additionalProperty.
+3. Add keywords to MusicComposition from the song's tags array. The data has a tags array like ["modern", "ccli_top", "miracle", "faith", "encouragement"]. Add this as "keywords": "modern, ccli_top, miracle, faith, encouragement" (comma-separated string). Helps Google understand context.
+4. ItemList description templating. For each browse page, the ItemList description should be dynamically generated like this:
+
+Time-signatures: "{count} worship songs in {signature} time signature, with keys, BPM, and tempo for each."
+Keys: "{count} worship songs in the key of {key} for {gender} vocalists, with BPM and time signature for each."
+Themes: "{count} worship songs on the theme of {theme}, with keys, BPM, and tempo for each."
+Artists: "{count} worship songs by {artist}, with keys, BPM, and tempo for each."
+Tempo: "{count} worship songs at {tempo} tempo, with keys, BPM, and time signature for each."
+
+count is the actual length of the song list shown.
+5. Blog posts — use author: { @type: Organization } since the data has author: "Worship Song Index", which is already an organization name, not a person. Don't try to coerce it into a Person.
+Greenlight to proceed. Move to Step 2 (Organization + WebSite in base layout), Step 3 (BreadcrumbList everywhere), Step 4 (MusicComposition on song pages with all the corrections above), and then stop at Checkpoint 2 to show me the proposed code for one example song page and one example browse page before applying to all 3,470 + browse routes.

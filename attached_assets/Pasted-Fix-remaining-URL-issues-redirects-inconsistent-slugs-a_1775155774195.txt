@@ -1,0 +1,60 @@
+Fix remaining URL issues: redirects, inconsistent slugs, and uppercase keys
+The previous deploy fixed internal links and generated new slugified theme URLs, but there are three remaining issues that need to be cleaned up.
+1. Inconsistent theme slug format — some use underscores, some use hyphens
+The sitemap currently has BOTH formats for multi-word themes:
+
+great_commission (underscore)
+body-of-christ (hyphen)
+There are even duplicates like both greatness_of_god AND greatness-of-god
+
+Also, the page title renders ugly for underscore slugs — it shows "Theme: Great_commission" with a literal underscore.
+Fix needed: Standardize ALL theme slugs to use hyphens (not underscores). In getStaticPaths() for the theme page template, ensure every theme slug is generated with .replace(/\s+/g, '-').toLowerCase() or equivalent. The page title display should convert hyphens back to spaces with proper capitalization (e.g., "Great Commission" not "Great_commission"). Remove any duplicate entries from the sitemap.
+2. Add 301 redirects for old broken URLs that Google has indexed
+Google Search Console has 23 URLs it has been crawling that return 404. These are the OLD URL formats (with spaces, uppercase, and F%23). Since the pages now live at new slugified URLs, we need 301 redirects from the old URLs to the new ones.
+For an Astro static site, the cleanest approach is to add redirect rules. In astro.config.mjs, add a redirects object, OR create a public/_redirects file (if deploying to Netlify/Cloudflare), OR handle it via middleware.
+The redirects needed:
+Theme pages with spaces → hyphenated versions:
+
+/browse/themes/great commission/ → /browse/themes/great-commission/
+/browse/themes/christ alone/ → /browse/themes/christ-alone/
+/browse/themes/name of jesus/ → /browse/themes/name-of-jesus/
+/browse/themes/gods goodness/ → /browse/themes/gods-goodness/
+/browse/themes/kingship of jesus/ → /browse/themes/kingship-of-jesus/
+/browse/themes/worship response/ → /browse/themes/worship-response/
+/browse/themes/goodness of god/ → /browse/themes/goodness-of-god/
+/browse/themes/presence of god/ → /browse/themes/presence-of-god/
+/browse/themes/heavenly worship/ → /browse/themes/heavenly-worship/
+/browse/themes/spiritual warfare/ → /browse/themes/spiritual-warfare/
+/browse/themes/resurrection power/ → /browse/themes/resurrection-power/
+/browse/themes/spiritual authority/ → /browse/themes/spiritual-authority/
+/browse/themes/light of christ/ → /browse/themes/light-of-christ/
+/browse/themes/lordship of jesus/ → /browse/themes/lordship-of-jesus/
+/browse/themes/gods greatness/ → /browse/themes/gods-greatness/
+/browse/themes/love of god/ → /browse/themes/love-of-god/
+/browse/themes/gods glory/ → /browse/themes/gods-glory/
+/browse/themes/desire for god/ → /browse/themes/desire-for-god/
+/browse/themes/daily worship/ → /browse/themes/daily-worship/
+
+Uppercase key pages → lowercase:
+
+/browse/keys/male/E/ → /browse/keys/male/e/
+/browse/keys/female/D/ → /browse/keys/female/d/
+/browse/keys/male/G/ → /browse/keys/male/g/
+
+F# encoded pages → new f-sharp format:
+
+/browse/keys/male/F%23/ → /browse/keys/male/f-sharp/
+/browse/keys/female/F%23 → /browse/keys/female/f-sharp/
+
+Ideally, rather than hard-coding each redirect, implement a middleware or catch-all approach:
+
+Any /browse/themes/ URL with spaces → replace spaces with hyphens and redirect
+Any /browse/keys/ URL with uppercase letters → lowercase and redirect
+Any /browse/keys/ URL containing F%23 or F# → redirect to f-sharp
+
+This way future URLs are also covered.
+3. Uppercase key URLs in "Crawled - currently not indexed"
+Google Search Console also shows /browse/keys/female/D/ and /browse/keys/male/G/ in the "Crawled - currently not indexed" bucket. These uppercase URLs don't resolve. The middleware redirect approach from #2 above would fix these as well.
+After fixing:
+
+Run npm run build to verify no build errors

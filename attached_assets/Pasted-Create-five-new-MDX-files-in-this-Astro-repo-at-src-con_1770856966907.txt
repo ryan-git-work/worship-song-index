@@ -1,0 +1,234 @@
+Create five new MDX files in this Astro repo at: src/content/devotionals/
+
+Do not modify any existing code. Just add these five files with the exact contents below.
+
+1) File: src/content/devotionals/learn-the-pace.mdx
+Paste exactly:
+---
+title: Learn the Pace
+pillar: sustainable-ministry
+description: A short devotional about following Jesus at a human pace instead of living off urgency.
+verseRef: Matthew 11:28-30
+songSlugs:
+  - run-to-the-father
+  - i-surrender
+  - goodness-of-god
+discussionQuestions:
+  - Where have you been carrying ministry like Jesus asked you to carry it alone.
+  - What part of your week feels heaviest right now, and why.
+  - What is one pace change you need to make before it becomes a crisis.
+prayer: Jesus, we come to You tired. Teach us Your rhythm and Your gentleness. Help us lead from rest, not from pressure, and to carry what You assign, not what fear demands.
+---
+
+Jesus does not start with a strategy.
+
+He starts with an invitation.
+
+“Come to me.”
+
+Not come to the next meeting.
+Not come to the next rehearsal.
+Not come to the next deadline.
+Come to me.
+
+Then He says, “Take my yoke.”
+
+A yoke is not the absence of work. It is shared work. It means you are not meant to carry the load alone. A lot of worship leaders are exhausted because they are yoked to urgency instead of yoked to Jesus.
+
+Matthew 11 is not a verse for vacations. It is a verse for ministry.
+
+Jesus promises rest for your soul, not because you quit serving, but because you learn His pace. His yoke is easy and His burden is light. That does not mean ministry is always easy. It means His way of carrying it is different than yours.
+
+If you lead worship, your culture will mirror your pace. When you live frantic, your team will feel frantic. When you lead from rest, you give them permission to breathe.
+
+This week, stop measuring your faithfulness by your exhaustion.
+
+Come to Jesus.
+Learn His pace.
+Then lead from that place.
+
+2) File: src/content/devotionals/your-soul-needs-quiet.mdx
+Paste exactly:
+---
+title: Your Soul Needs Quiet
+pillar: sustainable-ministry
+description: A short devotional about why quiet is not wasted time and how God meets you there.
+verseRef: Psalm 46:10
+songSlugs:
+  - holy-spirit
+  - here-again
+  - nothing-else
+discussionQuestions:
+  - What noise do you use to avoid being still.
+  - Where do you feel most tempted to prove your value through productivity.
+  - What is one quiet practice you can commit to for seven days.
+prayer: God, teach us to be still. Quiet the anxious striving in us. Make our hearts attentive to You again, and let our leadership flow from communion, not noise.
+---
+
+“Be still, and know that I am God.”
+
+That is not a suggestion for calm people. It is a command for anxious ones.
+
+Stillness is not laziness. Stillness is trust. It is the decision to stop scrambling for control and to remember who God is.
+
+A lot of ministry burnout is not caused by workload alone. It is caused by a life with no quiet. No margin. No room for the soul to come up for air.
+
+Worship leaders are especially vulnerable here because we can stay around spiritual things and still avoid God. We can plan sets, listen to tracks, and build moments while never slowing down enough to be with Him.
+
+Psalm 46 does not say, “Be still and become more efficient.”
+
+It says, “Be still and know.”
+
+Knowing God is relational. It requires attention. And attention requires quiet.
+
+Before you rehearse today, do not add one more thing.
+
+Subtract something.
+
+Turn down the noise.
+Sit with the verse.
+Let the stillness expose what you have been carrying.
+Then let God meet you there.
+
+3) File: src/content/devotionals/guard-your-margin.mdx
+Paste exactly:
+---
+title: Guard Your Margin
+pillar: sustainable-ministry
+description: A short devotional about why limits are not a lack of faith and how boundaries protect love.
+verseRef: Mark 1:35
+songSlugs:
+  - i-surrender
+  - make-room
+  - build-my-life
+discussionQuestions:
+  - What boundary do you keep breaking that is slowly breaking you.
+  - Where do you say yes because you are afraid of disappointing people.
+  - What is one limit you can set this week that would make you a better pastor and a healthier person.
+prayer: Jesus, teach us to live with holy limits. Give us courage to say no when we need to, and wisdom to protect what matters. Make our yeses honest and our leadership healthy.
+---
+
+Mark says Jesus got up “very early in the morning.”
+
+Then He went to a solitary place.
+Then He prayed.
+
+This is important because Jesus was busy.
+
+People needed Him. Crowds were waiting. Miracles were happening. And still, He chose solitude. He chose prayer. He chose margin.
+
+If Jesus needed margin, you do too.
+
+Many worship leaders secretly believe boundaries are selfish. But boundaries are not selfish. Boundaries are stewardship. They protect your ability to love your family, your team, and your church without resentment.
+
+If you say yes to everything, you will eventually say no to someone you love, not because you want to, but because you are empty.
+
+Jesus shows a different way.
+
+He did not let urgent needs dictate His identity.
+He did not let crowds control His schedule.
+He withdrew to be with the Father, then returned to serve.
+
+Guarding margin is not quitting. It is building a sustainable life with God.
+
+Before you add another commitment, ask yourself.
+
+Does this align with my calling, or is it feeding my fear.
+
+Then choose the healthier path.
+
+4) File: src/content/devotionals/the-gift-of-sabbath.mdx
+Paste exactly:
+---
+title: The Gift of Sabbath
+pillar: sustainable-ministry
+description: A short devotional about Sabbath as a gift that restores worship leaders before they break.
+verseRef: Exodus 20:8-10
+songSlugs:
+  - gratitude
+  - it-is-well
+  - blessed-be-your-name
+discussionQuestions:
+  - When you think about rest, what emotion rises up first.
+  - What do you tend to do when you do not know how to stop.
+  - What would a real Sabbath look like for you in this season.
+prayer: Father, teach us to receive rest as a gift. Free us from striving and from measuring our worth by output. Restore our joy and strengthen our souls for faithful service.
+---
+
+God does not give Sabbath as punishment.
+
+He gives Sabbath as protection.
+
+“Remember the Sabbath day, to keep it holy.”
+
+Holy means set apart. Not because the day is magical, but because you are human. You were created with limits. Sabbath is God saying, “I care about you enough to require rest.”
+
+Most worship leaders do not burn out because they hate God. They burn out because they forget they are not God.
+
+Sabbath is the weekly reminder that the world keeps spinning without your effort. The church is still Jesus’ bride without your control. The Kingdom does not collapse if you stop.
+
+A Sabbath rhythm reorders your heart.
+
+It breaks the addiction to productivity.
+It confronts the fear of being unnecessary.
+It teaches you to trust God with outcomes.
+
+If you want sustainable ministry, you need sustainable worship.
+
+Not just on a stage.
+In your calendar.
+
+This week, choose one small Sabbath practice and treat it like obedience, not indulgence.
+
+Rest is worship when it is received with trust.
+
+5) File: src/content/devotionals/strength-in-weakness.mdx
+Paste exactly:
+---
+title: Strength in Weakness
+pillar: sustainable-ministry
+description: A short devotional about admitting weakness before it turns into isolation and burnout.
+verseRef: 2 Corinthians 12:9
+songSlugs:
+  - run-to-the-father
+  - i-surrender
+  - nothing-else
+discussionQuestions:
+  - Where are you trying to appear strong when you are actually tired.
+  - Who is one person you can be honest with this week.
+  - What would it look like to let God’s grace meet you in the place you keep hiding.
+prayer: Jesus, we bring You our weakness. We do not want to pretend. Let Your grace meet us where we are. Make us humble enough to ask for help and confident enough to rest in Your strength.
+---
+
+“My grace is sufficient for you.”
+
+Paul heard that in the middle of limitation.
+
+He wanted something removed. God offered something deeper.
+
+Grace.
+
+This is hard for worship leaders because we are trained to hold it together. We are often the people who show up early, stay late, and absorb pressure so everyone else can worship.
+
+But the danger is that ministry can turn into a performance of strength.
+
+You can sing about trust while living in anxiety.
+You can preach surrender while clenching your life with control.
+You can lead worship while secretly drowning.
+
+Paul’s weakness became the place where God’s power was seen, not because weakness is good, but because it forced him into dependence.
+
+Sustainable ministry requires honesty.
+
+You are not called to be impressive.
+You are called to be faithful.
+
+This week, do not hide your weakness from God.
+Do not hide it from trusted people.
+Bring it into the light.
+
+Grace is sufficient.
+
+And when you stop pretending, your soul can finally breathe again.
+
+After creating the files, run the dev server and confirm they render on the Sustainable Ministry pillar page and each devotional page.

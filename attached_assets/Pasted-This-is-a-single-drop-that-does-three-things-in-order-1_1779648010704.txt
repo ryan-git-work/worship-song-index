@@ -1,0 +1,56 @@
+This is a single drop that does three things in order:
+1. Updates the song-page template to render a new `editorial_markdown` field
+2. Updates the JSON-LD schema to use the new field for description
+3. Merges 320 song editorials into public/songs.json
+
+# STEP 1 — Template change (one-time, idempotent)
+
+Update `src/pages/songs/[slug].astro` to:
+
+- IF the song's `editorial_markdown` field exists and is a non-empty string: render it as markdown content IN PLACE OF the three existing prose sections (Theology & Meaning, Worship Leadership Tips, Arrangement Tips). Hide the three existing prose sections entirely on that page.
+- IF `editorial_markdown` is empty or missing: render the page exactly as it does today (the three existing prose sections show, no new section).
+
+Keep the structured Quick Facts sidebar (Male Key, Female Key, Tempo, BPM, Time Signature) and the Scripture References / Themes / Tags blocks unchanged in both cases.
+
+Use the `marked` package for markdown rendering. If not already installed, `npm install marked` first.
+
+If the template change has already been made in a previous run, detect that and skip this step rather than duplicating the logic.
+
+# STEP 2 — JSON-LD schema change
+
+Update the song-page JSON-LD MusicComposition schema:
+
+- IF `editorial_markdown` is present and non-empty: set the `description` field to the first ~160 characters of the "What this song is saying about God" section from the markdown. Extract that H2 section, strip the heading, take the first 160 chars, end at a sentence boundary.
+- IF `editorial_markdown` is empty: fall back to the existing `summary_theology` value as the description (current behavior).
+
+# STEP 3 — Merge 320 editorials into songs.json
+
+Read `public/songs.json`. For each key in the pasted JSON object at the bottom of this prompt:
+- Find the song whose `slug` matches the key
+- Add or update an `editorial_markdown` field with the value from the pasted JSON
+- Do NOT modify any other fields
+
+VALIDATION before saving songs.json:
+- Confirm exactly 320 songs were updated. Report any unmatched slugs and stop if any.
+- Confirm no other fields were modified.
+- Audit pasted markdown for em dashes ("—"). Stop if any found.
+
+# STEP 4 — Build + spot-check
+
+After saving everything:
+1. Run the production build
+2. Visit these 8 song pages to confirm the new editorial renders correctly (and the old 3 short sections are hidden):
+   - https://worshipsongindex.com/songs/blessed-be-your-name/
+   - https://worshipsongindex.com/songs/way-maker/
+   - https://worshipsongindex.com/songs/no-longer-slaves/
+   - https://worshipsongindex.com/songs/hosanna-hillsong/
+   - https://worshipsongindex.com/songs/promises-maverick/
+   - https://worshipsongindex.com/songs/firm-foundation-he-wont/
+   - https://worshipsongindex.com/songs/stand-in-your-love/
+   - https://worshipsongindex.com/songs/great-things/
+3. Visit one un-enriched song page (any song NOT in the pasted deltas) to confirm it still renders normally with the original 3 prose sections.
+4. Report: which URLs rendered correctly, which had issues, any errors during build.
+
+# THE PASTED JSON (320 editorials, ~1.7 MB):
+
+[paste the entire contents of wsi-songs-deltas-batches-1-and-2.json below this line]

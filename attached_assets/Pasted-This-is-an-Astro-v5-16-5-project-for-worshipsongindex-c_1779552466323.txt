@@ -1,0 +1,221 @@
+This is an Astro v5.16.5 project for worshipsongindex.com, a worship-song reference site with 3,470 songs. I need you to add JSON-LD structured data across the site to improve Google indexation and SERP presentation. Please do the following, in order, and stop to confirm at the marked checkpoints.
+
+# Step 1 — Inspect the project structure
+
+Read the following to understand the layout before changing anything:
+
+- `src/layouts/` — find the base layout file(s) that wrap every page
+- `src/pages/songs/[slug].astro` (or wherever individual song pages are rendered)
+- `src/pages/browse/` — all browse route templates (time-signatures, keys, tempo, themes, artists, etc.)
+- `src/pages/index.astro` — the homepage
+- `src/pages/blog/[slug].astro` or `src/pages/guides/` — wherever the Guides / blog posts live
+- The data source for songs (content collection, JSON file, or DB)
+
+Tell me what you found before making changes. Specifically: which layout(s) wrap every page, where the song detail template lives, what the data shape is for one song record, and where the browse pages get their song lists from.
+
+**CHECKPOINT 1.** Wait for my confirmation before continuing.
+
+# Step 2 — Add Organization + WebSite schema to the base layout
+
+In the base layout (so it renders on every page), inject these two JSON-LD blocks in the <head>:
+
+**Organization schema:**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Worship Song Index",
+  "url": "https://worshipsongindex.com",
+  "logo": "https://worshipsongindex.com/[whatever-the-actual-logo-path-is].png",
+  "description": "A free, structured worship-song reference for church worship leaders. Search 3,470+ worship songs by key, BPM, time signature, scripture, and theme."
+}
+```
+
+**WebSite schema (with SearchAction if the site has a search input):**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Worship Song Index",
+  "url": "https://worshipsongindex.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://worshipsongindex.com/search?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+```
+
+If the site does NOT have a search endpoint yet, omit the `potentialAction` block and just include `@type: WebSite` with name and url.
+
+# Step 3 — Add BreadcrumbList schema to every page that has visible breadcrumbs
+
+The recon shows breadcrumbs already render on every page (Home / Browse / [page]). For each route template that displays breadcrumbs, inject a JSON-LD BreadcrumbList block matching the visible breadcrumb hierarchy. Example for a song detail page at /songs/so-be-it-elevation-worship:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://worshipsongindex.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Browse",
+      "item": "https://worshipsongindex.com/browse"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "[Song Title]",
+      "item": "https://worshipsongindex.com/songs/[slug]"
+    }
+  ]
+}
+```
+
+Apply the same pattern to browse pages, where position 3 is the browse-type label (e.g., "Time Signature: 6/8") and the item URL is the browse page URL.
+
+# Step 4 — Add MusicComposition schema to every song detail page
+
+In `src/pages/songs/[slug].astro` (or equivalent), generate a JSON-LD MusicComposition block for each song using the song record's data. Use this template — only populate fields that exist in the data, omit any that are null:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "MusicComposition",
+  "name": "{song.title}",
+  "url": "https://worshipsongindex.com/songs/{song.slug}",
+  "composer": [
+    { "@type": "Person", "name": "{songwriter1}" },
+    { "@type": "Person", "name": "{songwriter2}" }
+  ],
+  "musicalKey": "{song.male_key} (male), {song.female_key} (female)",
+  "beatsPerMinute": {song.bpm},
+  "inLanguage": "en",
+  "recordedAs": {
+    "@type": "MusicRecording",
+    "name": "{song.title}",
+    "byArtist": { "@type": "MusicGroup", "name": "{song.artist}" }
+  },
+  "about": [
+    { "@type": "Thing", "name": "{theme1}" },
+    { "@type": "Thing", "name": "{theme2}" }
+  ],
+  "citation": [
+    "{scripture_ref_1}",
+    "{scripture_ref_2}"
+  ]
+}
+```
+
+Notes:
+- If the data doesn't have separate songwriter records, omit the `composer` array entirely. Don't fabricate.
+- `about` should pull from the song's themes array.
+- `citation` should pull from the song's scripture_refs array.
+- `musicalKey` is unusual to express as "X (male), Y (female)" but the spec allows any string — this is more useful for worship-leader searchers than picking one.
+
+# Step 5 — Add ItemList schema to every browse page
+
+On each browse route (`/browse/time-signatures/[sig]`, `/browse/keys/male/[key]`, `/browse/keys/female/[key]`, `/browse/themes/[theme]`, `/browse/artists/[artist]`, `/browse/tempo/[tempo]`, and any others), inject a JSON-LD ItemList block enumerating the songs shown on that page. Limit to the first 30 songs to keep the JSON-LD payload reasonable. Template:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Worship Songs in 6/8 Time",
+  "description": "29 worship songs in 6/8 time signature, with keys, BPM, and tempo for each.",
+  "numberOfItems": 29,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "url": "https://worshipsongindex.com/songs/abide",
+      "name": "Abide"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "url": "https://worshipsongindex.com/songs/ascend",
+      "name": "Ascend"
+    }
+  ]
+}
+```
+
+The `name` and `description` of the ItemList should match the page's H1 and a one-sentence summary. `numberOfItems` should reflect the actual count shown. The `itemListElement` array should contain the first 30 songs as `ListItem` records.
+
+**CHECKPOINT 2.** Before applying any of the above, show me your proposed code for ONE example song page and ONE example browse page so I can confirm the field mappings look right.
+
+# Step 6 — Add Article schema to Guides / blog posts
+
+For each guide / blog post under `/blog/` or `/guides/`, inject Article schema in the head:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{post.title}",
+  "description": "{post.description}",
+  "datePublished": "{post.publishDate}",
+  "dateModified": "{post.updatedDate or post.publishDate}",
+  "author": {
+    "@type": "Organization",
+    "name": "Worship Song Index"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Worship Song Index",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://worshipsongindex.com/[logo-path].png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://worshipsongindex.com/blog/{post.slug}"
+  }
+}
+```
+
+# Step 7 — Validate
+
+After applying all schemas:
+
+1. Run the production build (`npm run build` or the project's build command).
+2. Pick one example URL from each schema-bearing page type:
+   - Homepage
+   - One song page
+   - One browse page (use /browse/time-signatures/6-8/)
+   - One blog post
+3. For each, copy the rendered HTML and run it through Google's Rich Results Test at https://search.google.com/test/rich-results, OR paste it into https://validator.schema.org/ for raw schema validation.
+4. Report back: which schemas validated cleanly, which had warnings, which had errors. Show me the actual output.
+
+# Step 8 — Resubmit the sitemap
+
+After deployment, the next time Google crawls the site it'll pick up the new structured data automatically. To speed that up:
+
+1. In Google Search Console for sc-domain:worshipsongindex.com → Sitemaps → click the three-dot menu on `sitemap-index.xml` → Refresh.
+2. Use URL Inspection on 5–10 of the most important URLs (homepage, /browse/time-signatures/6-8/, top song pages from GSC) and click "Request indexing" on each.
+
+I'll handle Step 8 manually after you confirm Step 7 looks clean.
+
+# Constraints
+
+- Do not invent fields. If a song record doesn't have a CCLI number, songwriters, album, or year, omit the corresponding schema property. No placeholders.
+- Do not strip existing schema markup if the project already has any. Tell me what's there first and I'll decide whether to merge or replace.
+- Keep JSON-LD as a `<script type="application/ld+json">` block, not inline microdata. JSON-LD is what Google recommends.
+- Render JSON-LD server-side in Astro so it's in the initial HTML. Do not lazy-load it.
+- Don't add Advantage+ tracking, FB Pixel, or any analytics in this same change. Schema only.
+
+When you're ready to start, do Step 1 and stop at Checkpoint 1.

@@ -1,0 +1,231 @@
+Create five new MDX files in this Astro repo at: src/content/devotionals/
+
+Do not modify any existing code. Just add these five files with the exact contents below.
+
+1) File: src/content/devotionals/one-thing.mdx
+Paste exactly:
+---
+title: One Thing
+pillar: presence-and-prayer
+description: A short devotional about choosing presence over distraction before you lead.
+verseRef: Psalm 27:4
+songSlugs:
+  - nothing-else
+  - make-room
+  - here-again
+discussionQuestions:
+  - What has been competing for your attention and affection lately.
+  - What would it look like for our team to seek one thing together before we rehearse.
+  - Where do you feel rushed most often, and what would slow down look like.
+prayer: God, make our hearts single. Pull our attention back to You. Let our worship flow from Your presence, not from pressure or distraction. Teach us to desire You first.
+---
+
+“One thing have I asked of Yah.”
+
+Not ten things.
+Not everything at once.
+One thing.
+
+There is a kind of clarity that comes when you stop trying to carry the whole world and you simply seek God.
+
+Presence and prayer are not add ons. They are the foundation. If you lead worship without presence, you will eventually start leading from mechanics. It might sound good, but it will feel thin.
+
+This verse is not about wanting a moment. It is about wanting God.
+
+To behold His beauty.
+To inquire in His temple.
+To stay near.
+
+Before you lead anyone else, choose the one thing.
+
+Sit with God.
+Breathe.
+Let your soul quiet.
+Then step into rehearsal with a heart that is already turned toward Him.
+
+2) File: src/content/devotionals/wait-on-yah.mdx
+Paste exactly:
+---
+title: Wait on Yah
+pillar: presence-and-prayer
+description: A short devotional about waiting as worship and why rushing kills listening.
+verseRef: Isaiah 40:31
+songSlugs:
+  - i-surrender
+  - abide
+  - holy-spirit
+discussionQuestions:
+  - Where do you feel like you are always rushing in ministry right now.
+  - What do you think you might hear from God if you slowed down and waited.
+  - What is one practical way our team could practice waiting together this week.
+prayer: Holy Spirit, teach us to wait. Strengthen us as we slow down and listen. Renew our hearts and give us patience to follow Your lead, not our urgency.
+---
+
+Waiting feels unproductive.
+
+That is why it forms you.
+
+“They who wait for Yah will renew their strength.”
+
+Waiting is not passive. Waiting is trust. It is the decision to stop forcing outcomes and to let God lead at His pace.
+
+Worship leaders often rush because they are carrying the weight of the moment. We feel responsible for the room. We feel responsible for the energy. We feel responsible for the response.
+
+But that is not your burden.
+
+Waiting is how you return the weight to God.
+
+This week, practice a simple kind of waiting.
+
+Before rehearsal, take sixty seconds of silence.
+Before the first song, pray without filling the space.
+Before the service starts, let your heart settle.
+
+Waiting is not wasted time.
+
+It is worship that says, God, we trust You to meet us.
+
+3) File: src/content/devotionals/ask-seek-knock.mdx
+Paste exactly:
+---
+title: Ask, Seek, Knock
+pillar: presence-and-prayer
+description: A short devotional about prayer that is persistent and honest, not performative.
+verseRef: Matthew 7:7
+songSlugs:
+  - run-to-the-father
+  - i-surrender
+  - goodness-of-god
+discussionQuestions:
+  - What is one thing you need to ask God for with fresh honesty right now.
+  - Where have you stopped seeking because you got tired or disappointed.
+  - What would persistent prayer look like for our team this month.
+prayer: Father, teach us to ask with faith. Teach us to seek with hunger. Teach us to knock with perseverance. Make our team a praying team, not just a talented one.
+---
+
+Jesus says, “Ask, and it will be given to you. Seek, and you will find. Knock, and it will be opened for you.”
+
+Prayer is not a performance.
+Prayer is dependence.
+
+Worship teams can fall into a pattern where prayer is a transition. A quick moment to check a box before rehearsal. A closing line before soundcheck. A spiritual bow on top of a technical process.
+
+But Jesus is inviting something deeper.
+
+Ask.
+Seek.
+Knock.
+
+That is active language.
+
+It means you bring real needs to God.
+It means you do not stop at surface level.
+It means you keep coming, not because you are desperate, but because you trust the Father.
+
+This week, pray like you mean it.
+
+Ask for unity.
+Ask for healing in your church.
+Ask for courage.
+Ask for a new tenderness toward God.
+
+Then keep seeking.
+
+Prayer is not what you do before the work.
+
+Prayer is the work.
+
+4) File: src/content/devotionals/my-house-prayer.mdx
+Paste exactly:
+---
+title: My House Will Be Called Prayer
+pillar: presence-and-prayer
+description: A short devotional about building a prayer culture, not just a worship set.
+verseRef: Matthew 21:13
+songSlugs:
+  - holy-spirit
+  - here-as-in-heaven
+  - make-room
+discussionQuestions:
+  - If someone joined our team, would they say prayer is central or occasional.
+  - What is one thing we could change that would make prayer normal for us.
+  - Where do you feel like we rely on talent more than dependence.
+prayer: Jesus, make us a people of prayer. Teach us to depend on You, not on our ability. Let our rehearsals and services be soaked in prayer and shaped by Your presence.
+---
+
+Jesus says, “My house will be called a house of prayer.”
+
+Not a house of production.
+Not a house of excellence.
+Not a house of performance.
+
+Prayer.
+
+That does not mean excellence is unimportant. It means prayer is foundational.
+
+A team can be very good at music and still be weak in prayer. And when prayer is weak, dependence shifts. You start relying on skill to carry spiritual weight. You start using energy to replace presence. You start trying to manufacture what only God can give.
+
+Prayer puts things back in order.
+
+Prayer says, God, we cannot do this without You.
+Prayer says, God, we do not want to.
+Prayer says, God, meet Your people.
+
+If you want a prayer culture, start small.
+
+Pray before you talk.
+Pray when something goes wrong.
+Pray when someone shares a burden.
+Pray for the congregation by name.
+
+Over time, prayer becomes normal.
+
+And when prayer is normal, presence becomes real.
+
+5) File: src/content/devotionals/spirit-and-truth.mdx
+Paste exactly:
+---
+title: Spirit and Truth
+pillar: presence-and-prayer
+description: A short devotional about worship that is led by the Spirit and anchored in truth.
+verseRef: John 4:23-24
+songSlugs:
+  - build-my-life
+  - way-maker
+  - the-heart-of-worship
+discussionQuestions:
+  - Where do you tend to lean more, Spirit without structure or structure without Spirit.
+  - What would it look like for truth to shape our songs and for the Spirit to shape our posture.
+  - What is one prayer you want to pray before you lead this week.
+prayer: Holy Spirit, lead us into true worship. Anchor us in truth and keep us tender to Your presence. Let our leadership be honest, humble, and alive with faith.
+---
+
+Jesus says the Father is seeking worshipers.
+
+That is a wild thought.
+
+God is not only receiving worship. He is seeking people who will worship in spirit and truth.
+
+Spirit and truth belong together.
+
+Truth without the Spirit can become cold.
+Spirit without truth can become shallow.
+
+But when the Spirit leads and truth anchors, worship becomes real. People are not just singing words. They are encountering God. They are being formed. They are being healed. They are being reminded of what is true.
+
+Worship teams need both.
+
+We need the Word shaping what we sing.
+We need the Spirit shaping how we lead.
+We need theology that holds weight.
+We need presence that carries love.
+
+Before you lead this week, pray a simple prayer.
+
+Father, make us worshipers.
+Holy Spirit, lead us.
+Jesus, be the center.
+
+Then step into the room with truth in your mouth and dependence in your heart.
+
+After creating the files, run the dev server and confirm they render on the Presence and Prayer pillar page and each devotional page.

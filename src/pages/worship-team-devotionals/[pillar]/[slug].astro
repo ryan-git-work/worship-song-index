@@ -1,0 +1,191 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import RelatedSongs from '../../../components/RelatedSongs.astro';
+import RelatedLinks from '../../../components/RelatedLinks.astro';
+import { getCollection, render } from 'astro:content';
+import { getDevotionalImagePath } from '../../../lib/devotionalImage';
+
+const pillarNames: Record<string, string> = {
+  'heart-and-motives': 'Heart and Motives',
+  'team-culture-and-unity': 'Team Culture and Unity',
+  'sustainable-ministry': 'Sustainable Ministry',
+  'excellence-and-craft': 'Excellence and Craft',
+  'pastoral-leadership': 'Pastoral Leadership',
+  'congregational-worship': 'Congregational Worship',
+  'presence-and-prayer': 'Presence and Prayer',
+};
+
+export async function getStaticPaths() {
+  const devotionals = await getCollection('devotionals');
+  return devotionals.map((devo) => {
+    const parts = devo.id.split('/');
+    const slug = parts.pop()!;
+    const pillar = parts.join('/');
+    return {
+      params: { pillar, slug },
+      props: { entry: devo },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { pillar, slug } = Astro.params;
+const { Content } = await render(entry);
+
+const pillarTitle = pillarNames[entry.data.pillar] || entry.data.pillar;
+const title = entry.data.title + " - Worship Team Devotionals";
+const description = entry.data.description;
+const imagePath = getDevotionalImagePath(slug!);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": entry.data.title,
+  "description": description,
+  "url": `https://worshipsongindex.com/worship-team-devotionals/${pillar}/${slug}/`,
+  "image": `https://worshipsongindex.com${imagePath}`,
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+      { "@type": "ListItem", "position": 2, "name": "Devotionals", "item": "https://worshipsongindex.com/worship-team-devotionals/" },
+      { "@type": "ListItem", "position": 3, "name": pillarTitle, "item": `https://worshipsongindex.com/worship-team-devotionals/${pillar}/` },
+      { "@type": "ListItem", "position": 4, "name": entry.data.title, "item": `https://worshipsongindex.com/worship-team-devotionals/${pillar}/${slug}/` }
+    ]
+  }
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav class="text-sm mb-8" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/worship-team-devotionals/" class="text-primary-600 hover:text-primary-800 transition-colors">Devotionals</a>
+    <span class="mx-2">/</span>
+    <a href={`/worship-team-devotionals/${entry.data.pillar}/`} class="text-primary-600 hover:text-primary-800 transition-colors">{pillarTitle}</a>
+    <span class="mx-2">/</span>
+    <span>{entry.data.title}</span>
+  </nav>
+
+  <article class="max-w-3xl">
+
+    <div class="devotional-hero mb-10 rounded-xl overflow-hidden" style="aspect-ratio: 16/7; position: relative;">
+      <img
+        src={imagePath}
+        alt=""
+        width="1200"
+        height="525"
+        class="devotional-hero-img"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="devotional-hero-overlay"></div>
+      <div class="devotional-hero-text">
+        <p class="devotional-pillar-label">{pillarTitle}</p>
+        <h1 class="devotional-title">{entry.data.title}</h1>
+        <p class="devotional-verse">{entry.data.verseRef}</p>
+      </div>
+    </div>
+
+    <div class="prose prose-lg max-w-none mb-12" style="color: var(--color-text-secondary);">
+      <Content />
+    </div>
+
+    {entry.data.discussionQuestions && entry.data.discussionQuestions.length > 0 && (
+      <section class="rounded-lg border p-6 mb-8" style="background: var(--color-surface-card); border-color: var(--color-border);">
+        <h2 class="text-xl font-semibold mb-4" style="font-family: var(--font-serif); color: var(--color-text-primary);">Discussion Questions</h2>
+        <ol class="list-decimal list-inside space-y-3" style="color: var(--color-text-secondary);">
+          {entry.data.discussionQuestions.map((q: string) => (
+            <li class="leading-relaxed">{q}</li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    {entry.data.prayer && (
+      <section class="rounded-lg p-6 mb-8 bg-primary-50 border border-primary-100">
+        <h2 class="text-xl font-semibold text-primary-800 mb-3" style="font-family: var(--font-serif);">Prayer</h2>
+        <p class="text-primary-900 leading-relaxed italic">{entry.data.prayer}</p>
+      </section>
+    )}
+
+    <div class="space-y-6 mb-12">
+      {entry.data.songSlugs && entry.data.songSlugs.length > 0 && (
+        <RelatedSongs songSlugs={entry.data.songSlugs} />
+      )}
+
+      {(entry.data.podcastUrl || entry.data.tccUrl) && (
+        <RelatedLinks podcastUrl={entry.data.podcastUrl} tccUrl={entry.data.tccUrl} />
+      )}
+    </div>
+  </article>
+
+  <div class="mt-4">
+    <a href={`/worship-team-devotionals/${entry.data.pillar}/`} class="text-primary-600 hover:text-primary-800 font-medium flex items-center gap-1 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to {pillarTitle}
+    </a>
+  </div>
+</Layout>
+
+<style>
+  .devotional-hero {
+    position: relative;
+  }
+
+  .devotional-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .devotional-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 15, 15, 0.08) 0%,
+      rgba(15, 15, 15, 0.28) 40%,
+      rgba(15, 15, 15, 0.72) 100%
+    );
+  }
+
+  .devotional-hero-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.75rem 2rem;
+  }
+
+  .devotional-pillar-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 0.5rem;
+  }
+
+  .devotional-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+  }
+
+  .devotional-verse {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-style: italic;
+  }
+</style>

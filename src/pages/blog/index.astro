@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import blogData from '../../../public/blog-posts.json';
+
+const posts = blogData.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
+
+const title = 'Worship Leader Blog | Keys, Tempos, Theology & Set Planning | Worship Song Index';
+const description = 'Practical guides for worship leaders — how to choose song keys, plan worship sets, select songs for Communion and healing services, and navigate the church calendar.';
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 py-10">
+
+    <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+      <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+      <span class="mx-2">/</span>
+      <span>Blog</span>
+    </nav>
+
+    <header class="mb-12">
+      <img src={posts[0]?.featuredImage || '/generated-icon.png'} alt="" class="w-full h-56 md:h-72 object-cover rounded-2xl mb-6 border" style="border-color: var(--color-border);" />
+      <h1 class="text-4xl font-bold mb-4" style="color: var(--color-text-primary);">
+        Worship Leader Resources
+      </h1>
+      <p class="text-lg" style="color: var(--color-text-muted);">
+        Practical guides on keys, tempos, theology, and set planning — built from data on 1,500+ worship songs.
+      </p>
+    </header>
+
+    <div class="space-y-10">
+      {posts.map(post => (
+        <article class="border-b pb-10" style="border-color: var(--color-border);">
+          {post.featuredImage && (
+            <a href={`/blog/${post.slug}`}>
+              <img src={post.featuredImage} alt="" class="w-full h-52 object-cover rounded-xl mb-5 border" style="border-color: var(--color-border);" />
+            </a>
+          )}
+          <div class="mb-2">
+            <span class="text-xs uppercase tracking-widest font-semibold px-2 py-1 rounded"
+                  style="background: var(--color-bg-secondary); color: var(--color-text-muted);">
+              {post.category.replace(/-/g, ' ')}
+            </span>
+            <span class="text-xs ml-3" style="color: var(--color-text-muted);">
+              {new Date(post.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </span>
+          </div>
+          <h2 class="text-2xl font-bold mt-3 mb-3">
+            <a href={`/blog/${post.slug}`}
+               class="text-primary-700 hover:text-primary-900 transition-colors">
+              {post.title}
+            </a>
+          </h2>
+          <p class="mb-4" style="color: var(--color-text-secondary);">
+            {post.excerpt}
+          </p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            {post.tags.slice(0, 4).map(tag => (
+              <span class="text-xs px-2 py-1 rounded-full"
+                    style="background: var(--color-bg-tag); color: var(--color-text-muted);">
+                {tag.replace(/-/g, ' ')}
+              </span>
+            ))}
+          </div>
+          <a href={`/blog/${post.slug}`}
+             class="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors">
+            Read the full guide →
+          </a>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</Layout>

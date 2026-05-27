@@ -1,0 +1,314 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ThemeTag from '../../components/ThemeTag.astro';
+import RelatedDevotionals from '../../components/RelatedDevotionals.astro';
+import type { Song } from '../../types/song';
+import { getTempoLabel, formatTheme, getYouTubeVideoId } from '../../types/song';
+import { getDevotionalsBySongSlug } from '../../lib/devotionalIndex';
+import { marked } from 'marked';
+
+export interface Props {
+  song: Song;
+}
+
+export async function getStaticPaths() {
+  const songsData = await import('../../../public/songs.json');
+  const songs: Song[] = songsData.default;
+
+  return songs.map((song) => ({
+    params: { slug: song.slug },
+    props: { song },
+  }));
+}
+
+const { song } = Astro.props;
+const relatedDevotionals = await getDevotionalsBySongSlug(song.slug);
+
+function artistToSlug(artist: string): string {
+  return artist
+    .toLowerCase()
+    .replace(/[\/\\]/g, '-')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+const artistSlug = artistToSlug(song.primary_artist);
+
+// Custom SEO metadata for specific songs
+const customSEO: Record<string, { title: string; description: string }> = {
+  'living-hope': {
+    title: 'Living Hope — Phil Wickham | Worship Song Key, BPM & Planning Guide — Worship Song Index',
+    description: 'Living Hope by Phil Wickham — male key C, female key E, 68 BPM, 4/4 time. A gospel-rich resurrection song ideal for Easter, communion, and cross-centered series. Includes worship leadership and arrangement tips.'
+  },
+  'king-of-kings': {
+    title: 'King of Kings — Hillsong Worship | Worship Song Key, BPM & Planning Guide — Worship Song Index',
+    description: 'King of Kings by Hillsong Worship — male key D, female key F, 68 BPM, 4/4 time. A gospel narrative song tracing Christ\'s coming, death, and resurrection. Ideal for Advent, Easter, and sermon series on the life of Christ. Includes worship leadership and arrangement tips.'
+  }
+};
+
+const title = customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
+// Build editorial description for JSON-LD when editorial_markdown is present
+function getEditorialDescription(md: string | undefined): string {
+  if (!md) return '';
+  const match = md.match(/## What this song is saying about God\s*\n\n([\s\S]*?)(?=\n## |\n*$)/);
+  if (!match) return '';
+  const text = match[1].trim().replace(/\s+/g, ' ');
+  if (text.length <= 160) return text;
+  let cut = text.lastIndexOf('.', 160);
+  if (cut < 100) cut = text.lastIndexOf(' ', 160);
+  if (cut < 0) cut = 160;
+  return text.slice(0, cut) + '...';
+}
+
+const editorialDesc = getEditorialDescription(song.editorial_markdown);
+const description = customSEO[song.slug]?.description ?? (editorialDesc || song.summary_theology.substring(0, 155) + (song.summary_theology.length > 155 ? '...' : ''));
+const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
+
+const musicComposition = {
+  "@context": "https://schema.org",
+  "@type": "MusicComposition",
+  "name": song.title,
+  "url": canonicalURL,
+  "musicalKey": song.default_male_key,
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Recommended male key",
+      "value": song.default_male_key
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Recommended female key",
+      "value": song.default_female_key
+    }
+  ],
+  "beatsPerMinute": song.tempo_bpm,
+  "inLanguage": "en",
+  "recordedAs": {
+    "@type": "MusicRecording",
+    "name": song.title,
+    "byArtist": { "@type": "MusicGroup", "name": song.primary_artist }
+  },
+  ...(song.themes?.length && {
+    "about": song.themes.map((t: string) => ({ "@type": "Thing", "name": t })),
+    "keywords": [...song.themes, ...(song.tags || [])].join(", ")
+  }),
+  ...(song.scripture_refs?.length && { "citation": song.scripture_refs }),
+  ...(editorialDesc ? { "description": editorialDesc } : song.summary_theology && { "description": song.summary_theology })
+};
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" },
+    { "@type": "ListItem", "position": 3, "name": song.title, "item": canonicalURL }
+  ]
+};
+
+const structuredData = [musicComposition, breadcrumb];
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <a href="/browse" class="text-primary-600 hover:text-primary-800 transition-colors">Browse</a>
+    <span class="mx-2">/</span>
+    <span>{song.title}</span>
+  </nav>
+
+  <header class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold mb-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      {song.title}
+    </h1>
+    <p class="text-xl" style="color: var(--color-text-secondary);">
+      by <a href={`/browse/artists/${artistSlug}`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">{song.primary_artist}</a>
+    </p>
+  </header>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <div class="lg:col-span-2 space-y-8">
+
+      {song.youtube && (() => {
+        const videoId = getYouTubeVideoId(song.youtube || '');
+        if (videoId) {
+          return (
+            <div 
+              class="yt-player-wrapper"
+              onclick={`this.innerHTML='<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"><\\/iframe>'`}
+              style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:480px; margin:16px 0; border-radius:8px; cursor:pointer; background:#000;"
+            >
+              <img 
+                src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                alt={`Watch ${song.title} on YouTube`}
+                style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; border-radius:8px; opacity:0.8;"
+              />
+              <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:64px; height:64px; background:rgba(255,0,0,0.85); border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                <div style="width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:20px solid white; margin-left:5px;"></div>
+              </div>
+            </div>
+          );
+        }
+      })()}
+
+      {song.editorial_markdown ? (
+        <article class="prose prose-lg" style="color: var(--color-text-secondary);" set:html={marked(song.editorial_markdown)} />
+      ) : (
+        <>
+          <section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              Theology &amp; Meaning
+            </h2>
+            <p class="leading-relaxed" style="color: var(--color-text-secondary); max-width: 70ch;">
+              {song.summary_theology}
+            </p>
+          </section>
+
+          <section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              Worship Leadership Tips
+            </h2>
+            <p class="leading-relaxed" style="color: var(--color-text-secondary); max-width: 70ch;">
+              <Fragment set:html={song.practical_worship_leadership} />
+            </p>
+          </section>
+
+          <section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+              </svg>
+              Arrangement Tips
+            </h2>
+            <p class="leading-relaxed" style="color: var(--color-text-secondary); max-width: 70ch;">
+              {song.arrangement_tips}
+            </p>
+          </section>
+        </>
+      )}
+
+      {song.scripture_refs.length > 0 && (
+        <section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+            Scripture References
+          </h2>
+          <ul class="space-y-2">
+            {song.scripture_refs.map((ref) => (
+              <li class="flex items-center gap-2" style="color: var(--color-text-secondary);">
+                <span class="w-1.5 h-1.5 bg-primary-400 rounded-full flex-shrink-0"></span>
+                {ref}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section>
+        <h2 class="text-lg font-semibold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Themes</h2>
+        <div class="flex flex-wrap gap-2">
+          {song.themes.map((theme) => (
+            <a href={`/browse/themes/${theme}`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-colors">
+              {formatTheme(theme)}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {song.tags.length > 0 && (
+        <section>
+          <h2 class="text-lg font-semibold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Tags</h2>
+          <div class="flex flex-wrap gap-2">
+            {song.tags.map((tag) => (
+              <a href={`/browse/tags/${tag}`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-accent-100 text-accent-800 hover:bg-accent-200 transition-colors">
+                {formatTheme(tag)}
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {relatedDevotionals.length > 0 && (
+        <RelatedDevotionals devotionals={relatedDevotionals} />
+      )}
+    </div>
+
+    <aside class="lg:col-span-1">
+      <div class="rounded-lg border p-6 sticky top-8" style="background: var(--color-surface-card); border-color: var(--color-border);">
+        <h2 class="text-lg font-semibold mb-4 pb-3 border-b" style="font-family: var(--font-serif); color: var(--color-text-primary); border-color: var(--color-border-light);">
+          Song Details
+        </h2>
+
+        <dl class="space-y-4">
+          <div class="flex justify-between items-center">
+            <dt style="color: var(--color-text-muted);">Male Key</dt>
+            <dd>
+              <a href={`/browse/keys/male/${song.default_male_key.replace('#', '-sharp').toLowerCase()}`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                {song.default_male_key}
+              </a>
+            </dd>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <dt style="color: var(--color-text-muted);">Female Key</dt>
+            <dd>
+              <a href={`/browse/keys/female/${song.default_female_key.replace('#', '-sharp').toLowerCase()}`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                {song.default_female_key}
+              </a>
+            </dd>
+          </div>
+
+          <div class="border-t" style="border-color: var(--color-border-light);"></div>
+
+          <div class="flex justify-between items-center">
+            <dt style="color: var(--color-text-muted);">Tempo</dt>
+            <dd class="font-medium" style="color: var(--color-text-primary);">
+              {getTempoLabel(song.tempo_bpm)}
+            </dd>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <dt style="color: var(--color-text-muted);">BPM</dt>
+            <dd class="font-semibold" style="color: var(--color-text-primary);">
+              {song.tempo_bpm}
+            </dd>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <dt style="color: var(--color-text-muted);">Time Signature</dt>
+            <dd>
+              <a href={`/browse/time-signatures/${song.time_signature.replace('/', '-')}`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
+                {song.time_signature}
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-6 pt-4 border-t" style="border-color: var(--color-border-light);">
+          <a
+            href="/"
+            class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-800 font-medium transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to All Songs
+          </a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</Layout>

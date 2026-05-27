@@ -1,0 +1,37 @@
+---
+import songsData from '../../public/songs.json';
+
+interface Props {
+  songSlugs: string[];
+}
+
+const { songSlugs } = Astro.props;
+
+function humanize(slug: string): string {
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+const songs = songSlugs.map((slug) => {
+  const match = (songsData as any[]).find((s) => s.slug === slug);
+  return match
+    ? { slug: match.slug, title: match.title, artist: match.primary_artist }
+    : { slug, title: humanize(slug), artist: null };
+});
+---
+
+<div class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+  <h3 class="text-lg font-semibold mb-4" style="font-family: var(--font-serif); color: var(--color-text-primary);">Related Songs</h3>
+  <ul class="space-y-3">
+    {songs.map((song) => (
+      <li>
+        <a href={`/songs/${song.slug}`} class="text-primary-600 hover:text-primary-800 transition-colors font-medium">
+          {song.title}
+        </a>
+        {song.artist && <span class="text-sm ml-2" style="color: var(--color-text-muted);">by {song.artist}</span>}
+      </li>
+    ))}
+  </ul>
+</div>

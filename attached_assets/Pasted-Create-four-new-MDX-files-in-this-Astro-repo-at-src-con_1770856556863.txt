@@ -1,0 +1,169 @@
+Create four new MDX files in this Astro repo at: src/content/devotionals/
+
+Do not modify any existing code. Just add these four files with the exact contents below.
+
+1) File: src/content/devotionals/hidden-room.mdx
+Paste exactly:
+---
+title: The Hidden Room
+pillar: heart-and-motives
+description: A short devotional about who you are when no one is watching, and why that forms who you become when everyone is.
+verseRef: Matthew 6:6
+songSlugs:
+  - make-room
+  - nothing-else
+  - abide
+discussionQuestions:
+  - What part of your leadership feels most tempted to perform instead of be present.
+  - If God is already your Father, what do you feel like you still have to prove.
+  - What would it look like this week to lead from overflow instead of adrenaline.
+prayer: Father, bring us back to the secret place. Teach us to value Your presence more than the room’s response. Make our worship honest, steady, and rooted in love.
+---
+
+Matthew says, “Go into your room.”
+
+Not a stage.
+Not a platform.
+Not a green room.
+A room.
+
+Jesus is not building performers. He is forming sons and daughters.
+
+This is one of the great tensions of worship leadership. We spend a lot of time in public spaces, but our souls are shaped in private ones. What you rehearse in hidden places becomes what you reach for when the pressure hits.
+
+A worship team can be incredibly skilled and still spiritually thin. Not because they do not love God, but because the pace of ministry quietly trains them to live off momentum instead of communion.
+
+Jesus says your Father sees in secret.
+
+That means the secret place matters, even when no one claps for it.
+It counts, even when it feels unproductive.
+It forms you, even when it feels quiet.
+
+Before you lead worship this week, lead your own heart back into the room.
+
+2) File: src/content/devotionals/create-in-me.mdx
+Paste exactly:
+---
+title: Create In Me
+pillar: heart-and-motives
+description: A short devotional about letting God deal with the heart beneath the role.
+verseRef: Psalm 51:10
+songSlugs:
+  - refiners-fire
+  - new-wine
+  - run-to-the-father
+discussionQuestions:
+  - Where have you been trying to manage your image instead of surrender your heart.
+  - What is one motive you want God to purify in you right now.
+  - What would change if you believed renewal is something God does, not something you manufacture.
+prayer: God, create in us clean hearts. Remove what is mixed, and renew what is weary. Give us worship that is honest, soft, and free from performance.
+---
+
+David does not ask for better habits first.
+
+He asks for a new heart.
+
+“Create in me a clean heart, O God.”
+
+That word create matters. David is not asking for a tune up. He is asking for a miracle. A heart is not something you polish into holiness. A heart is something God renews.
+
+Worship leaders can drift into coping mechanisms that look spiritual from the outside. We compensate with excellence. We hide behind preparation. We over function to avoid feeling what is really going on inside.
+
+But Psalm 51 does not let us stay there.
+
+A clean heart is not the same as a flawless week.
+It is a surrendered one.
+
+This verse is an invitation to stop pretending that your role can carry your soul. It cannot. Your gifting is real, but it is not your foundation. Your platform is visible, but it is not your covering.
+
+Let God touch the heart beneath the ministry.
+
+Then lead from that place.
+
+3) File: src/content/devotionals/the-slow-yes.mdx
+Paste exactly:
+---
+title: The Slow Yes
+pillar: heart-and-motives
+description: A short devotional about surrendering your will when leadership costs you something.
+verseRef: Luke 22:42
+songSlugs:
+  - i-surrender
+  - yes-i-will
+  - build-my-life
+discussionQuestions:
+  - What is the hardest yes for you to say right now.
+  - Where are you trying to lead without surrendering first.
+  - What would obedience look like in one specific decision this week.
+prayer: Jesus, teach us Your kind of surrender. Give us courage to say yes even when it costs us comfort. Form in us an obedience that is calm, honest, and steady.
+---
+
+This is one of the most sobering sentences in the Gospels.
+
+“Not my will, but yours, be done.”
+
+Jesus is not saying this in a peaceful moment. He is saying it under pressure. In sorrow. In the weight of what is coming.
+
+Surrender is often presented like a vibe. But in Scripture, surrender is a decision. It is a realignment. It is a releasing of control when control feels like the only thing keeping you steady.
+
+Worship leaders feel this constantly.
+
+You want a great set.
+You want the room to respond.
+You want people to sing.
+You want the team to show up prepared.
+You want the Sunday to work.
+
+And in the middle of all that, Jesus invites you into a different posture.
+
+Not my will.
+
+That does not mean you stop caring about excellence. It means excellence is no longer your savior. It means you lead with open hands. You plan, you prepare, you serve, and you still surrender the outcome.
+
+The slow yes is often the most spiritual thing your team can practice together.
+
+4) File: src/content/devotionals/costly-worship.mdx
+Paste exactly:
+---
+title: Costly Worship
+pillar: heart-and-motives
+description: A short devotional about worship that is more than words, and why the cost reveals the heart.
+verseRef: 2 Samuel 24:24
+songSlugs:
+  - the-heart-of-worship
+  - blessed-be-your-name
+  - it-is-well
+discussionQuestions:
+  - Where have you been tempted to offer God what costs you nothing.
+  - What is one area where worship needs to move from lyrics into obedience.
+  - What would it look like to lead worship this week from gratitude instead of pressure.
+prayer: God, give us worship that is real. Teach us to offer You our whole hearts, not leftovers. Help us lead from love, not from fear, and from surrender, not from striving.
+---
+
+David says something that cuts through all the noise.
+
+“I will not offer burnt offerings to the Lord my God which cost me nothing.”
+
+Cost is not a punishment. It is a revealer.
+
+It reveals what you value.
+It reveals what you trust.
+It reveals what you worship.
+
+Worship teams can accidentally build a culture where worship is what happens when everything goes right. When the band is tight. When the mix is clean. When the energy is strong. When the room responds.
+
+But David is talking about something deeper.
+
+Worship is what you offer God even when it costs you comfort, recognition, or control.
+
+Sometimes the cost is repentance.
+Sometimes it is humility.
+Sometimes it is forgiving someone on your team.
+Sometimes it is showing up with joy when you feel heavy.
+Sometimes it is letting go of the need to be noticed.
+
+If worship only works when it is easy, it is not worship. It is management.
+
+This week, lead your team into worship that costs something. Not because God needs it, but because your hearts do.
+
+After creating the files, run the dev server and confirm they render on the Heart and Motives pillar page and each devotional page.

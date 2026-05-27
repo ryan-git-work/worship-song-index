@@ -1,0 +1,40 @@
+---
+const { devotionals } = Astro.props;
+
+const pillarNames: Record<string, string> = {
+  'heart-and-motives': 'Heart and Motives',
+  'team-culture-and-unity': 'Team Culture and Unity',
+  'sustainable-ministry': 'Sustainable Ministry',
+  'excellence-and-craft': 'Excellence and Craft',
+  'pastoral-leadership': 'Pastoral Leadership',
+  'congregational-worship': 'Congregational Worship',
+  'presence-and-prayer': 'Presence and Prayer',
+};
+---
+
+<section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+  <h2 class="text-xl font-semibold mb-2 flex items-center gap-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+    </svg>
+    Worship Team Devotionals
+  </h2>
+  <p class="text-sm mb-4" style="color: var(--color-text-muted);">Devotionals that reference this song for worship team discussion.</p>
+  <ul class="space-y-3">
+    {devotionals.map((entry: any) => {
+      const slug = entry.id.split('/').pop();
+      const pillar = entry.data.pillar;
+      const href = `/worship-team-devotionals/${pillar}/${slug}/`;
+      const pillarLabel = pillarNames[pillar] || pillar;
+      return (
+        <li>
+          <a href={href} class="block group">
+            <span class="text-primary-600 group-hover:text-primary-800 font-medium transition-colors">{entry.data.title}</span>
+            <span class="text-sm ml-2" style="color: var(--color-text-muted);">{entry.data.verseRef}</span>
+            <span class="block text-xs mt-0.5" style="color: var(--color-text-muted);">{pillarLabel}</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>

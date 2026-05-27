@@ -1,0 +1,214 @@
+Create five new MDX files in this Astro repo at: src/content/devotionals/
+
+Do not modify any existing code. Just add these five files with the exact contents below.
+
+1) File: src/content/devotionals/teach-and-admonish.mdx
+Paste exactly:
+---
+title: Teach and Admonish
+pillar: congregational-worship
+description: A short devotional about why congregational singing is formation, not filler.
+verseRef: Colossians 3:16
+songSlugs:
+  - build-my-life
+  - goodness-of-god
+  - the-blessing
+discussionQuestions:
+  - What are we teaching our church through the songs we choose.
+  - Where have we been aiming for a moment instead of aiming for formation.
+  - What is one small change we could make to help the room participate more fully.
+prayer: Jesus, let Your word dwell in us richly. Help us choose songs that form people in truth and love. Teach us to lead in a way that invites participation, not spectatorship.
+---
+
+“Let the word of Christ dwell in you richly.”
+
+Paul ties that to singing.
+
+Songs are not just atmosphere. They are theology that people carry home. They become prayers in the car. They become comfort in grief. They become language for faith when words are hard.
+
+That means congregational worship is not mainly about volume or energy. It is about formation.
+
+When the room is not singing, it might not be a passion problem. It might be a clarity problem. Or a key problem. Or a familiarity problem. Or a trust problem.
+
+But underneath all of that, the question is simple.
+
+Is the word of Christ dwelling richly in the songs we are leading.
+
+This week, do not just ask, “Will this be a moment.”
+
+Ask, “Will this form people.”
+
+Then lead in a way that helps the room carry the word together.
+
+2) File: src/content/devotionals/sing-with-understanding.mdx
+Paste exactly:
+---
+title: Sing with Understanding
+pillar: congregational-worship
+description: A short devotional about clarity as a spiritual value for congregational participation.
+verseRef: 1 Corinthians 14:15
+songSlugs:
+  - way-maker
+  - build-my-life
+  - yes-i-will
+discussionQuestions:
+  - What do we do that unintentionally makes it hard for the room to engage.
+  - Where could we simplify so the room can sing with confidence.
+  - What is one clarity move we can make this Sunday, even if it feels less exciting.
+prayer: Holy Spirit, help us lead with clarity. Remove confusion and distraction. Let our church sing with understanding, with faith, and with joy.
+---
+
+Paul says, “I will sing with the spirit, and I will sing with the understanding also.”
+
+That matters for congregational worship.
+
+Understanding does not kill passion. It makes passion accessible.
+
+A room cannot fully participate in what it cannot follow. Confusing structures, unclear lyrics, unpredictable repeats, keys that are too high, and transitions that feel like a maze will quietly turn singers into listeners.
+
+Clarity is not a technical preference. It is a pastoral decision.
+
+When you simplify, you are serving.
+When you repeat with intention, you are helping memory.
+When you choose a singable key, you are making space for the room.
+When you explain a new chorus, you are discipling people into participation.
+
+This week, do not chase complexity.
+
+Chase understanding.
+
+Sing with the spirit, and with the understanding also.
+
+3) File: src/content/devotionals/let-everything-praise.mdx
+Paste exactly:
+---
+title: Let Everything Praise
+pillar: congregational-worship
+description: A short devotional about inviting the whole room, not just the loudest people.
+verseRef: Psalm 150:6
+songSlugs:
+  - praise
+  - cant-help-but-praise
+  - alive-and-breathing
+discussionQuestions:
+  - Who might feel left out of our worship leadership right now, and why.
+  - What would it look like to lead for the quiet people in the room, not just the expressive ones.
+  - What is one invitation you could give this week that feels warm and safe, not pressuring.
+prayer: God, let everything that has breath praise You. Teach us to lead with invitation, not manipulation. Make room for every kind of worshipper to respond in faith.
+---
+
+“Let everything that has breath praise Yah.”
+
+That is not a line for a hype moment. It is a vision for a whole church.
+
+Congregational worship is not the front row. It is the whole room. The introvert. The skeptic. The new believer. The weary parent. The teenager who does not want to be noticed. The older saint who has sung through suffering.
+
+Your job is not to manufacture emotion. Your job is to invite response.
+
+Praise is a command, but it is also an invitation. It is a doorway into remembering who God is.
+
+So lead for the whole room.
+
+Explain what is happening when you introduce a new song.
+Choose keys that average voices can sing.
+Repeat what matters so people can learn it.
+Speak in a way that lowers anxiety, not raises it.
+
+Let everything that has breath praise.
+
+That includes the people who are quiet today.
+
+Invite them with gentleness.
+
+4) File: src/content/devotionals/strengthen-the-weak.mdx
+Paste exactly:
+---
+title: Strengthen the Weak
+pillar: congregational-worship
+description: A short devotional about leading in a way that supports the weak, not just the strong.
+verseRef: Isaiah 35:3-4
+songSlugs:
+  - it-is-well
+  - blessed-be-your-name
+  - run-to-the-father
+discussionQuestions:
+  - What kind of people are we unintentionally leaving behind in our worship leadership.
+  - Where do we equate high energy with faithful worship.
+  - What is one way we can lead that strengthens the weak and steadies the anxious.
+prayer: Jesus, strengthen weak hands and steady feeble knees. Help our worship leadership serve the hurting. Let our church find courage and comfort in You.
+---
+
+Isaiah says, “Strengthen the weak hands, and make firm the feeble knees.”
+
+That is worship leadership language.
+
+Because worship is not only celebration. It is also support.
+
+Some Sundays, people walk in with joy.
+Some Sundays, they walk in barely holding on.
+
+If your worship leadership only works for the strong, it is not congregational worship. It is a concert for the confident.
+
+Congregational worship makes room for the weak.
+
+It gives people language when they do not have it.
+It gives them truth when their feelings are loud.
+It gives them a safe way to respond even if they cannot sing at full strength.
+
+This is why song selection matters.
+This is why pacing matters.
+This is why the way you speak matters.
+
+Lead in a way that strengthens the weak.
+
+When you do, the room becomes a place of healing, not pressure.
+
+5) File: src/content/devotionals/help-the-room-sing.mdx
+Paste exactly:
+---
+title: Help the Room Sing
+pillar: congregational-worship
+description: A short devotional about courage and clarity that make congregational participation possible.
+verseRef: Nehemiah 8:8
+songSlugs:
+  - king-of-kings
+  - good-grace
+  - here-as-in-heaven
+discussionQuestions:
+  - What do you think is the biggest barrier to participation in your church right now.
+  - If you could change one thing in how we lead, what would help the room sing more confidently.
+  - What is one courageous decision you need to make this week that will serve the congregation long term.
+prayer: God, give us clarity and courage. Help us explain well, lead well, and serve our church with simplicity. Let our people find their voice again in worship.
+---
+
+Nehemiah says they “read… and gave the sense, so that they understood the reading.”
+
+That is the job.
+
+Not only to present something, but to help people understand it.
+
+Congregational worship is not automatic. People need help. They need clear leadership. They need simple pathways. They need a reason to trust that what they are being asked to sing is worth their whole heart.
+
+Sometimes your church is not singing because they are stubborn.
+
+More often, they are not singing because they are unsure.
+
+Unsure of the melody.
+Unsure of the key.
+Unsure of the words.
+Unsure of the moment.
+Unsure if their voice even matters.
+
+Your leadership can remove that uncertainty.
+
+Explain the chorus.
+Repeat it enough to learn it.
+Choose a singable range.
+Lead with confidence that is calm, not intense.
+
+Give the sense.
+Help the room understand.
+
+Then watch participation grow over time.
+
+After creating the files, run the dev server and confirm they render on the Congregational Worship pillar page and each devotional page.

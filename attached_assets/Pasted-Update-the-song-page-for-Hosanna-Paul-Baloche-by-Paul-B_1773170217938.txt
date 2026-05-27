@@ -1,0 +1,20 @@
+Update the song page for "Hosanna (Paul Baloche)" by Paul Baloche with the following content. Replace the existing text in each section:
+Theology & Meaning:
+"Hosanna" is the Greek transliteration of the Hebrew hoshia na — meaning "save us, we pray" — shouted by the crowd as Jesus entered Jerusalem on Palm Sunday (Matthew 21:9, John 12:13). Paul Baloche's song reclaims that ancient cry as a present-tense declaration, framing corporate worship as both a welcome of Christ's presence and a recognition of His saving power. The song draws on Psalm 118:25-26, the messianic passage the crowd was quoting, and connects it to the New Testament fulfillment in Jesus. It's theologically rich precisely because "Hosanna" is simultaneously praise and petition — we're not just celebrating who He is, we're calling on Him to act. The bridge's invitation for Christ to "have His way" roots the song in surrender, making it more than a triumphal shout and closer to a posture of open-handed welcome.
+Worship Leadership Tips:
+This is a natural fit for Palm Sunday but works equally well as a service opener or a response song after preaching on the kingship of Christ. Keep it rhythmic and celebratory — the groove is what carries the congregation. If your band tends to over-play, resist the temptation to build too early; let the verses breathe so the chorus lands with weight. The word "Hosanna" itself is worth a brief spoken moment of explanation if your congregation skews younger or less liturgically familiar — even 15 seconds of context ("this is the cry of the crowd as Jesus rode into Jerusalem") dramatically deepens engagement. It pairs well following "King of Kings" (Hillsong Worship) or leading into a more reflective song like "O Come to the Altar."
+Arrangement Tips:
+Start with a medium-energy groove from the top — this isn't a slow build song, it earns its momentum by staying rhythmically consistent throughout. Guitar and keys can drive the verses; bring percussion and bass in full on the first chorus. The bridge ("Come have Your way among us / We welcome You here, Lord Jesus") works best when the band drops to half-dynamic, creating space before a final full-band chorus. In E, this sits well for most male vocalists; G works cleanly for female leads. At 92 BPM it should feel like a confident march rather than a sprint — don't let it rush.
+Scripture References:
+
+Matthew 21:9
+Psalm 118:25-26
+John 12:13
+Matthew 21:5
+Zechariah 9:9
+Romans 12:1-2
+Revelation 19:11-16
+
+Also update the YouTube URL for this song to: https://www.youtube.com/watch?v=_6t53HBih1I
+Note: strip everything after the video ID in the URL — the &list= and &start_radio= parameters are not needed for the embed to work.
+Do not change anything else on the page — keys, BPM, themes, tags, and layout should all stay the same.

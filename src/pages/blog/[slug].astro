@@ -1,0 +1,224 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SongCard from '../../components/SongCard.astro';
+import blogData from '../../../public/blog-posts.json';
+import songsData from '../../../public/songs.json';
+import type { Song } from '../../types/song';
+
+export async function getStaticPaths() {
+  return blogData.map(post => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const songs: Song[] = songsData as Song[];
+const linkedSongs = (post.songLinks || [])
+  .map((slug: string) => songs.find(s => s.slug === slug))
+  .filter(Boolean) as Song[];
+const formattedDate = new Date(post.publishDate).toLocaleDateString('en-US', {
+  year: 'numeric', month: 'long', day: 'numeric'
+});
+
+const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.title,
+  "description": post.excerpt || post.metaDescription,
+  "url": canonicalURL,
+  "datePublished": post.publishDate,
+  "dateModified": post.publishDate,
+  "author": {
+    "@type": "Organization",
+    "name": post.author || "Worship Song Index",
+    "url": "https://worshipsongindex.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Worship Song Index",
+    "url": "https://worshipsongindex.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://worshipsongindex.com/generated-icon.png"
+    }
+  },
+  ...(post.featuredImage && {
+    "image": `https://worshipsongindex.com${post.featuredImage}`
+  })
+};
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://worshipsongindex.com/blog" },
+    { "@type": "ListItem", "position": 3, "name": post.title, "item": canonicalURL }
+  ]
+};
+
+const structuredData = [article, breadcrumb];
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+const renderMarkdown = (input: string) => {
+  const lines = input.split('\n');
+  const blocks: string[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) {
+      i++;
+      continue;
+    }
+
+    if (line.startsWith('## ')) {
+      blocks.push(`<h2>${escapeHtml(line.slice(3))}</h2>`);
+      i++;
+      continue;
+    }
+
+    if (line.startsWith('### ')) {
+      blocks.push(`<h3>${escapeHtml(line.slice(4))}</h3>`);
+      i++;
+      continue;
+    }
+
+    if (line.startsWith('> ')) {
+      const quote = [line.slice(2)];
+      i++;
+      while (i < lines.length && lines[i].startsWith('> ')) {
+        quote.push(lines[i].slice(2));
+        i++;
+      }
+      blocks.push(`<blockquote><p>${escapeHtml(quote.join(' '))}</p></blockquote>`);
+      continue;
+    }
+
+    if (/^\d+\.\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        items.push(`<li>${escapeHtml(lines[i].replace(/^\d+\.\s/, ''))}</li>`);
+        i++;
+      }
+      blocks.push(`<ol>${items.join('')}</ol>`);
+      continue;
+    }
+
+    if (line.startsWith('- ')) {
+      const items = [];
+      while (i < lines.length && lines[i].startsWith('- ')) {
+        items.push(`<li>${escapeHtml(lines[i].slice(2))}</li>`);
+        i++;
+      }
+      blocks.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+
+    const paragraph = [line.trim()];
+    i++;
+    while (i < lines.length && lines[i].trim() && !lines[i].startsWith('## ') && !lines[i].startsWith('### ') && !lines[i].startsWith('> ') && !/^\d+\.\s/.test(lines[i]) && !lines[i].startsWith('- ')) {
+      paragraph.push(lines[i].trim());
+      i++;
+    }
+    blocks.push(`<p>${escapeHtml(paragraph.join(' '))}</p>`);
+  }
+
+  return blocks.join('\n');
+};
+
+const htmlBody = renderMarkdown(post.body);
+---
+
+<Layout title={post.metaTitle} description={post.metaDescription} structuredData={structuredData}>
+  <div class="max-w-3xl mx-auto px-4 py-10">
+
+    <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+      <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+      <span class="mx-2">/</span>
+      <a href="/blog" class="text-primary-600 hover:text-primary-800 transition-colors">Blog</a>
+      <span class="mx-2">/</span>
+      <span>{post.title}</span>
+    </nav>
+
+    <header class="mb-10">
+      {post.featuredImage && (
+        <img src={post.featuredImage} alt="" class="w-full h-64 object-cover rounded-2xl mb-6 border" style="border-color: var(--color-border);" />
+      )}
+      <div class="mb-3">
+        <span class="text-xs uppercase tracking-widest font-semibold px-2 py-1 rounded"
+              style="background: var(--color-bg-secondary); color: var(--color-text-muted);">
+          {post.category.replace(/-/g, ' ')}
+        </span>
+        <span class="text-xs ml-3" style="color: var(--color-text-muted);">
+          {formattedDate}
+        </span>
+      </div>
+      <h1 class="text-4xl font-bold mb-5 leading-tight" style="color: var(--color-text-primary);">
+        {post.title}
+      </h1>
+      <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+        {post.excerpt}
+      </p>
+    </header>
+
+    <article class="prose prose-lg max-w-none mb-16" style="color: var(--color-text-primary); --tw-prose-headings: var(--color-text-primary); --tw-prose-links: var(--color-primary-600); --tw-prose-bold: var(--color-text-primary); --tw-prose-body: var(--color-text-secondary);" set:html={htmlBody} />
+
+    {linkedSongs.length > 0 && (
+      <section class="mt-12 pt-10 border-t" style="border-color: var(--color-border);">
+        <h2 class="text-2xl font-bold mb-2" style="color: var(--color-text-primary);">
+          Songs Referenced in This Guide
+        </h2>
+        <p class="text-sm mb-6" style="color: var(--color-text-muted);">
+          Every song below includes keys, BPM, theology notes, arrangement tips, and worship leadership guidance in the full index.
+        </p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {linkedSongs.map(song => (
+            <SongCard
+              title={song.title}
+              artist={song.primary_artist}
+              maleKey={song.default_male_key}
+              femaleKey={song.default_female_key}
+              tempo={song.tempo_bpm}
+              bpm={song.tempo_bpm}
+              timeSignature={song.time_signature}
+              slug={song.slug}
+            />
+          ))}
+        </div>
+        <div class="mt-6">
+          <a href="/" class="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors">
+            Browse all songs in the index →
+          </a>
+        </div>
+      </section>
+    )}
+
+    <div class="mt-10 pt-8 border-t" style="border-color: var(--color-border);">
+      <div class="flex flex-wrap gap-2">
+        {post.tags.map((tag: string) => (
+          <a href={`/browse/tags/${tag}`} class="text-xs px-3 py-1 rounded-full transition-colors hover:opacity-80" style="background: var(--color-bg-tag); color: var(--color-text-muted);">
+            {tag.replace(/-/g, ' ')}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <a href="/blog" class="text-sm text-primary-600 hover:text-primary-800 transition-colors">
+        ← Back to all guides
+      </a>
+    </div>
+
+  </div>
+</Layout>

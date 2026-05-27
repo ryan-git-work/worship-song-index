@@ -1,0 +1,111 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import type { Song } from '../../types/song';
+import songsData from '../../../public/songs.json';
+
+const songs: Song[] = songsData;
+
+const artistCount = [...new Set(songs.map(s => s.primary_artist))].length;
+const themeCount = [...new Set(songs.flatMap(s => s.themes))].length;
+const tagCount = [...new Set(songs.flatMap(s => s.tags))].length;
+const allMaleKeys = [...new Set(songs.map(s => s.default_male_key))].sort();
+const allFemaleKeys = [...new Set(songs.map(s => s.default_female_key))].sort();
+const allTimeSignatures = [...new Set(songs.map(s => s.time_signature))].sort();
+
+const title = "Browse Songs - Worship Song Index";
+const description = "Browse worship songs by artist, category, key, or time signature. Find the perfect song for your worship set.";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Browse Worship Songs",
+  "description": description,
+  "url": "https://worshipsongindex.com/browse",
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+      { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" }
+    ]
+  }
+};
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <div class="mb-10">
+    <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse Songs</h1>
+    <p class="text-lg" style="color: var(--color-text-secondary);">Find worship songs by artist, category, key, or time signature.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+    <a href="/browse/artists" class="block p-6 rounded-lg border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-primary-300" style="background: var(--color-surface-card); border-color: var(--color-border);">
+      <div class="flex items-center gap-4 mb-3">
+        <span class="text-3xl">&#127908;</span>
+        <div>
+          <h2 class="text-xl font-semibold" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse by Artist</h2>
+          <p class="text-sm" style="color: var(--color-text-muted);">{artistCount} artists and bands</p>
+        </div>
+      </div>
+      <p class="text-sm" style="color: var(--color-text-secondary);">Find songs from your favorite worship leaders like Hillsong, Elevation, Bethel, and more.</p>
+    </a>
+
+    <a href="/browse/categories" class="block p-6 rounded-lg border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:border-primary-300" style="background: var(--color-surface-card); border-color: var(--color-border);">
+      <div class="flex items-center gap-4 mb-3">
+        <span class="text-3xl">&#127925;</span>
+        <div>
+          <h2 class="text-xl font-semibold" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse by Category</h2>
+          <p class="text-sm" style="color: var(--color-text-muted);">{themeCount} themes, {tagCount} tags</p>
+        </div>
+      </div>
+      <p class="text-sm" style="color: var(--color-text-secondary);">Find songs by theme like praise, worship, hope, faith, and more.</p>
+    </a>
+  </div>
+
+  <div class="space-y-10">
+    <section>
+      <h2 class="text-2xl font-semibold mb-5" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse by Key</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="text-lg font-medium mb-3" style="font-family: var(--font-serif); color: var(--color-text-secondary);">Male Keys</h3>
+          <div class="flex flex-wrap gap-2">
+            {allMaleKeys.map(key => (
+              <a href={`/browse/keys/male/${key.replace('#', '-sharp').toLowerCase()}`} class="px-4 py-2 bg-primary-100 text-primary-800 rounded-lg hover:bg-primary-200 transition-colors font-medium text-sm">
+                {key}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium mb-3" style="font-family: var(--font-serif); color: var(--color-text-secondary);">Female Keys</h3>
+          <div class="flex flex-wrap gap-2">
+            {allFemaleKeys.map(key => (
+              <a href={`/browse/keys/female/${key.replace('#', '-sharp').toLowerCase()}`} class="px-4 py-2 bg-accent-100 text-accent-800 rounded-lg hover:bg-accent-200 transition-colors font-medium text-sm">
+                {key}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-semibold mb-5" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse by Time Signature</h2>
+      <div class="flex flex-wrap gap-2">
+        {allTimeSignatures.map(sig => (
+          <a href={`/browse/time-signatures/${sig.replace('/', '-')}`} class="px-4 py-2 rounded-lg hover:bg-primary-100 transition-colors font-medium text-sm" style="background: var(--color-border-light); color: var(--color-text-secondary);">
+            {sig}
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <div class="mt-12">
+    <a href="/" class="text-primary-600 hover:text-primary-800 font-medium flex items-center gap-1 transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to All Songs
+    </a>
+  </div>
+</Layout>
