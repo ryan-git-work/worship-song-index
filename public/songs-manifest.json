@@ -1,5 +1,30 @@
 {
   "total_songs": 3470,
-  "chunks": 7,
-  "note": "songs.json was too large for direct upload. Combine all chunks to reconstruct."
+  "chunks": 22,
+  "chunk_files": [
+    "public/songs-chunk-1.json",
+    "public/songs-chunk-2.json",
+    "public/songs-chunk-3.json",
+    "public/songs-chunk-4.json",
+    "public/songs-chunk-5.json",
+    "public/songs-chunk-6.json",
+    "public/songs-chunk-7.json",
+    "public/songs-chunk-8-1.json",
+    "public/songs-chunk-8-2.json",
+    "public/songs-chunk-9.json",
+    "public/songs-chunk-10.json",
+    "public/songs-chunk-11-1.json",
+    "public/songs-chunk-11-2.json",
+    "public/songs-chunk-12.json",
+    "public/songs-chunk-13.json",
+    "public/songs-chunk-14-1.json",
+    "public/songs-chunk-14-2.json",
+    "public/songs-chunk-15.json",
+    "public/songs-chunk-16.json",
+    "public/songs-chunk-17-1.json",
+    "public/songs-chunk-17-2.json",
+    "public/songs-chunk-18.json"
+  ],
+  "note": "public/songs.json (11.3MB) was too large for direct GitHub API upload. Download all chunk files and concatenate their arrays to reconstruct the full dataset.",
+  "last_updated": "2026-05-27"
 }
