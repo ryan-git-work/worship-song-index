@@ -4,6 +4,7 @@ import SongCard from '../../components/SongCard.astro';
 import blogData from '../../../public/blog-posts.json';
 import songsData from '../../../public/songs.json';
 import type { Song } from '../../types/song';
+import { getTempoLabel } from '../../types/song';
 
 export async function getStaticPaths() {
   return blogData.map(post => ({
@@ -189,7 +190,7 @@ const htmlBody = renderMarkdown(post.body);
               artist={song.primary_artist}
               maleKey={song.default_male_key}
               femaleKey={song.default_female_key}
-              tempo={song.tempo_bpm}
+              tempo={getTempoLabel(song.tempo_bpm)}
               bpm={song.tempo_bpm}
               timeSignature={song.time_signature}
               slug={song.slug}

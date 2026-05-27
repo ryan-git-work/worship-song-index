@@ -52,6 +52,9 @@ export interface Song {
   
   /** Optional Amazon Music link */
   amazon_link?: string;
+
+  /** Optional long-form editorial content for enhanced song pages */
+  editorial_markdown?: string;
 }
 
 /**

@@ -49,21 +49,39 @@ const customSEO: Record<string, { title: string; description: string }> = {
 };
 
 const title = customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
+
+function trimToSentence(text: string, maxLength = 155): string {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= maxLength) return normalized;
+  let cut = normalized.lastIndexOf('.', maxLength);
+  if (cut < 100) cut = normalized.lastIndexOf(' ', maxLength);
+  if (cut < 0) cut = maxLength;
+  return normalized.slice(0, cut).replace(/[.,;:!?-]+$/, '') + '...';
+}
+
 // Build editorial description for JSON-LD when editorial_markdown is present
 function getEditorialDescription(md: string | undefined): string {
   if (!md) return '';
   const match = md.match(/## What this song is saying about God\s*\n\n([\s\S]*?)(?=\n## |\n*$)/);
   if (!match) return '';
-  const text = match[1].trim().replace(/\s+/g, ' ');
-  if (text.length <= 160) return text;
-  let cut = text.lastIndexOf('.', 160);
-  if (cut < 100) cut = text.lastIndexOf(' ', 160);
-  if (cut < 0) cut = 160;
-  return text.slice(0, cut) + '...';
+  return trimToSentence(match[1], 155);
+}
+
+function buildSongDescription(song: Song, editorialDesc: string): string {
+  const rawSummary = song.summary_theology || '';
+  const normalizedSummary = rawSummary.trim();
+  const weakSummaryPattern = /^(the song|this song)(\b|['’])/i;
+  const isWeakSummary = normalizedSummary.length < 40 || weakSummaryPattern.test(normalizedSummary);
+  const isWeakEditorial = weakSummaryPattern.test(editorialDesc.trim());
+
+  if (editorialDesc && !isWeakEditorial) return editorialDesc;
+  if (!isWeakSummary) return trimToSentence(rawSummary, 155);
+
+  return `${song.title} by ${song.primary_artist}: worship song keys, ${song.tempo_bpm} BPM, ${song.time_signature} time, Scripture references, theology notes, arrangement tips, and worship leadership guidance.`;
 }
 
 const editorialDesc = getEditorialDescription(song.editorial_markdown);
-const description = customSEO[song.slug]?.description ?? (editorialDesc || song.summary_theology.substring(0, 155) + (song.summary_theology.length > 155 ? '...' : ''));
+const description = customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc);
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
 
 const musicComposition = {
@@ -96,7 +114,7 @@ const musicComposition = {
     "keywords": [...song.themes, ...(song.tags || [])].join(", ")
   }),
   ...(song.scripture_refs?.length && { "citation": song.scripture_refs }),
-  ...(editorialDesc ? { "description": editorialDesc } : song.summary_theology && { "description": song.summary_theology })
+  ...(description && { "description": description })
 };
 
 const breadcrumb = {
