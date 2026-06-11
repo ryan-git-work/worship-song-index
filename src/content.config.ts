@@ -32,4 +32,19 @@ const devotionals = defineCollection({
   }),
 });
 
-export const collections = { devotionalHubs, devotionals };
+const articles = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
+  schema: z.object({
+    created: z.union([z.date(), z.string()]),
+    type: z.literal('occasion-page'),
+    brand: z.literal('wsi'),
+    slug: z.string(),
+    meta_title: z.string(),
+    meta_description: z.string(),
+    target_occasion: z.string(),
+    song_links_count: z.number(),
+    word_count: z.number(),
+  }),
+});
+
+export const collections = { devotionalHubs, devotionals, articles };
