@@ -140,4 +140,3 @@ Finally: some of the people in that room haven't sung in a year. Some haven't su
 
 ---
 
-_Sources: WSI enrichment index, verified slug list (`wsi-enrichment-progress.json`)_

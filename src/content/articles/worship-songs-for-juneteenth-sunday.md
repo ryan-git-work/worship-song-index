@@ -155,4 +155,3 @@ The history is specific. The theology is solid. The congregation is waiting. Lea
 
 ---
 
-_Sources: WSI enrichment data (verified slug list), vault content guidance for Juneteenth occasion page_

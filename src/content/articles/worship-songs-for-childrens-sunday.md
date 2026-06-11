@@ -124,4 +124,3 @@ This set runs approximately 25-30 minutes of music with a dedicated children's m
 
 **Pastor coordination:** Before the service, confirm with the pastor the exact structure of the children's moment: when it happens, whether children are dismissed after or stay for the message, and whether the children's ministry team needs a musical cue for dismissal. The children's moment works best when the worship team and the children's team have communicated before the service, not improvised it on stage.
 
-_Sources: `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-youth-service.md`, `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-baby-dedication.md`_

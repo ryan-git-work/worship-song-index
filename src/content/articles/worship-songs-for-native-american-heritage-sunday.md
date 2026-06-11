@@ -142,4 +142,3 @@ The heaviness of this Sunday is not a liability. Worship that can hold the full 
 
 ---
 
-_Sources: verified song slugs from wsi-enrichment-progress.json_

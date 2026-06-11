@@ -158,4 +158,3 @@ That's worth preparing for.
 
 ---
 
-_Sources: WSI song slug index at `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

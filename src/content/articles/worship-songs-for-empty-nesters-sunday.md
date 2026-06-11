@@ -134,4 +134,3 @@ That's a good thing to do on a Sunday.
 
 ---
 
-_Sources: `/Users/ryanloche/Obsidian Vault/01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

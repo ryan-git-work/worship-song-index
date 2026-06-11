@@ -138,4 +138,3 @@ One more thing worth telling the whole team beforehand: what makes this day diff
 
 ---
 
-_Sources: wsi-enrichment-progress.json (slug verification), Acts 1:14 / Acts 2 narrative frame_

@@ -145,4 +145,3 @@ One last thing: after the service, check on the family. The worship leader often
 
 ---
 
-_Sources: WSI enrichment data, verified slug index (`wsi-enrichment-progress.json`)_

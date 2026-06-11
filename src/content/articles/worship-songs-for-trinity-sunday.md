@@ -128,4 +128,3 @@ Trinity Sunday runs on content, not atmosphere, and that shift in the service's 
 
 **Pastor coordination:** Trinity Sunday is one of the Sundays where a brief spoken introduction to the service makes sense before the first song. One or two sentences: "Today is Trinity Sunday. We are going to spend our time together confessing what we believe about who God is." Not a lecture, not an explanation of the songs. Just an orientation. Confirm with the pastor before Sunday that either they or you will say it, and that it will not happen twice.
 
-_Sources: `01 - Projects/Worship Song Index/WSI Occasion Pages Playbook.md`, `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`_

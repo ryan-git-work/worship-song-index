@@ -148,4 +148,3 @@ That is the work. Go do it well.
 
 ---
 
-_Sources: wsi-enrichment-progress.json (slug verification)_

@@ -144,4 +144,3 @@ The congregation will leave quieter than they came in. That is the service worki
 
 ---
 
-_Sources: `/Users/ryanloche/Obsidian Vault/01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

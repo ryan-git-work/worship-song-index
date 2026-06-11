@@ -148,4 +148,3 @@ Debrief the team afterward. This kind of service can be heavy to carry, especial
 
 ---
 
-_Sources: `/Users/ryanloche/Obsidian Vault/01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

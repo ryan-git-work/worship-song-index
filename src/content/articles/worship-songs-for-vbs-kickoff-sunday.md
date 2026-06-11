@@ -123,4 +123,3 @@ One more thing worth saying to your team before the service starts: the voluntee
 
 ---
 
-_Sources consulted: verified slug list from `wsi-enrichment-progress.json`_

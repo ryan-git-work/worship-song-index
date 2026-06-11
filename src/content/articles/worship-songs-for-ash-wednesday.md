@@ -134,4 +134,3 @@ For the tech team: watch your lighting. A well-lit stage with full theatrical li
 
 One more thing for everyone on the team. You will be receiving ashes too, if your church practices that, or at minimum you will be physically present to others who are. This is not a performance night. It is a service night. The same invitation extended to the congregation is extended to you. Prepare accordingly.
 
-_Sources: `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`, `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`, `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-good-friday.md`_

@@ -145,4 +145,3 @@ The whole team is doing pastoral work this Sunday. The congregation is walking i
 
 ---
 
-_Sources: Slug verification via `wsi-enrichment-progress.json`. Song selection curated from verified WSI catalog slugs._

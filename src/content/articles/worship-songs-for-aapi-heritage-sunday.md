@@ -128,4 +128,3 @@ The people in the seats on this Sunday are singing about a faith that has been c
 
 ---
 
-*Sources: WSI occasion page framework, Worship Song Index enrichment data*

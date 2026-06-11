@@ -118,4 +118,3 @@ This set assumes a 40-50 minute worship arc with senior recognition approximatel
 
 **Pastor coordination:** Confirm before the service: how many names are being read, how long the prayer time is expected to run, and what the signal is to move from prayer into commissioning. The band needs that information to plan the He Will Hold Me Fast sustain and the transition into In Christ Alone. One conversation in the pre-service green room is worth more than any amount of real-time adaptation.
 
-_Sources: occasion-page spec 2026-06-06, pre-verified slug list provided in brief_

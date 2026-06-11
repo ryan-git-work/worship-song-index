@@ -121,4 +121,3 @@ Note on BPM: all four songs in this set land between 68 and 74 BPM. That is inte
 
 If the service runs long and you need to cut, cut the closing song to a single verse and chorus. The congregation has received what they came for. A graceful exit is better than an overtime finish.
 
-_Sources: Psalm 127:3, 1 Samuel 1:27-28, Mark 10:13-16. Pre-verified song slugs per WSI internal link registry._

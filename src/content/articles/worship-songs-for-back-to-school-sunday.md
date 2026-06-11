@@ -120,4 +120,3 @@ This set assumes a 40-45 minute worship arc with a commissioning or sending mome
 
 **Pastor coordination:** Two conversations before the service. First, confirm whether there is a teacher appreciation or student commissioning prayer and where it falls in the service. Second, agree on the signal to move forward if the prayer runs longer than planned. The band needs the first piece of information to plan the arc and the second to avoid stranding the room. One conversation in the pre-service green room is worth far more than any real-time adaptation when students and teachers are standing at the front.
 
-_Sources: occasion-page spec 2026-06-06, pre-verified slug list provided in brief_

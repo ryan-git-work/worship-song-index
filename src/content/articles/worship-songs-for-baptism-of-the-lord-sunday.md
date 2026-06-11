@@ -146,4 +146,3 @@ A few practical notes for this particular set:
 
 ---
 
-_Sources: verified slugs from `wsi-enrichment-progress.json`_

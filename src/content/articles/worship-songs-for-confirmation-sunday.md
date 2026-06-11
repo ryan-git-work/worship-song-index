@@ -125,4 +125,3 @@ The pastor is holding the theological container for this Sunday. Your job is to 
 
 ---
 
-_Sources: WSI occasion page format, wsi-enrichment-progress.json (slug verification)_

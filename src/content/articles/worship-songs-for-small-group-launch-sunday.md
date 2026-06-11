@@ -120,4 +120,3 @@ The best thing that can happen on Small Group Launch Sunday is that the congrega
 
 ---
 
-_Sources: WSI enrichment progress data for slug verification._

@@ -105,4 +105,3 @@ That is the most important thing you can give a capital campaign Sunday. Not the
 
 ---
 
-_Sources: Slug verification via `wsi-enrichment-progress.json`. Content developed from WSI occasion-page framework and CLAUDE.md voice guidelines._

@@ -142,4 +142,3 @@ For everyone: you may not know who in the room is carrying the heaviest weight. 
 
 ---
 
-_Sources: WSI slug index (`wsi-enrichment-progress.json`), song candidate list for Memorial Day Sunday occasion page._

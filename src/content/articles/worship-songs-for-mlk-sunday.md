@@ -138,4 +138,3 @@ King preached his last sermon the night before he was killed. He talked about go
 
 ---
 
-_Sources: verified slug list from `wsi-enrichment-progress.json`_

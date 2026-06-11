@@ -134,4 +134,3 @@ This set runs approximately 30-35 minutes for a service that moves from gatherin
 
 Ask the question directly in your pre-service coordination. "Are you planning to recognize the mothers? If so, when, and what do you want the music to do in that moment?" That conversation saves you from being caught without a plan at the worst possible time.
 
-_Sources: `01 - Projects/Worship Song Index/wsi-song-page-template.md`, `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-baptism-sunday.md`, `01 - Projects/Worship Song Index/worshipsongindex-strategy.md`_

@@ -144,4 +144,3 @@ That's what you're helping them declare. Start there, and the rest will follow.
 
 ---
 
-_Sources: Worship Song Index enrichment data (wsi-enrichment-progress.json), verified slug list_

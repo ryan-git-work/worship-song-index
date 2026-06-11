@@ -130,4 +130,3 @@ A revival service asks the team to hold the same posture the congregation is in:
 
 **Pastor coordination:** Confirm two things before Sunday: where in the set the pastor may speak or pray aloud, and how ministry time will be initiated. If the pastor is calling people forward, the team needs to know whether they are already in Revival in Belfast when that happens or holding a pad in silence. Thirty seconds of conversation before the service prevents five minutes of awkwardness during it.
 
-_Sources: `01 - Projects/Worship Song Index/WSI Occasion Pages Playbook.md`, `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`, `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

@@ -122,4 +122,3 @@ For the pastor or retreat speaker: coordinate with the worship leader about wher
 
 The weekend will surprise you. Build a plan. Be willing to throw it away.
 
-_Sources: `04 - Resources/Voice Library/Ryan teaching transcripts (keystone voice reference).md`_

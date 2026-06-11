@@ -137,4 +137,3 @@ For **all of you**: this Sunday is unusual because it has a history and a claim 
 
 The team behind the worship leader sets the ceiling on what is possible in the room. When they understand what the Sunday is asking, they can help carry the weight of it. Brief them well this week.
 
-_Sources: WSI occasion-page template, WSI enrichment data (`wsi-enrichment-progress.json`)_

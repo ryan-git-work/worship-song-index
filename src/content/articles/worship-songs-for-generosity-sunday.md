@@ -114,4 +114,3 @@ One more thing for the worship leader specifically: if your pastor is going to a
 
 ---
 
-_Sources: `/Users/ryanloche/Obsidian Vault/01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

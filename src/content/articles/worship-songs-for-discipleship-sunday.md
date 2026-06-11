@@ -129,4 +129,3 @@ The congregation that leaves a Discipleship Sunday having moved toward concrete 
 
 ---
 
-_Sources: song slug verification via wsi-enrichment-progress.json_

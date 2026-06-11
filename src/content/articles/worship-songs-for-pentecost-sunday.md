@@ -132,4 +132,3 @@ Pentecost Sunday requires more advance coordination than most Sundays, and speci
 
 **Pastor coordination:** Confirm the Acts 2 reading placement (suggested: inside the Spirit Break Out bridge), the length of the post-sermon response moment, and whether there will be any spoken invitation during the multilingual song. The more the pastor and worship leader agree on the skeleton before Sunday, the more freedom the Spirit has to move within a clear structure.
 
-_Sources: `01 - Projects/Worship Song Index/WSI Occasion Pages Playbook.md`_

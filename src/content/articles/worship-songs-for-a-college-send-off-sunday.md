@@ -135,4 +135,3 @@ The whole team is doing pastoral work on this Sunday, not just musical work. The
 
 ---
 
-_Sources: Worship Song Index slug registry (`wsi-enrichment-progress.json`)_

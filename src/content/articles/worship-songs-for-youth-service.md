@@ -124,4 +124,3 @@ This set assumes a 35-40 minute arc with four to five songs, a mid-set pastoral 
 
 **Youth leader coordination:** Before the service, confirm with the youth pastor whether there are specific students going through something significant or pastoral moments the set needs to hold space for. A worship leader who knows the room can make real-time adjustments that one flying blind cannot. That information lives with the youth team. Ask for it before you get on stage.
 
-_Sources: `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`, `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-baptism-sunday.md`_

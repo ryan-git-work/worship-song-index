@@ -144,4 +144,3 @@ The worship leader does not carry this Sunday alone. The team behind you is part
 
 ---
 
-_Sources: WSI enrichment data, verified slug list from wsi-enrichment-progress.json_

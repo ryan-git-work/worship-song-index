@@ -130,4 +130,3 @@ This set runs approximately 30-35 minutes and is designed to move from gathering
 
 **Pastor coordination:** Before the service, ask directly whether anyone from the platform plans to make a specific statement about women's roles, calling, or the current state of the conversation in the church. You need to know, because the song that follows that statement will either hold the room or break it. If that statement is coming, the song after it must be wide enough for every theological position in the room to re-enter. You Say or You Never Let Go can do that. A strength-and-calling song cannot, because it will read as a position statement by proximity. The conversation with your pastor before the service is not optional. Have it.
 
-_Sources: `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-mothers-day.md`, `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-an-anti-trafficking-or-justice-sunday.md`_

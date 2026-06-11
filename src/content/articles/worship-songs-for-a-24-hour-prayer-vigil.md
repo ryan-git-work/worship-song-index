@@ -141,4 +141,3 @@ The vigil is not the most visible thing your worship team will do this year. It 
 
 ---
 
-_Sources: Worship Song Index enrichment data, slug registry at `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

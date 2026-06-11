@@ -120,4 +120,3 @@ The students who stand at a flagpole are doing something the adults in the room 
 
 ---
 
-_Sources consulted: WSI enrichment progress JSON (slug verification), SYATP historical record (1990 founding, annual September third-Wednesday observance), Worship Song Index song library._

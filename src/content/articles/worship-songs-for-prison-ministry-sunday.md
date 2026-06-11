@@ -151,4 +151,3 @@ That is the work. Prepare for it accordingly.
 
 ---
 
-_Sources: wsi-enrichment-progress.json (slug verification)_

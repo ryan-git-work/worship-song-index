@@ -115,4 +115,3 @@ This Sunday matters. The person who has not been back to church since the divorc
 
 ---
 
-_Sources: Worship Song Index slug verification via `wsi-enrichment-progress.json`_

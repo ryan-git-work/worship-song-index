@@ -149,4 +149,3 @@ The people in your room on First Responders Sunday will not all tell you what th
 
 ---
 
-_Sources: song slug verification via `wsi-enrichment-progress.json`_

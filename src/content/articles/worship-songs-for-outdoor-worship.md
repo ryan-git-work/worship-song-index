@@ -165,4 +165,3 @@ The outdoor service is one of those occasions where a quick thirty-minute team c
 
 ---
 
-_Sources: WSI verified slug index (`wsi-enrichment-progress.json`)_

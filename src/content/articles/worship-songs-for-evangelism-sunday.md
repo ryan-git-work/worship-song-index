@@ -125,4 +125,3 @@ Evangelism Sunday is one of the Sundays where the behind-the-scenes team carries
 
 ---
 
-_Sources: WSI occasion page research, verified song slugs from wsi-enrichment-progress.json_

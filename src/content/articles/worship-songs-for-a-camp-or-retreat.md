@@ -134,4 +134,3 @@ Camp changes the rules for every person on the team, and not communicating those
 
 **Camp director coordination:** Confirm session timing and transitions before each day, not morning-of. Late-night sessions in particular tend to run long when the Spirit is moving or when the speaker needs more time. Know in advance whether worship comes before or after ministry response time, and whether the team should be ready to continue after the message or hold. Thirty seconds of conversation before each session is cheaper than five minutes of confusion during it.
 
-_Sources: `01 - Projects/Worship Song Index/WSI Occasion Pages Playbook.md`_
