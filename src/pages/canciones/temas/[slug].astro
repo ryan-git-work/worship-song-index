@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const pages = (await getCollection('spanishBrowsePages')).filter((entry) =>
+    entry.data.url.startsWith('/canciones/temas/')
+  );
+
+  return pages.map((entry) => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const canonicalURL = `https://worshipsongindex.com/canciones/temas/${entry.data.slug}/`;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": entry.data.meta_title,
+  "description": entry.data.meta_description,
+  "url": canonicalURL,
+  "inLanguage": "es",
+  "author": {
+    "@type": "Organization",
+    "name": "Worship Song Index",
+    "url": "https://worshipsongindex.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Worship Song Index",
+    "url": "https://worshipsongindex.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://worshipsongindex.com/generated-icon.png"
+    }
+  },
+  "wordCount": entry.data.word_count,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalURL
+  }
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Canciones" },
+    { "@type": "ListItem", "position": 3, "name": "Temas" },
+    { "@type": "ListItem", "position": 4, "name": entry.data.slug, "item": canonicalURL }
+  ]
+};
+---
+
+<Layout title={entry.data.meta_title} description={entry.data.meta_description} structuredData={[articleSchema, breadcrumbSchema]} lang="es">
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <span>Canciones</span>
+    <span class="mx-2">/</span>
+    <span>Temas</span>
+  </nav>
+
+  <article class="max-w-3xl">
+    <header class="mb-10">
+      <p class="text-sm font-medium uppercase tracking-widest mb-3" style="color: var(--color-text-muted);">
+        Guía de tema
+      </p>
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-5" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+        {entry.data.meta_title}
+      </h1>
+      <p class="text-lg leading-relaxed" style="color: var(--color-text-secondary);">
+        {entry.data.meta_description}
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3 text-sm" style="color: var(--color-text-muted);">
+        <span>{entry.data.word_count.toLocaleString()} palabras</span>
+        <span aria-hidden="true">/</span>
+        <span>{entry.data.song_links_count} enlaces de canciones</span>
+      </div>
+    </header>
+
+    <div
+      class="prose prose-lg max-w-none"
+      style="color: var(--color-text-secondary); --tw-prose-headings: var(--color-text-primary); --tw-prose-links: var(--color-primary-600); --tw-prose-bold: var(--color-text-primary); --tw-prose-body: var(--color-text-secondary);"
+    >
+      <Content />
+    </div>
+  </article>
+</Layout>

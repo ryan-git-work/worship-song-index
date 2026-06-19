@@ -1,4 +1,4 @@
-import type { Song } from '../types/song';
+import type { Song, SpanishSong } from '../types/song';
 
 import chunk1 from '../../public/songs-chunk-1.json';
 import chunk2 from '../../public/songs-chunk-2.json';
@@ -22,8 +22,9 @@ import chunk16 from '../../public/songs-chunk-16.json';
 import chunk171 from '../../public/songs-chunk-17-1.json';
 import chunk172 from '../../public/songs-chunk-17-2.json';
 import chunk18 from '../../public/songs-chunk-18.json';
+import spanishChunk from '../../public/songs-chunk-spanish.json';
 
-export const songs: Song[] = [
+const englishChunks = [
   ...chunk1,
   ...chunk2,
   ...chunk3,
@@ -46,4 +47,11 @@ export const songs: Song[] = [
   ...chunk171,
   ...chunk172,
   ...chunk18,
-] as Song[];
+];
+
+export const songs: Song[] = englishChunks.map((song) => ({
+  ...song,
+  language: song.language ?? 'en',
+})) as Song[];
+
+export const spanishSongs = spanishChunk as SpanishSong[];

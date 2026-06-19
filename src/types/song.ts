@@ -55,6 +55,32 @@ export interface Song {
 
   /** Optional long-form editorial content for enhanced song pages */
   editorial_markdown?: string;
+
+  /** Content language. Existing English catalog entries default to "en" at load time. */
+  language?: 'en' | 'es';
+}
+
+export interface SpanishSong {
+  slug: string;
+  title: string;
+  primary_artist: string;
+  year: number | null;
+  default_male_key: string | null;
+  default_female_key: string | null;
+  tempo_bpm: number | null;
+  time_signature: string | null;
+  themes: string[];
+  scripture_refs: string[];
+  summary_theology: string;
+  language: 'es';
+  url: string;
+  cluster?: string;
+  verified?: boolean;
+  verify_flags?: string[];
+  tags: string[];
+  practical_worship_leadership: string;
+  arrangement_tips: string;
+  editorial_markdown: string;
 }
 
 /**

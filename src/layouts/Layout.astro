@@ -5,9 +5,11 @@ interface Props {
   title: string;
   description: string;
   structuredData?: object;
+  lang?: string;
+  alternates?: Array<{ hreflang: string; href: string }>;
 }
 
-const { title, description, structuredData } = Astro.props;
+const { title, description, structuredData, lang = 'en', alternates = [] } = Astro.props;
 
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
 
@@ -28,7 +30,7 @@ const allSchemas = [organizationSchema, ...pageSchemas];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,6 +42,9 @@ const allSchemas = [organizationSchema, ...pageSchemas];
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
     <link rel="canonical" href={canonicalURL} />
+    {alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+    ))}
 
     <title>{title}</title>
     <meta name="description" content={description} />

@@ -47,4 +47,20 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { devotionalHubs, devotionals, articles };
+const spanishBrowsePages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/spanishBrowsePages' }),
+  schema: z.object({
+    created: z.union([z.date(), z.string()]),
+    type: z.literal('browse-page-es'),
+    brand: z.literal('wsi'),
+    language: z.literal('es'),
+    slug: z.string(),
+    url: z.string(),
+    meta_title: z.string(),
+    meta_description: z.string(),
+    song_links_count: z.number(),
+    word_count: z.number(),
+  }),
+});
+
+export const collections = { devotionalHubs, devotionals, articles, spanishBrowsePages };

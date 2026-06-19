@@ -1,0 +1,220 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { spanishSongs } from '../../lib/songs';
+import type { SpanishSong } from '../../types/song';
+import { formatTheme, getYouTubeVideoId } from '../../types/song';
+import { marked } from 'marked';
+
+export interface Props {
+  song: SpanishSong;
+}
+
+export async function getStaticPaths() {
+  return spanishSongs.map((song) => ({
+    params: { slug: song.slug },
+    props: { song },
+  }));
+}
+
+const { song } = Astro.props;
+const browsePages = await getCollection('spanishBrowsePages');
+const artistPageSlugs = new Set(
+  browsePages.filter((entry) => entry.data.url.startsWith('/canciones/artistas/')).map((entry) => entry.data.slug)
+);
+const themePageSlugs = new Set(
+  browsePages.filter((entry) => entry.data.url.startsWith('/canciones/temas/')).map((entry) => entry.data.slug)
+);
+
+function artistToSlug(artist: string): string {
+  return artist
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\/\\]/g, '-')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+const derivedArtistSlug = artistToSlug(song.primary_artist);
+const linkedArtistSlug = song.cluster && artistPageSlugs.has(song.cluster)
+  ? song.cluster
+  : artistPageSlugs.has(derivedArtistSlug)
+    ? derivedArtistSlug
+    : null;
+
+function trimToSentence(text: string, maxLength = 155): string {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= maxLength) return normalized;
+  let cut = normalized.lastIndexOf('.', maxLength);
+  if (cut < 100) cut = normalized.lastIndexOf(' ', maxLength);
+  if (cut < 0) cut = maxLength;
+  return normalized.slice(0, cut).replace(/[.,;:!?-]+$/, '') + '...';
+}
+
+const title = `${song.title} — ${song.primary_artist} | Canción de adoración`;
+const description = trimToSentence(song.summary_theology || `${song.title} por ${song.primary_artist}: guía pastoral para dirigir esta canción de adoración en español.`);
+const canonicalURL = `https://worshipsongindex.com/canciones/${song.slug}/`;
+
+const musicComposition = {
+  "@context": "https://schema.org",
+  "@type": "MusicComposition",
+  "name": song.title,
+  "url": canonicalURL,
+  "inLanguage": "es",
+  ...(song.default_male_key && { "musicalKey": song.default_male_key }),
+  ...(song.tempo_bpm && { "beatsPerMinute": song.tempo_bpm }),
+  "recordedAs": {
+    "@type": "MusicRecording",
+    "name": song.title,
+    "byArtist": { "@type": "MusicGroup", "name": song.primary_artist }
+  },
+  ...(song.themes?.length && {
+    "about": song.themes.map((theme: string) => ({ "@type": "Thing", "name": theme })),
+    "keywords": [...song.themes, ...(song.tags || [])].join(", ")
+  }),
+  ...(song.scripture_refs?.length && { "citation": song.scripture_refs }),
+  "description": description
+};
+
+const breadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
+    { "@type": "ListItem", "position": 2, "name": "Canciones" },
+    { "@type": "ListItem", "position": 3, "name": song.title, "item": canonicalURL }
+  ]
+};
+
+const structuredData = [musicComposition, breadcrumb];
+---
+
+<Layout title={title} description={description} structuredData={structuredData} lang="es">
+  <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
+    <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
+    <span class="mx-2">/</span>
+    <span>Canciones</span>
+    <span class="mx-2">/</span>
+    <span>{song.title}</span>
+  </nav>
+
+  <header class="mb-10">
+    <p class="text-sm font-medium uppercase tracking-widest mb-3" style="color: var(--color-text-muted);">
+      Canción de adoración
+    </p>
+    <h1 class="text-3xl md:text-4xl font-bold mb-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      {song.title}
+    </h1>
+    <p class="text-xl" style="color: var(--color-text-secondary);">
+      por {linkedArtistSlug ? (
+        <a href={`/canciones/artistas/${linkedArtistSlug}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">{song.primary_artist}</a>
+      ) : (
+        <span class="font-medium">{song.primary_artist}</span>
+      )}
+    </p>
+  </header>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-8">
+      {song.youtube && (() => {
+        const videoId = getYouTubeVideoId(song.youtube || '');
+        if (videoId) {
+          return (
+            <div
+              class="yt-player-wrapper"
+              onclick={`this.innerHTML='<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:8px;"><\\/iframe>'`}
+              style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:480px; margin:16px 0; border-radius:8px; cursor:pointer; background:#000;"
+            >
+              <img
+                src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                alt={`Ver ${song.title} en YouTube`}
+                style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; border-radius:8px; opacity:0.8;"
+              />
+              <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:64px; height:64px; background:rgba(255,0,0,0.85); border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                <div style="width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:20px solid white; margin-left:5px;"></div>
+              </div>
+            </div>
+          );
+        }
+      })()}
+
+      <article class="prose prose-lg" style="color: var(--color-text-secondary);" set:html={marked(song.editorial_markdown)} />
+
+      {song.scripture_refs.length > 0 && (
+        <section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">
+          <h2 class="text-xl font-semibold mb-4" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+            Referencias bíblicas
+          </h2>
+          <ul class="space-y-2">
+            {song.scripture_refs.map((ref) => (
+              <li class="flex items-center gap-2" style="color: var(--color-text-secondary);">
+                <span class="w-1.5 h-1.5 bg-primary-400 rounded-full flex-shrink-0"></span>
+                {ref}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section>
+        <h2 class="text-lg font-semibold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Temas</h2>
+        <div class="flex flex-wrap gap-2">
+          {song.themes.map((theme) => (
+            themePageSlugs.has(theme) ? (
+              <a href={`/canciones/temas/${theme}/`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-colors">
+                {formatTheme(theme)}
+              </a>
+            ) : (
+              <span class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-primary-100 text-primary-800">
+                {formatTheme(theme)}
+              </span>
+            )
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <aside class="lg:col-span-1">
+      <div class="rounded-lg border p-6 sticky top-8" style="background: var(--color-surface-card); border-color: var(--color-border);">
+        <h2 class="text-lg font-semibold mb-4 pb-3 border-b" style="font-family: var(--font-serif); color: var(--color-text-primary); border-color: var(--color-border-light);">
+          Detalles de la canción
+        </h2>
+
+        <dl class="space-y-4">
+          <div class="flex justify-between items-center gap-4">
+            <dt style="color: var(--color-text-muted);">Tono sugerido</dt>
+            <dd class="font-semibold text-right" style="color: var(--color-text-primary);">
+              {song.default_male_key || 'Por documentar'}
+            </dd>
+          </div>
+
+          <div class="flex justify-between items-center gap-4">
+            <dt style="color: var(--color-text-muted);">Tempo</dt>
+            <dd class="font-semibold text-right" style="color: var(--color-text-primary);">
+              {song.tempo_bpm ? `${song.tempo_bpm} BPM` : 'Por documentar'}
+            </dd>
+          </div>
+
+          <div class="flex justify-between items-center gap-4">
+            <dt style="color: var(--color-text-muted);">Compás</dt>
+            <dd class="font-semibold text-right" style="color: var(--color-text-primary);">
+              {song.time_signature || 'Por documentar'}
+            </dd>
+          </div>
+
+          {song.year && (
+            <div class="flex justify-between items-center gap-4">
+              <dt style="color: var(--color-text-muted);">Año</dt>
+              <dd class="font-semibold text-right" style="color: var(--color-text-primary);">
+                {song.year}
+              </dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </aside>
+  </div>
+</Layout>
