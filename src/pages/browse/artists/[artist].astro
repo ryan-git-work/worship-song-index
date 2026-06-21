@@ -3,34 +3,15 @@ import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
 import { getTempoLabel } from '../../../types/song';
 import { songs } from '../../../lib/songs';
+import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
-
-const slugify = (artist: string): string => {
-  return artist
-    .toLowerCase()
-    .replace(/[\/\\]/g, '-')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-};
 
 export function getStaticPaths() {
   const allArtists = [...new Set(songs.map(s => s.primary_artist))];
 
-  const toSlug = (artist: string): string => {
-    return artist
-      .toLowerCase()
-      .replace(/[\/\\]/g, '-')
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '');
-  };
-
   return allArtists.map(artist => ({
-    params: { artist: toSlug(artist) },
+    params: { artist: slugifyBrowseValue(artist) },
     props: { artist }
   }));
 }
@@ -42,7 +23,7 @@ const filteredSongs = songs.filter(s => {
   return songArtist === artistLower || songArtist.includes(artistLower);
 }).sort((a, b) => a.title.localeCompare(b.title));
 
-const artistSlug = slugify(artist);
+const artistSlug = slugifyBrowseValue(artist);
 const title = `${artist} Worship Songs | BPM, Tempo & Keys — Worship Song Index`;
 const description = `Browse ${filteredSongs.length} worship songs by ${artist}. Find chords, keys, and worship leader tips for ${artist} songs.`;
 

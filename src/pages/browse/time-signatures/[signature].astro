@@ -3,6 +3,8 @@ import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
 import { getTempoLabel } from '../../../types/song';
 import { songs } from '../../../lib/songs';
+import { timeSignatureToSlug } from '../../../lib/browseSlugs';
+import { timeSignatureArticleSchemas } from '../../../lib/timeSignatureArticleSchemas';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -10,32 +12,25 @@ export async function getStaticPaths() {
   const allSignatures = [...new Set(songs.map(s => s.time_signature))];
 
   return allSignatures.map(sig => ({
-    params: { signature: sig.replace('/', '-') },
+    params: { signature: timeSignatureToSlug(sig) },
     props: { signature: sig }
   }));
 }
 
 const { signature } = Astro.props;
 const filteredSongs = songs.filter(s => s.time_signature === signature).sort((a, b) => a.title.localeCompare(b.title));
+const signatureSlug = Astro.params.signature || '';
+const editorialEntry = (editorialsData as any)["time-signatures"]?.[signatureSlug];
+const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
 
-const is68 = signature === '6/8';
-
-const title = is68
-  ? 'Worship Songs in 6/8 Time | Keys, BPM & Tempo — Worship Song Index'
-  : `Songs in ${signature} Time - Worship Song Index`;
-
-const description = is68
-  ? 'Browse worship songs in 6/8 time, complete with male and female keys, BPM, and tempo markings. Find the right songs for altar calls, communion, and set closers that breathe.'
-  : `Browse worship songs with ${signature} time signature`;
+const title = editorialEntry?.title ?? `Songs in ${signature} Time - Worship Song Index`;
+const description = editorialEntry?.description ?? `Browse worship songs with ${signature} time signature`;
 
 function formatTimeSignature(slug: string): string {
   return slug.replace('-', '/');
 }
 
 const displaySig = formatTimeSignature(signature);
-
-const editorialEntry = (editorialsData as any)["time-signatures"]?.[Astro.params.signature || ''];
-const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
 
 const itemList = {
   "@context": "https://schema.org",
@@ -61,7 +56,8 @@ const breadcrumb = {
   ]
 };
 
-const structuredData = [itemList, breadcrumb];
+const articleSchema = timeSignatureArticleSchemas[signatureSlug];
+const structuredData = [itemList, breadcrumb, ...(articleSchema ? [articleSchema] : [])];
 ---
 
 <Layout title={title} description={description} structuredData={structuredData}>
@@ -75,16 +71,10 @@ const structuredData = [itemList, breadcrumb];
 
   <div class="mb-10">
     <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">
-      {is68 ? 'Worship Songs in 6/8 Time' : `Time Signature: ${signature}`}
+      {editorialEntry?.title ? `Worship Songs in ${signature} Time` : `Time Signature: ${signature}`}
     </h1>
     <p style="color: var(--color-text-muted);">Showing {filteredSongs.length} songs</p>
   </div>
-
-  {is68 && (
-    <p class="mb-10 text-base leading-relaxed max-w-3xl" style="color: var(--color-text-secondary);">
-      6/8 is one of the most expressive time signatures in worship music. Unlike the steady march of 4/4, it moves in two large beats per measure, each with a built-in triplet feel — giving songs a rolling, wave-like quality that feels both spacious and forward-moving. Songs like Goodness of God, Reckless Love, and Great Are You Lord all carry that characteristic lilt that congregations tend to sink into naturally. This time signature works especially well for tender moments of response, altar calls, and set closers where you want the music to breathe without losing momentum. Use the filters below to find 6/8 songs by key and tempo to build a set that flows.
-    </p>
-  )}
 
   {editorialHtml && (
     <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
@@ -114,7 +104,7 @@ const structuredData = [itemList, breadcrumb];
     </a>
   </div>
 
-  {is68 && (
+  {signature === '6/8' && (
     <div class="mt-12 pt-8 border-t" style="border-color: var(--color-border);">
       <p class="text-sm font-medium mb-3" style="color: var(--color-text-muted);">Looking for other time signatures?</p>
       <p class="text-sm" style="color: var(--color-text-secondary);">

@@ -4,6 +4,7 @@ import SongCard from '../../../../components/SongCard.astro';
 import { getTempoLabel } from '../../../../types/song';
 import { songs } from '../../../../lib/songs';
 import { getKeyDescription } from '../../../../lib/keyDescriptions';
+import { formatKeySlug, keyToSlug } from '../../../../lib/browseSlugs';
 import editorialsData from '../../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -11,7 +12,7 @@ export async function getStaticPaths() {
   const allKeys = [...new Set(songs.map(s => s.default_female_key))];
 
   return allKeys.map(key => ({
-    params: { key: key.replace('#', '-sharp').toLowerCase() },
+    params: { key: keyToSlug(key) },
     props: { key }
   }));
 }
@@ -21,24 +22,16 @@ const keySlug = Astro.params.key;
 const keyDescription = getKeyDescription(keySlug);
 const filteredSongs = songs.filter(s => s.default_female_key === key).sort((a, b) => a.title.localeCompare(b.title));
 
-const isKeyF = key === 'F';
-
-const title = isKeyF
-  ? 'Worship Songs in the Key of F (Female Voice) | BPM & Tempo — Worship Song Index'
-  : `Worship Songs in the Key of ${key} (Female Voice) | BPM & Tempo — Worship Song Index`;
-
-const description = isKeyF
-  ? 'Browse worship songs in the key of F for female vocalists, complete with BPM, tempo, and time signature. The most popular female key in modern worship — find your next set here.'
-  : `Browse worship songs in the key of ${key} for female vocalists, with BPM, tempo, and time signature for every song. Find the perfect key for your worship team.`;
-
-function formatKey(slug: string): string {
-  return slug.replace(/\b([a-g])-sharp\b/gi, (_m, letter: string) => letter.toUpperCase() + '#');
-}
-
-const displayKey = formatKey(keySlug);
-
 const editorialEntry = (editorialsData as any)["keys-female"]?.[keySlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+
+const title = editorialEntry?.title
+  ?? `Worship Songs in the Key of ${key} (Female Voice) | BPM & Tempo — Worship Song Index`;
+
+const description = editorialEntry?.description
+  ?? `Browse worship songs in the key of ${key} for female vocalists, with BPM, tempo, and time signature for every song. Find the perfect key for your worship team.`;
+
+const displayKey = formatKeySlug(keySlug);
 
 const itemList = {
   "@context": "https://schema.org",
@@ -78,7 +71,7 @@ const structuredData = [itemList, breadcrumb];
 
   <div class="mb-10">
     <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">
-      {isKeyF ? 'Worship Songs in the Key of F (Female Voice)' : `Female Key: ${key}`}
+      {editorialEntry?.title ? `Worship Songs in the Key of ${displayKey} (Female Voice)` : `Female Key: ${key}`}
     </h1>
     <p style="color: var(--color-text-muted);">Showing {filteredSongs.length} songs</p>
   </div>
@@ -86,12 +79,6 @@ const structuredData = [itemList, breadcrumb];
   {keyDescription && (
     <p class="mb-10 text-base leading-relaxed max-w-3xl" style="color: var(--color-text-secondary);">
       {keyDescription}
-    </p>
-  )}
-
-  {isKeyF && (
-    <p class="mb-10 text-base leading-relaxed max-w-3xl" style="color: var(--color-text-secondary);">
-      F major is the most common key for female vocalists in modern worship — and the sheer size of this catalog reflects that. It sits in a sweet spot for many female voices, offering enough range to feel expressive without pushing into uncomfortable territory. Songs like What A Beautiful Name, Way Maker, Oceans, and King of Kings all land here, making F one of the most versatile and well-stocked keys you can plan around. One practical note: nearly every song on this page pairs with D for a male vocalist, so if you're planning a male-led set in D or a mixed-lead service, this list is your matching resource. Browse by tempo and time signature below to find songs that fit your vocalist and your set.
     </p>
   )}
 
@@ -123,7 +110,7 @@ const structuredData = [itemList, breadcrumb];
     </a>
   </div>
 
-  {isKeyF && (
+  {key === 'F' && (
     <div class="mt-12 pt-8 border-t" style="border-color: var(--color-border);">
       <p class="text-sm font-medium mb-3" style="color: var(--color-text-muted);">Looking for other keys?</p>
       <div class="text-sm space-y-2" style="color: var(--color-text-secondary);">
@@ -131,7 +118,7 @@ const structuredData = [itemList, breadcrumb];
           Browse female keys:{' '}
           <a href="/browse/keys/female/a" class="text-primary-600 hover:text-primary-800 transition-colors">A</a>
           {' · '}
-          <a href="/browse/keys/female/b-sharp" class="text-primary-600 hover:text-primary-800 transition-colors">Bb</a>
+          <a href="/browse/keys/female/bb" class="text-primary-600 hover:text-primary-800 transition-colors">Bb</a>
           {' · '}
           <a href="/browse/keys/female/c" class="text-primary-600 hover:text-primary-800 transition-colors">C</a>
           {' · '}

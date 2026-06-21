@@ -4,6 +4,7 @@ import SongCard from '../../../../components/SongCard.astro';
 import { getTempoLabel } from '../../../../types/song';
 import { songs } from '../../../../lib/songs';
 import { getKeyDescription } from '../../../../lib/keyDescriptions';
+import { formatKeySlug, keyToSlug } from '../../../../lib/browseSlugs';
 import editorialsData from '../../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -11,7 +12,7 @@ export async function getStaticPaths() {
   const allKeys = [...new Set(songs.map(s => s.default_male_key))];
 
   return allKeys.map(key => ({
-    params: { key: key.replace('#', '-sharp').toLowerCase() },
+    params: { key: keyToSlug(key) },
     props: { key }
   }));
 }
@@ -21,24 +22,16 @@ const keySlug = Astro.params.key;
 const keyDescription = getKeyDescription(keySlug);
 const filteredSongs = songs.filter(s => s.default_male_key === key).sort((a, b) => a.title.localeCompare(b.title));
 
-const isKeyG = key === 'G';
-
-const title = isKeyG
-  ? 'Worship Songs in the Key of G (Male Voice) | BPM & Tempo — Worship Song Index'
-  : `Worship Songs in the Key of ${key} (Male Voice) | BPM & Tempo — Worship Song Index`;
-
-const description = isKeyG
-  ? 'Browse worship songs in the key of G for male vocalists, with BPM, tempo, and time signature for every song. The most popular key in modern worship — find your next set here.'
-  : `Browse worship songs in the key of ${key} for male vocalists, with BPM, tempo, and time signature for every song. Find the perfect key for your worship team.`;
-
-function formatKey(slug: string): string {
-  return slug.replace(/\b([a-g])-sharp\b/gi, (_m, letter: string) => letter.toUpperCase() + '#');
-}
-
-const displayKey = formatKey(keySlug);
-
 const editorialEntry = (editorialsData as any)["keys-male"]?.[keySlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+
+const title = editorialEntry?.title
+  ?? `Worship Songs in the Key of ${key} (Male Voice) | BPM & Tempo — Worship Song Index`;
+
+const description = editorialEntry?.description
+  ?? `Browse worship songs in the key of ${key} for male vocalists, with BPM, tempo, and time signature for every song. Find the perfect key for your worship team.`;
+
+const displayKey = formatKeySlug(keySlug);
 
 const itemList = {
   "@context": "https://schema.org",
@@ -78,7 +71,7 @@ const structuredData = [itemList, breadcrumb];
 
   <div class="mb-10">
     <h1 class="text-3xl md:text-4xl font-bold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">
-      {isKeyG ? 'Worship Songs in the Key of G (Male)' : `Male Key: ${key}`}
+      {editorialEntry?.title ? `Worship Songs in the Key of ${displayKey} (Male Voice)` : `Male Key: ${key}`}
     </h1>
     <p style="color: var(--color-text-muted);">Showing {filteredSongs.length} songs</p>
   </div>
@@ -86,12 +79,6 @@ const structuredData = [itemList, breadcrumb];
   {keyDescription && (
     <p class="mb-10 text-base leading-relaxed max-w-3xl" style="color: var(--color-text-secondary);">
       {keyDescription}
-    </p>
-  )}
-
-  {isKeyG && (
-    <p class="mb-10 text-base leading-relaxed max-w-3xl" style="color: var(--color-text-secondary);">
-      G major is the most widely used key in modern worship music — and for good reason. It sits in a comfortable range for most male voices, uses intuitive chord shapes on guitar, and carries a brightness that works across tempos and styles. Songs like How Great Is Our God, 10,000 Reasons, and Who You Say I Am all call G home, making it the de facto key of a generation of congregational worship. If your male vocalist is still finding their range, G is almost always the safest starting point. Note that most songs in this key pair naturally with Bb for female vocalists — so if you're planning a mixed-lead set, that transposition is your friend. Browse the full list below by tempo and time signature to build a set that fits your band and your congregation.
     </p>
   )}
 
@@ -123,7 +110,7 @@ const structuredData = [itemList, breadcrumb];
     </a>
   </div>
 
-  {isKeyG && (
+  {key === 'G' && (
     <div class="mt-12 pt-8 border-t" style="border-color: var(--color-border);">
       <p class="text-sm font-medium mb-3" style="color: var(--color-text-muted);">Looking for other keys?</p>
       <div class="text-sm space-y-2" style="color: var(--color-text-secondary);">
@@ -143,7 +130,7 @@ const structuredData = [itemList, breadcrumb];
         </p>
         <p>
           Browse female keys:{' '}
-          <a href="/browse/keys/female/b-sharp" class="text-primary-600 hover:text-primary-800 transition-colors">Bb</a>
+          <a href="/browse/keys/female/bb" class="text-primary-600 hover:text-primary-800 transition-colors">Bb</a>
           {' · '}
           <a href="/browse/keys/female/c" class="text-primary-600 hover:text-primary-800 transition-colors">C</a>
           {' · '}

@@ -1,16 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { songs } from '../../../lib/songs';
-
-function artistToSlug(artist: string): string {
-  return artist
-    .toLowerCase()
-    .replace(/[\/\\]/g, '-')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
+import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 
 const artistCounts: Record<string, number> = {};
 const allArtists = [...new Set(songs.map(s => s.primary_artist))].sort();
@@ -61,7 +52,7 @@ const structuredData = {
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
     {allArtists.map(artist => (
       <a
-        href={`/browse/artists/${artistToSlug(artist)}`}
+        href={`/browse/artists/${slugifyBrowseValue(artist)}/`}
         class="p-4 rounded-lg border transition-all duration-200 hover:shadow-md hover:border-primary-300 flex justify-between items-center"
         style="background: var(--color-surface-card); border-color: var(--color-border);"
       >

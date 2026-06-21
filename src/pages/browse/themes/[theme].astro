@@ -4,6 +4,7 @@ import SongCard from '../../../components/SongCard.astro';
 import { getTempoLabel } from '../../../types/song';
 import { songs } from '../../../lib/songs';
 import { getThemeDescription } from '../../../lib/themeDescriptions';
+import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -12,7 +13,7 @@ export async function getStaticPaths() {
   
   songs.forEach(song => {
     song.themes?.forEach(theme => {
-      allThemes.add(theme.toLowerCase().replace(/\s+/g, '-'));
+      allThemes.add(slugifyBrowseValue(theme));
     });
   });
 
@@ -30,7 +31,7 @@ const themeDescription = getThemeDescription(themeSlug);
 const normalizedTheme = themeSlug.replace(/-/g, ' ');
 const filteredSongs = songs
   .filter(s => 
-    s.themes?.some(t => t.toLowerCase().replace(/\s+/g, '-') === themeSlug)
+    s.themes?.some(t => slugifyBrowseValue(t) === themeSlug)
   )
   .sort((a, b) => a.title.localeCompare(b.title));
 

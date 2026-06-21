@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { songs } from '../../lib/songs';
+import { keyToSlug, timeSignatureToSlug } from '../../lib/browseSlugs';
 
 const artistCount = [...new Set(songs.map(s => s.primary_artist))].length;
 const themeCount = [...new Set(songs.flatMap(s => s.themes))].length;
@@ -66,7 +67,7 @@ const structuredData = {
           <h3 class="text-lg font-medium mb-3" style="font-family: var(--font-serif); color: var(--color-text-secondary);">Male Keys</h3>
           <div class="flex flex-wrap gap-2">
             {allMaleKeys.map(key => (
-              <a href={`/browse/keys/male/${key.replace('#', '-sharp').toLowerCase()}`} class="px-4 py-2 bg-primary-100 text-primary-800 rounded-lg hover:bg-primary-200 transition-colors font-medium text-sm">
+              <a href={`/browse/keys/male/${keyToSlug(key)}/`} class="px-4 py-2 bg-primary-100 text-primary-800 rounded-lg hover:bg-primary-200 transition-colors font-medium text-sm">
                 {key}
               </a>
             ))}
@@ -76,7 +77,7 @@ const structuredData = {
           <h3 class="text-lg font-medium mb-3" style="font-family: var(--font-serif); color: var(--color-text-secondary);">Female Keys</h3>
           <div class="flex flex-wrap gap-2">
             {allFemaleKeys.map(key => (
-              <a href={`/browse/keys/female/${key.replace('#', '-sharp').toLowerCase()}`} class="px-4 py-2 bg-accent-100 text-accent-800 rounded-lg hover:bg-accent-200 transition-colors font-medium text-sm">
+              <a href={`/browse/keys/female/${keyToSlug(key)}/`} class="px-4 py-2 bg-accent-100 text-accent-800 rounded-lg hover:bg-accent-200 transition-colors font-medium text-sm">
                 {key}
               </a>
             ))}
@@ -89,7 +90,7 @@ const structuredData = {
       <h2 class="text-2xl font-semibold mb-5" style="font-family: var(--font-serif); color: var(--color-text-primary);">Browse by Time Signature</h2>
       <div class="flex flex-wrap gap-2">
         {allTimeSignatures.map(sig => (
-          <a href={`/browse/time-signatures/${sig.replace('/', '-')}`} class="px-4 py-2 rounded-lg hover:bg-primary-100 transition-colors font-medium text-sm" style="background: var(--color-border-light); color: var(--color-text-secondary);">
+          <a href={`/browse/time-signatures/${timeSignatureToSlug(sig)}/`} class="px-4 py-2 rounded-lg hover:bg-primary-100 transition-colors font-medium text-sm" style="background: var(--color-border-light); color: var(--color-text-secondary);">
             {sig}
           </a>
         ))}

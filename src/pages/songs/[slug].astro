@@ -6,6 +6,7 @@ import type { Song } from '../../types/song';
 import { getTempoLabel, formatTheme, getYouTubeVideoId } from '../../types/song';
 import { getDevotionalsBySongSlug } from '../../lib/devotionalIndex';
 import { songs } from '../../lib/songs';
+import { keyToSlug, slugifyBrowseValue, timeSignatureToSlug } from '../../lib/browseSlugs';
 import { marked } from 'marked';
 
 export interface Props {
@@ -22,17 +23,7 @@ export async function getStaticPaths() {
 const { song } = Astro.props;
 const relatedDevotionals = await getDevotionalsBySongSlug(song.slug);
 
-function artistToSlug(artist: string): string {
-  return artist
-    .toLowerCase()
-    .replace(/[\/\\]/g, '-')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
-const artistSlug = artistToSlug(song.primary_artist);
+const artistSlug = slugifyBrowseValue(song.primary_artist);
 
 // Custom SEO metadata for specific songs
 const customSEO: Record<string, { title: string; description: string }> = {
@@ -238,7 +229,7 @@ const structuredData = [musicComposition, breadcrumb];
         <h2 class="text-lg font-semibold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Themes</h2>
         <div class="flex flex-wrap gap-2">
           {song.themes.map((theme) => (
-            <a href={`/browse/themes/${theme}`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-colors">
+            <a href={`/browse/themes/${slugifyBrowseValue(theme)}/`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-colors">
               {formatTheme(theme)}
             </a>
           ))}
@@ -250,7 +241,7 @@ const structuredData = [musicComposition, breadcrumb];
           <h2 class="text-lg font-semibold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Tags</h2>
           <div class="flex flex-wrap gap-2">
             {song.tags.map((tag) => (
-              <a href={`/browse/tags/${tag}`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-accent-100 text-accent-800 hover:bg-accent-200 transition-colors">
+              <a href={`/browse/tags/${slugifyBrowseValue(tag)}/`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-accent-100 text-accent-800 hover:bg-accent-200 transition-colors">
                 {formatTheme(tag)}
               </a>
             ))}
@@ -273,7 +264,7 @@ const structuredData = [musicComposition, breadcrumb];
           <div class="flex justify-between items-center">
             <dt style="color: var(--color-text-muted);">Male Key</dt>
             <dd>
-              <a href={`/browse/keys/male/${song.default_male_key.replace('#', '-sharp').toLowerCase()}`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+              <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
                 {song.default_male_key}
               </a>
             </dd>
@@ -282,7 +273,7 @@ const structuredData = [musicComposition, breadcrumb];
           <div class="flex justify-between items-center">
             <dt style="color: var(--color-text-muted);">Female Key</dt>
             <dd>
-              <a href={`/browse/keys/female/${song.default_female_key.replace('#', '-sharp').toLowerCase()}`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+              <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
                 {song.default_female_key}
               </a>
             </dd>
@@ -307,7 +298,7 @@ const structuredData = [musicComposition, breadcrumb];
           <div class="flex justify-between items-center">
             <dt style="color: var(--color-text-muted);">Time Signature</dt>
             <dd>
-              <a href={`/browse/time-signatures/${song.time_signature.replace('/', '-')}`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
+              <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
                 {song.time_signature}
               </a>
             </dd>

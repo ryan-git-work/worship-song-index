@@ -3,25 +3,34 @@ import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
 import { getTempoLabel, formatTheme } from '../../../types/song';
 import { songs } from '../../../lib/songs';
+import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
 export async function getStaticPaths() {
-  const allTags = [...new Set(songs.flatMap(s => s.tags))];
+  const tagBySlug = new Map<string, string>();
+  const artistSlugs = new Set(songs.map((song) => slugifyBrowseValue(song.primary_artist)));
+  songs.flatMap(s => s.tags).forEach((tag) => {
+    const slug = slugifyBrowseValue(tag);
+    if (artistSlugs.has(slug)) return;
+    if (!tagBySlug.has(slug)) tagBySlug.set(slug, tag);
+  });
 
-  return allTags.map(tag => ({
-    params: { tag },
-    props: { tag }
+  return Array.from(tagBySlug.entries()).map(([tagSlug, tag]) => ({
+    params: { tag: tagSlug },
+    props: { tag, tagSlug }
   }));
 }
 
-const { tag } = Astro.props;
-const filteredSongs = songs.filter(s => s.tags.includes(tag)).sort((a, b) => a.title.localeCompare(b.title));
+const { tag, tagSlug } = Astro.props;
+const filteredSongs = songs
+  .filter(s => s.tags.some((songTag) => slugifyBrowseValue(songTag) === tagSlug))
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 const title = `${formatTheme(tag)} Worship Songs | BPM, Tempo & Keys — Worship Song Index`;
 const description = `Browse ${filteredSongs.length} worship songs tagged "${formatTheme(tag)}". Find songs with the ${formatTheme(tag).toLowerCase()} style for your worship set.`;
 
-const editorialEntry = (editorialsData as any)["tags"]?.[tag || ''];
+const editorialEntry = (editorialsData as any)["tags"]?.[tagSlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
 
 const collectionPage = {
@@ -29,7 +38,7 @@ const collectionPage = {
   "@type": "CollectionPage",
   "name": `${formatTheme(tag)} Worship Songs`,
   "description": description,
-  "url": `https://worshipsongindex.com/browse/tags/${tag}`,
+  "url": `https://worshipsongindex.com/browse/tags/${tagSlug}/`,
   "numberOfItems": filteredSongs.length
 };
 
@@ -54,7 +63,7 @@ const breadcrumb = {
     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://worshipsongindex.com" },
     { "@type": "ListItem", "position": 2, "name": "Browse", "item": "https://worshipsongindex.com/browse" },
     { "@type": "ListItem", "position": 3, "name": "Categories", "item": "https://worshipsongindex.com/browse/categories" },
-    { "@type": "ListItem", "position": 4, "name": formatTheme(tag), "item": `https://worshipsongindex.com/browse/tags/${tag}` }
+    { "@type": "ListItem", "position": 4, "name": formatTheme(tag), "item": `https://worshipsongindex.com/browse/tags/${tagSlug}/` }
   ]
 };
 

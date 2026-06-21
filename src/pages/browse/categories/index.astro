@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { formatTheme } from '../../../types/song';
 import { songs } from '../../../lib/songs';
+import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 
 const themeCounts: Record<string, number> = {};
 const tagCounts: Record<string, number> = {};
@@ -58,7 +59,7 @@ const structuredData = {
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {allThemes.map(theme => (
           <a
-            href={`/browse/themes/${theme.toLowerCase().replace(/\s+/g, '-')}`}
+            href={`/browse/themes/${slugifyBrowseValue(theme)}/`}
             class="p-3 rounded-lg border transition-all duration-200 hover:shadow-md hover:border-primary-300 flex justify-between items-center"
             style="background: var(--color-surface-card); border-color: var(--color-border);"
           >
@@ -75,7 +76,7 @@ const structuredData = {
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {allTags.map(tag => (
           <a
-            href={`/browse/tags/${tag}`}
+            href={`/browse/tags/${slugifyBrowseValue(tag)}/`}
             class="p-3 rounded-lg border transition-all duration-200 hover:shadow-md hover:border-primary-300 flex justify-between items-center"
             style="background: var(--color-surface-card); border-color: var(--color-border);"
           >
