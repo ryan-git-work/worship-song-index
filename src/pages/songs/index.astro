@@ -1,0 +1,19 @@
+---
+import SongDirectoryPage from '../../components/SongDirectoryPage.astro';
+import { songs } from '../../lib/songs';
+
+const PAGE_SIZE = 100;
+const sortedSongs = [...songs].sort(
+  (left, right) =>
+    left.title.localeCompare(right.title) ||
+    left.primary_artist.localeCompare(right.primary_artist),
+);
+const totalPages = Math.ceil(sortedSongs.length / PAGE_SIZE);
+---
+
+<SongDirectoryPage
+  pageSongs={sortedSongs.slice(0, PAGE_SIZE)}
+  currentPage={1}
+  totalPages={totalPages}
+  totalSongs={sortedSongs.length}
+/>

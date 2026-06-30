@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SongListItem from './SongListItem.astro';
+import { getTempoLabel } from '../types/song';
+import type { Song } from '../types/song';
+
+interface Props {
+  pageSongs: Song[];
+  currentPage: number;
+  totalPages: number;
+  totalSongs: number;
+}
+
+const { pageSongs, currentPage, totalPages, totalSongs } = Astro.props;
+const title = currentPage === 1
+  ? `All Worship Songs A-Z | Worship Song Index`
+  : `All Worship Songs A-Z, Page ${currentPage} | Worship Song Index`;
+const description = `Browse page ${currentPage} of the complete ${totalSongs.toLocaleString()}-song Worship Song Index, organized alphabetically with keys, BPM, and time signature.`;
+const pageHref = (page: number) => page === 1 ? '/songs/' : `/songs/page/${page}/`;
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://worshipsongindex.com/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'All Songs',
+        item: 'https://worshipsongindex.com/songs/',
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    numberOfItems: pageSongs.length,
+    itemListElement: pageSongs.map((song, index) => ({
+      '@type': 'ListItem',
+      position: (currentPage - 1) * 100 + index + 1,
+      url: `https://worshipsongindex.com/songs/${song.slug}/`,
+      name: `${song.title} by ${song.primary_artist}`,
+    })),
+  },
+];
+---
+
+<Layout title={title} description={description} structuredData={structuredData}>
+  <nav aria-label="Breadcrumb" class="directory-breadcrumb">
+    <a href="/">Home</a>
+    <span aria-hidden="true">/</span>
+    <span>All songs</span>
+  </nav>
+
+  <header class="directory-header">
+    <p>Complete song directory</p>
+    <h1>Worship songs A-Z</h1>
+    <div>
+      <span>{totalSongs.toLocaleString()} English songs</span>
+      <span>Page {currentPage} of {totalPages}</span>
+    </div>
+  </header>
+
+  <div class="directory-tools">
+    <p>
+      Every song is also available through <a href="/browse/">browse categories</a> and the search above.
+    </p>
+    <nav aria-label="Song directory pages" class="directory-jump">
+      {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+        <a
+          href={pageHref(page)}
+          aria-current={page === currentPage ? 'page' : undefined}
+          aria-label={`Song directory page ${page}`}
+        >
+          {page}
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <section aria-label={`Songs on page ${currentPage}`} class="directory-list">
+    {pageSongs.map((song) => (
+      <SongListItem
+        title={song.title}
+        artist={song.primary_artist}
+        maleKey={song.default_male_key}
+        femaleKey={song.default_female_key}
+        tempo={getTempoLabel(song.tempo_bpm)}
+        bpm={song.tempo_bpm}
+        timeSignature={song.time_signature}
+        slug={song.slug}
+      />
+    ))}
+  </section>
+
+  <nav aria-label="Pagination" class="directory-pagination">
+    {currentPage > 1 ? (
+      <a href={pageHref(currentPage - 1)} rel="prev">← Previous</a>
+    ) : <span></span>}
+    <span>Page {currentPage} of {totalPages}</span>
+    {currentPage < totalPages ? (
+      <a href={pageHref(currentPage + 1)} rel="next">Next →</a>
+    ) : <span></span>}
+  </nav>
+</Layout>
+
+<style>
+  .directory-breadcrumb {
+    display: flex;
+    gap: 0.45rem;
+    margin-bottom: 2.2rem;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .directory-breadcrumb a,
+  .directory-tools a {
+    color: var(--color-primary-700);
+  }
+
+  .directory-header {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .directory-header > p {
+    margin: 0 0 0.45rem;
+    color: var(--color-primary-600);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .directory-header h1 {
+    margin: 0;
+    font-size: 3rem;
+    line-height: 1.05;
+  }
+
+  .directory-header > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.2rem;
+    margin-top: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+  }
+
+  .directory-tools {
+    display: grid;
+    grid-template-columns: minmax(14rem, 1fr) minmax(0, 2fr);
+    gap: 2rem;
+    align-items: start;
+    padding: 1.4rem 0;
+  }
+
+  .directory-tools p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.82rem;
+  }
+
+  .directory-jump {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.3rem;
+  }
+
+  .directory-jump a {
+    display: inline-grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    color: var(--color-text-secondary);
+    background: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .directory-jump a:hover,
+  .directory-jump a[aria-current='page'] {
+    border-color: var(--color-primary-700);
+    background: var(--color-primary-700);
+    color: #fff;
+  }
+
+  .directory-list {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    background: #fff;
+  }
+
+  .directory-pagination {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 0;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+  }
+
+  .directory-pagination a {
+    color: var(--color-primary-700);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .directory-pagination a:last-child {
+    text-align: right;
+  }
+
+  @media (max-width: 767px) {
+    .directory-header h1 {
+      font-size: 2.35rem;
+    }
+
+    .directory-tools {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .directory-jump {
+      justify-content: flex-start;
+    }
+  }
+</style>

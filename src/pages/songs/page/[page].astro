@@ -1,0 +1,37 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SongDirectoryPage from '../../../components/SongDirectoryPage.astro';
+import { songs } from '../../../lib/songs';
+
+export const getStaticPaths = (() => {
+  const pageSize = 100;
+  const sortedSongs = [...songs].sort(
+    (left, right) =>
+      left.title.localeCompare(right.title) ||
+      left.primary_artist.localeCompare(right.primary_artist),
+  );
+  const totalPages = Math.ceil(sortedSongs.length / pageSize);
+
+  return Array.from({ length: totalPages - 1 }, (_, index) => {
+    const page = index + 2;
+    return {
+      params: { page: String(page) },
+      props: {
+        pageSongs: sortedSongs.slice((page - 1) * pageSize, page * pageSize),
+        currentPage: page,
+        totalPages,
+        totalSongs: sortedSongs.length,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { pageSongs, currentPage, totalPages, totalSongs } = Astro.props;
+---
+
+<SongDirectoryPage
+  pageSongs={pageSongs}
+  currentPage={currentPage}
+  totalPages={totalPages}
+  totalSongs={totalSongs}
+/>

@@ -1,285 +1,677 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SongCard from '../components/SongCard.astro';
-import SongListItem from '../components/SongListItem.astro';
-import { getTempoLabel } from '../types/song';
+import SongSearch from '../components/SongSearch.astro';
 import { songs } from '../lib/songs';
-
+import { getTempoLabel } from '../types/song';
 import blogData from '../../public/blog-posts.json';
-const recentPosts = blogData.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()).slice(0, 3);
 
-const title = "Worship Song Index - Find Songs for Your Worship Service";
-const description = "Browse our collection of 3,470+ worship songs with keys, tempo, BPM, scripture references, and leadership tips. Find the perfect songs for your church worship service.";
+const featuredSlugs = [
+  'way-maker',
+  'goodness-of-god',
+  'holy-forever',
+  'what-a-beautiful-name',
+  'living-hope',
+  'build-my-life',
+  'gratitude',
+  'firm-foundation-he-wont',
+  'same-god',
+  'great-are-you-lord',
+  'bless-the-lord-o-my-soul-10000-reasons',
+  'i-speak-jesus',
+];
+
+const songsBySlug = new Map(songs.map((song) => [song.slug, song]));
+const featuredSongs = featuredSlugs
+  .map((slug) => songsBySlug.get(slug))
+  .filter((song) => song !== undefined);
+
+const recentPosts = [...blogData]
+  .filter((post) => new Date(post.publishDate).getTime() <= Date.now())
+  .sort((left, right) => new Date(right.publishDate).getTime() - new Date(left.publishDate).getTime())
+  .slice(0, 3)
+  .map((post) => ({
+    ...post,
+    displayExcerpt: post.excerpt.replace(/\s*—\s*/g, ', '),
+  }));
+
+const title = 'Worship Song Index | Keys, BPM, Meaning and Leadership Notes';
+const description = 'Search 3,470+ worship songs by title or artist. Find recommended keys, BPM, time signature, scripture, song meaning, and practical notes for leading each song.';
 
 const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Worship Song Index",
-  "description": description,
-  "url": "https://worshipsongindex.com"
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Worship Song Index',
+  description,
+  url: 'https://worshipsongindex.com',
 };
 ---
 
-<Layout title={title} description={description} structuredData={structuredData}>
-  <div class="mb-12">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: var(--font-serif); color: var(--color-text-primary); line-height: 1.15;">
-      Worship Song Index
-    </h1>
-    <p class="text-lg leading-relaxed max-w-3xl mb-4" style="color: var(--color-text-secondary);">
-      Worship Song Index exists to serve worship leaders by making song selection and service planning simpler and more intentional.
-    </p>
-    <p class="text-lg leading-relaxed max-w-3xl mb-4" style="color: var(--color-text-secondary);">
-      This searchable worship song database helps you explore modern worship songs by key, tempo, BPM, and time signature so you can build worship sets that flow well and serve your congregation.
-    </p>
-    <p class="text-lg leading-relaxed max-w-3xl mb-8" style="color: var(--color-text-secondary);">
-      Now you can also use <a href="/worship-team-devotionals/" class="text-primary-600 hover:text-primary-800 font-medium underline underline-offset-2 decoration-primary-300">Worship Team Devotionals</a>, short 5 to 10 minute Scripture anchored moments with discussion questions, built for before rehearsal or before Sunday. The goal is the same: thoughtful, pastoral worship leadership that forms people, not just moments.
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a href="/browse/" class="inline-flex items-center px-6 py-2.5 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors">
-        Browse Songs
-      </a>
-      <a href="/worship-team-devotionals/" class="inline-flex items-center px-6 py-2.5 font-medium rounded-lg border border-primary-300 text-primary-700 hover:bg-primary-50 transition-colors">
-        Worship Team Devotionals
-      </a>
-      <a href="/articles/" class="inline-flex items-center px-6 py-2.5 font-medium rounded-lg border border-primary-300 text-primary-700 hover:bg-primary-50 transition-colors">
-        Occasion Guides
-      </a>
-    </div>
-  </div>
-
-  <section class="mb-20">
-    <div class="flex items-center justify-between mb-8">
-      <div>
-        <h2 class="text-2xl font-bold" style="color: var(--color-text-primary);">
-          Worship Leader Guides
-        </h2>
-        <p class="text-sm mt-1" style="color: var(--color-text-muted);">
-          Practical help for keys, tempos, set planning, and seasonal worship
-        </p>
+<Layout title={title} description={description} structuredData={structuredData} fullWidth>
+  <section class="home-hero">
+    <img
+      class="home-hero__image"
+      src="/blog-images/church-interior-1.webp"
+      alt=""
+      width="1280"
+      height="768"
+      fetchpriority="high"
+    />
+    <div class="home-hero__veil"></div>
+    <div class="home-shell home-hero__content">
+      <p class="home-eyebrow">Free worship song reference</p>
+      <h1>Worship Song Index</h1>
+      <p class="home-hero__lead">
+        Find the right key, tempo, meaning, and leadership notes for the song already on your mind.
+      </p>
+      <SongSearch
+        id="home-song-search"
+        variant="hero"
+        placeholder="Try “Goodness of God” or “Phil Wickham”"
+      />
+      <div class="home-hero__proof" aria-label="Site highlights">
+        <span><strong>3,470+</strong> English songs</span>
+        <span><strong>177</strong> canciones en español</span>
+        <span><strong>Free</strong> to use</span>
       </div>
-      <a href="/blog" class="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors">
-        View all guides →
-      </a>
-    </div>
-
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {recentPosts.map(post => (
-        <a href={`/blog/${post.slug}`} class="block p-5 rounded-xl border transition-shadow hover:shadow-md" style="background: var(--color-bg-card); border-color: var(--color-border);">
-          <div class="text-xs uppercase tracking-wide font-semibold mb-2" style="color: var(--color-primary-500);">
-            {post.category.replace(/-/g, ' ')}
-          </div>
-          <h3 class="font-bold leading-snug mb-2" style="color: var(--color-text-primary);">
-            {post.title}
-          </h3>
-          <p class="text-sm line-clamp-3" style="color: var(--color-text-muted);">
-            {post.excerpt}
-          </p>
-        </a>
-      ))}
     </div>
   </section>
 
-  <div class="border-t pt-10 mb-6" style="border-color: var(--color-border);">
-    <div class="relative max-w-xl">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search songs by title, artist, theme, or tag..."
-        class="w-full px-4 py-3 pl-11 rounded-lg text-base transition-colors"
-        style="border: 1px solid var(--color-border); background: var(--color-surface-card); color: var(--color-text-primary); outline: none;"
-        onfocus="this.style.borderColor='#6B7F6A'; this.style.boxShadow='0 0 0 3px rgba(107,127,106,0.1)'"
-        onblur="this.style.borderColor='var(--color-border)'; this.style.boxShadow='none'"
-      />
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3.5 top-1/2 -translate-y-1/2" style="color: var(--color-text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-    <p class="text-sm" style="color: var(--color-text-muted);">
-      Showing <span id="songCount" class="font-semibold" style="color: var(--color-text-primary);">{songs.length}</span> songs
-    </p>
-
-    <div class="flex flex-wrap items-center gap-4">
-      <div class="flex items-center rounded-lg overflow-hidden border" style="border-color: var(--color-border);">
-        <button id="cardViewBtn" class="view-toggle px-3 py-2 flex items-center gap-1.5 text-sm font-medium bg-primary-600 text-white" title="Card View">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-          </svg>
-          <span class="hidden sm:inline">Cards</span>
-        </button>
-        <button id="listViewBtn" class="view-toggle px-3 py-2 flex items-center gap-1.5 text-sm font-medium" title="List View" style="background: var(--color-surface-card); color: var(--color-text-secondary);">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          <span class="hidden sm:inline">List</span>
-        </button>
+  <section class="home-section home-shell" aria-labelledby="browse-heading">
+    <div class="section-heading">
+      <div>
+        <p class="home-eyebrow home-eyebrow--dark">Start with what you know</p>
+        <h2 id="browse-heading">Browse the catalog your way</h2>
       </div>
+      <a href="/browse/" class="text-link">See every category <span aria-hidden="true">→</span></a>
+    </div>
 
-      <a href="/browse" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-        </svg>
-        Browse by Category
+    <div class="browse-grid">
+      <a href="/browse/themes/grace/" class="browse-entry">
+        <span class="browse-entry__mark" aria-hidden="true">01</span>
+        <h3>Theme</h3>
+        <p>Build around grace, trust, resurrection, prayer, and more.</p>
+        <span class="browse-entry__link">Browse themes <span aria-hidden="true">→</span></span>
       </a>
+      <a href="/browse/keys/male/g/" class="browse-entry">
+        <span class="browse-entry__mark" aria-hidden="true">02</span>
+        <h3>Key</h3>
+        <p>Start in a singable range for a male or female lead.</p>
+        <span class="browse-entry__link">Browse keys <span aria-hidden="true">→</span></span>
+      </a>
+      <a href="/browse/time-signatures/6-8/" class="browse-entry">
+        <span class="browse-entry__mark" aria-hidden="true">03</span>
+        <h3>Time signature</h3>
+        <p>Find the pulse your set needs, from 4/4 drive to 6/8 lift.</p>
+        <span class="browse-entry__link">Browse meters <span aria-hidden="true">→</span></span>
+      </a>
+      <a href="/browse/artists/phil-wickham/" class="browse-entry">
+        <span class="browse-entry__mark" aria-hidden="true">04</span>
+        <h3>Artist</h3>
+        <p>Explore songs and practical notes by the writers you use.</p>
+        <span class="browse-entry__link">Browse artists <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </section>
 
-      <div class="flex items-center gap-2">
-        <label for="sortSelect" class="text-sm" style="color: var(--color-text-muted);">Sort:</label>
-        <select id="sortSelect" class="px-3 py-2 rounded-lg text-sm" style="border: 1px solid var(--color-border); background: var(--color-surface-card); color: var(--color-text-primary);">
-          <option value="default">Default</option>
-          <option value="alpha-asc">A to Z</option>
-          <option value="alpha-desc">Z to A</option>
-          <option value="bpm-asc">BPM (Low to High)</option>
-          <option value="bpm-desc">BPM (High to Low)</option>
-        </select>
+  <section class="home-section home-section--tint">
+    <div class="home-shell">
+      <div class="section-heading">
+        <div>
+          <p class="home-eyebrow home-eyebrow--dark">A useful place to begin</p>
+          <h2>Frequently led worship songs</h2>
+        </div>
+        <a href="/songs/" class="text-link">Open the complete song index <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="featured-grid">
+        {featuredSongs.map((song) => (
+          <SongCard
+            title={song.title}
+            artist={song.primary_artist}
+            maleKey={song.default_male_key}
+            femaleKey={song.default_female_key}
+            tempo={getTempoLabel(song.tempo_bpm)}
+            bpm={song.tempo_bpm}
+            timeSignature={song.time_signature}
+            slug={song.slug}
+          />
+        ))}
       </div>
     </div>
-  </div>
+  </section>
 
-  <div id="songsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    {songs.map((song) => (
-      <div class="song-card" data-title={song.title} data-artist={song.primary_artist} data-themes={song.themes.join(' ')} data-tags={song.tags.join(' ')} data-bpm={song.tempo_bpm}>
-        <SongCard title={song.title} artist={song.primary_artist} maleKey={song.default_male_key} femaleKey={song.default_female_key} tempo={getTempoLabel(song.tempo_bpm)} bpm={song.tempo_bpm} timeSignature={song.time_signature} slug={song.slug} />
+  <section class="home-section home-shell" aria-labelledby="planning-heading">
+    <div class="planning-feature">
+      <div>
+        <p class="home-eyebrow home-eyebrow--dark">Plan beyond a single song</p>
+        <h2 id="planning-heading">Build a set that serves the room</h2>
+        <p>
+          Browse songs by musical feel, then use the editorial notes to think through theology,
+          transitions, congregational range, and where a song belongs in the service.
+        </p>
+        <div class="planning-feature__links">
+          <a href="/browse/time-signatures/6-8/">Explore worship songs in 6/8</a>
+          <a href="/blog/how-to-build-a-worship-set-that-flows/">Read the set-flow guide</a>
+          <a href="/articles/">Find songs for a service occasion</a>
+        </div>
       </div>
-    ))}
-  </div>
-
-  <div id="songsList" class="hidden rounded-lg overflow-hidden border" style="background: var(--color-surface-card); border-color: var(--color-border);">
-    <div class="hidden md:flex items-center gap-4 py-2.5 px-4 border-b text-xs font-semibold uppercase tracking-wider" style="background: var(--color-border-light); border-color: var(--color-border); color: var(--color-text-muted);">
-      <div class="flex-1">Song / Artist</div>
-      <div class="hidden sm:block w-24 text-center">Keys</div>
-      <div class="hidden md:flex items-center gap-3">
-        <span class="w-16 text-right">Tempo</span>
-        <span class="w-16 text-right">BPM</span>
-        <span class="w-12 text-center">Time</span>
-      </div>
-      <div class="w-4"></div>
+      <dl>
+        <div>
+          <dt>Keys</dt>
+          <dd>Male and female starting points</dd>
+        </div>
+        <div>
+          <dt>Movement</dt>
+          <dd>BPM, tempo, and time signature</dd>
+        </div>
+        <div>
+          <dt>Meaning</dt>
+          <dd>Scripture and theological focus</dd>
+        </div>
+        <div>
+          <dt>Leadership</dt>
+          <dd>Arrangement and pastoral guidance</dd>
+        </div>
+      </dl>
     </div>
-    {songs.map((song) => (
-      <div class="song-item" data-title={song.title} data-artist={song.primary_artist} data-themes={song.themes.join(' ')} data-tags={song.tags.join(' ')} data-bpm={song.tempo_bpm}>
-        <SongListItem title={song.title} artist={song.primary_artist} maleKey={song.default_male_key} femaleKey={song.default_female_key} tempo={getTempoLabel(song.tempo_bpm)} bpm={song.tempo_bpm} timeSignature={song.time_signature} slug={song.slug} />
-      </div>
-    ))}
-  </div>
+  </section>
 
-  {songs.length === 0 && (
-    <div class="text-center py-12">
-      <p class="text-lg" style="color: var(--color-text-muted);">No songs found. Add songs to public/songs.json to get started.</p>
+  <section class="home-section home-section--dark">
+    <div class="home-shell">
+      <div class="section-heading section-heading--light">
+        <div>
+          <p class="home-eyebrow">Practical field notes</p>
+          <h2>Guides for worship leaders</h2>
+        </div>
+        <a href="/blog/" class="text-link text-link--light">View all guides <span aria-hidden="true">→</span></a>
+      </div>
+
+      <div class="guide-grid">
+        {recentPosts.map((post) => (
+          <article class="guide-card">
+            <a href={`/blog/${post.slug}/`} class="guide-card__image-link" aria-label={post.title}>
+              <img
+                src={post.featuredImage}
+                alt=""
+                width="640"
+                height="360"
+                loading="lazy"
+              />
+            </a>
+            <div class="guide-card__body">
+              <p>{post.category.replace(/-/g, ' ')}</p>
+              <h3><a href={`/blog/${post.slug}/`}>{post.title}</a></h3>
+              <span>{post.displayExcerpt}</span>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
-  )}
+  </section>
+
+  <section class="home-section home-shell">
+    <div class="devotional-band">
+      <img
+        src="/devotional-images/devo-4.jpg"
+        alt="An open Bible ready for a worship team devotional"
+        width="960"
+        height="640"
+        loading="lazy"
+      />
+      <div>
+        <p class="home-eyebrow home-eyebrow--dark">Before rehearsal begins</p>
+        <h2>Form the team, not just the set</h2>
+        <p>
+          Short Scripture-anchored devotionals with discussion questions, built for five to ten
+          minutes before rehearsal or Sunday service.
+        </p>
+        <a href="/worship-team-devotionals/" class="primary-link">
+          Open worship team devotionals <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>
 
-<script>
-  const sortSelect = document.getElementById('sortSelect') as HTMLSelectElement;
-  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
-  const songsGrid = document.getElementById('songsGrid');
-  const songsList = document.getElementById('songsList');
-  const songCount = document.getElementById('songCount');
-  const cardViewBtn = document.getElementById('cardViewBtn');
-  const listViewBtn = document.getElementById('listViewBtn');
+<style>
+  .home-shell {
+    width: min(100% - 2rem, 76rem);
+    margin-inline: auto;
+  }
 
-  let currentView = localStorage.getItem('songViewPreference') || 'card';
+  .home-hero {
+    position: relative;
+    display: flex;
+    min-height: 32rem;
+    align-items: center;
+    overflow: visible;
+    isolation: isolate;
+  }
 
-  function setView(view: 'card' | 'list') {
-    currentView = view;
-    localStorage.setItem('songViewPreference', view);
+  .home-hero__image,
+  .home-hero__veil {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-    if (view === 'card') {
-      songsGrid?.classList.remove('hidden');
-      songsList?.classList.add('hidden');
-      cardViewBtn?.classList.add('bg-primary-600', 'text-white');
-      cardViewBtn?.removeAttribute('style');
-      listViewBtn?.classList.remove('bg-primary-600', 'text-white');
-      listViewBtn?.setAttribute('style', 'background: var(--color-surface-card); color: var(--color-text-secondary);');
-    } else {
-      songsGrid?.classList.add('hidden');
-      songsList?.classList.remove('hidden');
-      listViewBtn?.classList.add('bg-primary-600', 'text-white');
-      listViewBtn?.removeAttribute('style');
-      cardViewBtn?.classList.remove('bg-primary-600', 'text-white');
-      cardViewBtn?.setAttribute('style', 'background: var(--color-surface-card); color: var(--color-text-secondary);');
+  .home-hero__image {
+    z-index: -2;
+    object-fit: cover;
+    object-position: center 48%;
+  }
+
+  .home-hero__veil {
+    z-index: -1;
+    background: rgba(16, 26, 18, 0.72);
+  }
+
+  .home-hero__content {
+    padding-block: 4.5rem;
+    color: #fff;
+  }
+
+  .home-eyebrow {
+    margin: 0 0 0.65rem;
+    color: #d7e4d7;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .home-eyebrow--dark {
+    color: var(--color-primary-600);
+  }
+
+  .home-hero h1 {
+    max-width: 44rem;
+    margin: 0;
+    font-size: 3.6rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .home-hero__lead {
+    max-width: 40rem;
+    margin: 1rem 0 1.75rem;
+    color: #edf2ed;
+    font-size: 1.18rem;
+    line-height: 1.55;
+  }
+
+  .home-hero__proof {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.5rem;
+    margin-top: 1rem;
+    color: #e3ebe3;
+    font-size: 0.78rem;
+  }
+
+  .home-hero__proof strong {
+    color: #fff;
+  }
+
+  .home-section {
+    padding-block: 5rem;
+  }
+
+  .home-section--tint {
+    background: #eef2ed;
+  }
+
+  .home-section--dark {
+    background: #24342a;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-heading h2,
+  .planning-feature h2,
+  .devotional-band h2 {
+    margin: 0;
+    color: var(--color-text-primary);
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .section-heading--light h2 {
+    color: #fff;
+  }
+
+  .text-link {
+    flex: 0 0 auto;
+    color: var(--color-primary-700);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .text-link:hover {
+    color: var(--color-primary-900);
+  }
+
+  .text-link--light {
+    color: #dce8dd;
+  }
+
+  .browse-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .browse-entry {
+    position: relative;
+    min-height: 16rem;
+    padding: 1.5rem;
+    border-right: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .browse-entry:last-child {
+    border-right: 0;
+  }
+
+  .browse-entry:hover {
+    background: #f0f4ef;
+  }
+
+  .browse-entry__mark {
+    display: block;
+    margin-bottom: 2.5rem;
+    color: var(--color-primary-600);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+  }
+
+  .browse-entry h3 {
+    margin: 0 0 0.7rem;
+    font-size: 1.55rem;
+  }
+
+  .browse-entry p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .browse-entry__link {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.35rem;
+    left: 1.5rem;
+    color: var(--color-primary-700);
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .planning-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(18rem, 0.7fr);
+    gap: 5rem;
+    align-items: start;
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .planning-feature > div > p:not(.home-eyebrow),
+  .devotional-band > div > p:not(.home-eyebrow) {
+    max-width: 42rem;
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+  }
+
+  .planning-feature__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .planning-feature__links a {
+    color: var(--color-primary-700);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .planning-feature dl {
+    margin: 0;
+  }
+
+  .planning-feature dl div {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .planning-feature dt {
+    color: var(--color-primary-700);
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .planning-feature dd {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.82rem;
+  }
+
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .guide-card {
+    overflow: hidden;
+    border-radius: 0.4rem;
+    background: #fff;
+  }
+
+  .guide-card__image-link {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .guide-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 180ms ease;
+  }
+
+  .guide-card:hover img {
+    transform: scale(1.02);
+  }
+
+  .guide-card__body {
+    padding: 1.2rem;
+  }
+
+  .guide-card__body > p {
+    margin: 0 0 0.5rem;
+    color: var(--color-primary-600);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .guide-card h3 {
+    margin: 0 0 0.65rem;
+    font-size: 1.2rem;
+    line-height: 1.25;
+  }
+
+  .guide-card h3 a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .guide-card__body > span {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .devotional-band {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.75fr) minmax(0, 1.25fr);
+    min-height: 24rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    background: #fff;
+  }
+
+  .devotional-band > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .devotional-band > div {
+    align-self: center;
+    padding: 3rem;
+  }
+
+  .primary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.35rem;
+    background: var(--color-primary-700);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .primary-link:hover {
+    background: var(--color-primary-800);
+  }
+
+  @media (max-width: 1023px) {
+    .browse-grid,
+    .featured-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .browse-entry:nth-child(2) {
+      border-right: 0;
+    }
+
+    .browse-entry:nth-child(-n + 2) {
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .planning-feature {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
     }
   }
 
-  setView(currentView as 'card' | 'list');
+  @media (max-width: 767px) {
+    .home-hero {
+      min-height: 30rem;
+    }
 
-  cardViewBtn?.addEventListener('click', () => setView('card'));
-  listViewBtn?.addEventListener('click', () => setView('list'));
+    .home-hero__content {
+      padding-block: 3.75rem;
+    }
 
-  function updateVisibleCount() {
-    const container = currentView === 'card' ? songsGrid : songsList;
-    const selector = currentView === 'card' ? '.song-card' : '.song-item';
-    if (container && songCount) {
-      const visibleItems = container.querySelectorAll(`${selector}:not([style*="display: none"])`);
-      songCount.textContent = visibleItems.length.toString();
+    .home-hero h1 {
+      font-size: 2.75rem;
+    }
+
+    .home-hero__lead {
+      font-size: 1rem;
+    }
+
+    .home-section {
+      padding-block: 3.5rem;
+    }
+
+    .section-heading {
+      display: block;
+    }
+
+    .section-heading h2,
+    .planning-feature h2,
+    .devotional-band h2 {
+      font-size: 1.85rem;
+    }
+
+    .section-heading .text-link {
+      display: inline-block;
+      margin-top: 0.85rem;
+    }
+
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .devotional-band {
+      grid-template-columns: 1fr;
+    }
+
+    .devotional-band > img {
+      aspect-ratio: 16 / 9;
+    }
+
+    .devotional-band > div {
+      padding: 1.5rem;
     }
   }
 
-  function filterSongs(query: string) {
-    const searchTerms = query.toLowerCase().trim().split(/\s+/);
+  @media (max-width: 519px) {
+    .browse-grid,
+    .featured-grid {
+      grid-template-columns: 1fr;
+    }
 
-    const filterContainer = (container: Element | null, selector: string) => {
-      if (!container) return;
-      const items = container.querySelectorAll(selector) as NodeListOf<HTMLElement>;
+    .browse-entry,
+    .browse-entry:nth-child(2) {
+      min-height: 13rem;
+      border-right: 0;
+      border-bottom: 1px solid var(--color-border);
+    }
 
-      items.forEach(item => {
-        const title = (item.dataset.title || '').toLowerCase();
-        const artist = (item.dataset.artist || '').toLowerCase();
-        const themes = (item.dataset.themes || '').toLowerCase();
-        const tags = (item.dataset.tags || '').toLowerCase();
-        const searchText = `${title} ${artist} ${themes} ${tags}`;
+    .browse-entry:last-child {
+      border-bottom: 0;
+    }
 
-        const matches = searchTerms.every(term => searchText.includes(term));
-        item.style.display = matches ? '' : 'none';
-      });
-    };
-
-    filterContainer(songsGrid, '.song-card');
-    filterContainer(songsList, '.song-item');
-
-    updateVisibleCount();
+    .browse-entry__mark {
+      margin-bottom: 1.2rem;
+    }
   }
-
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      filterSongs(searchInput.value);
-    });
-  }
-
-  function sortItems() {
-    const sortContainer = (container: Element | null, selector: string) => {
-      if (!container || !sortSelect) return;
-      const items = Array.from(container.querySelectorAll(selector)) as HTMLElement[];
-
-      items.sort((a, b) => {
-        const titleA = a.dataset.title || '';
-        const titleB = b.dataset.title || '';
-        const bpmA = parseInt(a.dataset.bpm || '0');
-        const bpmB = parseInt(b.dataset.bpm || '0');
-
-        switch (sortSelect.value) {
-          case 'alpha-asc':
-            return titleA.localeCompare(titleB);
-          case 'alpha-desc':
-            return titleB.localeCompare(titleA);
-          case 'bpm-asc':
-            return bpmA - bpmB;
-          case 'bpm-desc':
-            return bpmB - bpmA;
-          default:
-            return 0;
-        }
-      });
-
-      items.forEach(item => container.appendChild(item));
-    };
-
-    sortContainer(songsGrid, '.song-card');
-    sortContainer(songsList, '.song-item');
-  }
-
-  if (sortSelect) {
-    sortSelect.addEventListener('change', sortItems);
-  }
-</script>
+</style>

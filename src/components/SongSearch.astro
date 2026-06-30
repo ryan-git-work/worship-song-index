@@ -1,0 +1,458 @@
+---
+interface Props {
+  id: string;
+  variant?: 'header' | 'hero';
+  placeholder?: string;
+}
+
+const {
+  id,
+  variant = 'header',
+  placeholder = 'Search by song title or artist',
+} = Astro.props;
+
+const isHero = variant === 'hero';
+---
+
+<div
+  class:list={['song-search', { 'song-search--hero': isHero }]}
+  data-song-search
+>
+  <form role="search" class="song-search__form" autocomplete="off">
+    <label class="sr-only" for={id}>Search worship songs by title or artist</label>
+    <svg class="song-search__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none">
+      <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"></circle>
+      <path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <input
+      id={id}
+      class="song-search__input"
+      type="search"
+      placeholder={placeholder}
+      role="combobox"
+      aria-autocomplete="list"
+      aria-expanded="false"
+      aria-controls={`${id}-results`}
+      aria-activedescendant=""
+      data-song-search-input
+    />
+    <span class="song-search__shortcut" aria-hidden="true">⌘K</span>
+  </form>
+
+  <div class="song-search__panel" data-song-search-panel hidden>
+    <div
+      id={`${id}-results`}
+      class="song-search__results"
+      role="listbox"
+      aria-label="Song search results"
+      data-song-search-results
+    ></div>
+    <p class="song-search__empty" data-song-search-empty hidden>
+      No songs found. Try another title or artist.
+    </p>
+    <p class="song-search__status sr-only" aria-live="polite" data-song-search-status></p>
+  </div>
+</div>
+
+<script>
+  type SearchSong = {
+    s: string;
+    t: string;
+    a: string;
+    m: string;
+    f: string;
+    b: number;
+    x: string;
+    normalizedTitle?: string;
+    normalizedArtist?: string;
+  };
+
+  let searchIndexPromise: Promise<SearchSong[]> | null = null;
+
+  const normalize = (value: string) =>
+    value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+
+  const loadSearchIndex = () => {
+    if (!searchIndexPromise) {
+      searchIndexPromise = fetch('/song-search.json?v=20260628')
+        .then((response) => {
+          if (!response.ok) throw new Error('Song search index failed to load');
+          return response.json() as Promise<SearchSong[]>;
+        })
+        .then((songs) =>
+          songs.map((song) => ({
+            ...song,
+            normalizedTitle: normalize(song.t),
+            normalizedArtist: normalize(song.a),
+          })),
+        );
+    }
+    return searchIndexPromise;
+  };
+
+  const editDistance = (left: string, right: string, limit = 2) => {
+    if (Math.abs(left.length - right.length) > limit) return limit + 1;
+    let previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+
+    for (let row = 1; row <= left.length; row += 1) {
+      const current = [row];
+      let rowMinimum = row;
+      for (let column = 1; column <= right.length; column += 1) {
+        const cost = left[row - 1] === right[column - 1] ? 0 : 1;
+        const value = Math.min(
+          current[column - 1] + 1,
+          previous[column] + 1,
+          previous[column - 1] + cost,
+        );
+        current[column] = value;
+        rowMinimum = Math.min(rowMinimum, value);
+      }
+      if (rowMinimum > limit) return limit + 1;
+      previous = current;
+    }
+
+    return previous[right.length];
+  };
+
+  const fuzzyTokenMatch = (token: string, words: string[]) => {
+    if (token.length < 4) return false;
+    return words.some((word) => word.length >= 4 && editDistance(token, word, 1) <= 1);
+  };
+
+  const scoreSong = (song: SearchSong, query: string) => {
+    const title = song.normalizedTitle || '';
+    const artist = song.normalizedArtist || '';
+    const tokens = query.split(' ').filter(Boolean);
+    const words = `${title} ${artist}`.split(' ');
+
+    const allTokensMatch = tokens.every(
+      (token) => title.includes(token) || artist.includes(token) || fuzzyTokenMatch(token, words),
+    );
+    if (!allTokensMatch) {
+      const closeTitle = query.length >= 5 && editDistance(query, title, 2) <= 2;
+      if (!closeTitle) return 0;
+    }
+
+    let score = 0;
+    if (title === query) score += 500;
+    else if (title.startsWith(query)) score += 320;
+    else if (title.includes(query)) score += 220;
+
+    if (artist === query) score += 180;
+    else if (artist.startsWith(query)) score += 130;
+    else if (artist.includes(query)) score += 90;
+
+    for (const token of tokens) {
+      if (title.startsWith(token)) score += 35;
+      else if (title.includes(token)) score += 22;
+      if (artist.startsWith(token)) score += 18;
+      else if (artist.includes(token)) score += 10;
+      if (fuzzyTokenMatch(token, words)) score += 4;
+    }
+
+    return score;
+  };
+
+  const searchSongs = (songs: SearchSong[], rawQuery: string) => {
+    const query = normalize(rawQuery);
+    if (query.length < 2) return [];
+
+    return songs
+      .map((song) => ({ song, score: scoreSong(song, query) }))
+      .filter((result) => result.score > 0)
+      .sort((left, right) => right.score - left.score || left.song.t.localeCompare(right.song.t))
+      .slice(0, 8)
+      .map((result) => result.song);
+  };
+
+  const initializeSongSearch = (root: HTMLElement) => {
+    if (root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    const input = root.querySelector<HTMLInputElement>('[data-song-search-input]');
+    const panel = root.querySelector<HTMLElement>('[data-song-search-panel]');
+    const results = root.querySelector<HTMLElement>('[data-song-search-results]');
+    const empty = root.querySelector<HTMLElement>('[data-song-search-empty]');
+    const status = root.querySelector<HTMLElement>('[data-song-search-status]');
+    if (!input || !panel || !results || !empty || !status) return;
+
+    let activeIndex = -1;
+    let currentResults: SearchSong[] = [];
+
+    const close = () => {
+      panel.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+      input.setAttribute('aria-activedescendant', '');
+      activeIndex = -1;
+    };
+
+    const setActive = (nextIndex: number) => {
+      const options = Array.from(results.querySelectorAll<HTMLElement>('[role="option"]'));
+      options.forEach((option) => option.setAttribute('aria-selected', 'false'));
+      if (!options.length) return;
+
+      activeIndex = (nextIndex + options.length) % options.length;
+      const activeOption = options[activeIndex];
+      activeOption.setAttribute('aria-selected', 'true');
+      activeOption.scrollIntoView({ block: 'nearest' });
+      input.setAttribute('aria-activedescendant', activeOption.id);
+    };
+
+    const render = (songs: SearchSong[]) => {
+      currentResults = songs;
+      activeIndex = -1;
+      results.replaceChildren();
+
+      songs.forEach((song, index) => {
+        const link = document.createElement('a');
+        link.id = `${input.id}-option-${index}`;
+        link.className = 'song-search__result';
+        link.href = `/songs/${song.s}/`;
+        link.setAttribute('role', 'option');
+        link.setAttribute('aria-selected', 'false');
+
+        const copy = document.createElement('span');
+        copy.className = 'song-search__result-copy';
+        const title = document.createElement('strong');
+        title.textContent = song.t;
+        const artist = document.createElement('span');
+        artist.textContent = song.a;
+        copy.append(title, artist);
+
+        const details = document.createElement('span');
+        details.className = 'song-search__result-details';
+        details.textContent = `${song.m} / ${song.f} · ${song.b} BPM · ${song.x}`;
+
+        link.append(copy, details);
+        results.append(link);
+      });
+
+      empty.hidden = songs.length > 0;
+      panel.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      status.textContent = songs.length
+        ? `${songs.length} song${songs.length === 1 ? '' : 's'} found`
+        : 'No songs found';
+    };
+
+    const update = async () => {
+      const query = input.value.trim();
+      if (query.length < 2) {
+        close();
+        return;
+      }
+
+      status.textContent = 'Searching songs';
+      try {
+        render(searchSongs(await loadSearchIndex(), query));
+      } catch {
+        empty.textContent = 'Search is unavailable right now. Please try again.';
+        render([]);
+      }
+    };
+
+    input.addEventListener('focus', () => {
+      loadSearchIndex().catch(() => undefined);
+      if (input.value.trim().length >= 2) update();
+    });
+    input.addEventListener('input', update);
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown' && currentResults.length) {
+        event.preventDefault();
+        setActive(activeIndex + 1);
+      } else if (event.key === 'ArrowUp' && currentResults.length) {
+        event.preventDefault();
+        setActive(activeIndex - 1);
+      } else if (event.key === 'Enter' && activeIndex >= 0) {
+        event.preventDefault();
+        const selected = results.querySelectorAll<HTMLAnchorElement>('[role="option"]')[activeIndex];
+        selected?.click();
+      } else if (event.key === 'Escape') {
+        close();
+      }
+    });
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!root.contains(event.target as Node)) close();
+    });
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-song-search]').forEach(initializeSongSearch);
+
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      const firstSearch = document.querySelector<HTMLInputElement>('[data-song-search-input]');
+      if (firstSearch) {
+        event.preventDefault();
+        firstSearch.focus();
+      }
+    }
+  });
+</script>
+
+<style>
+  .song-search {
+    position: relative;
+    width: min(100%, 21rem);
+    z-index: 20;
+  }
+
+  .song-search--hero {
+    width: min(100%, 42rem);
+  }
+
+  .song-search__form {
+    position: relative;
+  }
+
+  .song-search__icon {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #667267;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .song-search__input {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 3.2rem 0 2.8rem;
+    border: 1px solid #d8ddd8;
+    border-radius: 0.4rem;
+    background: #fff;
+    color: #1f2922;
+    font-size: 0.925rem;
+    line-height: 1;
+    box-shadow: 0 1px 2px rgba(23, 35, 26, 0.08);
+    outline: none;
+  }
+
+  .song-search--hero .song-search__input {
+    height: 3.75rem;
+    padding-left: 3.2rem;
+    font-size: 1rem;
+    border-color: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 0.45rem 1.6rem rgba(16, 26, 18, 0.22);
+  }
+
+  .song-search--hero .song-search__icon {
+    left: 1.1rem;
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .song-search__input:focus {
+    border-color: #526b55;
+    box-shadow: 0 0 0 3px rgba(82, 107, 85, 0.18);
+  }
+
+  .song-search__shortcut {
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    padding: 0.12rem 0.35rem;
+    border: 1px solid #dde2de;
+    border-radius: 0.25rem;
+    color: #6d776e;
+    background: #f5f7f5;
+    font-size: 0.7rem;
+    line-height: 1.2rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .song-search__panel {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    left: 0;
+    right: 0;
+    max-height: min(29rem, 62vh);
+    overflow-y: auto;
+    border: 1px solid #dfe4df;
+    border-radius: 0.4rem;
+    background: #fff;
+    box-shadow: 0 1rem 2.5rem rgba(20, 31, 23, 0.18);
+  }
+
+  .song-search__result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4rem;
+    padding: 0.65rem 0.8rem;
+    border-bottom: 1px solid #edf0ed;
+    color: #1f2922;
+    text-decoration: none;
+  }
+
+  .song-search__result:last-child {
+    border-bottom: 0;
+  }
+
+  .song-search__result:hover,
+  .song-search__result[aria-selected='true'] {
+    background: #edf3ee;
+  }
+
+  .song-search__result-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  .song-search__result-copy strong,
+  .song-search__result-copy span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .song-search__result-copy strong {
+    font-family: var(--font-serif);
+    font-size: 1.02rem;
+    line-height: 1.25;
+  }
+
+  .song-search__result-copy span {
+    color: #677069;
+    font-size: 0.78rem;
+  }
+
+  .song-search__result-details {
+    flex: 0 0 auto;
+    color: #6b746d;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  .song-search__empty {
+    padding: 1rem;
+    color: #667067;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  @media (max-width: 639px) {
+    .song-search {
+      width: 100%;
+    }
+
+    .song-search__shortcut,
+    .song-search__result-details {
+      display: none;
+    }
+
+    .song-search__input {
+      padding-right: 0.9rem;
+    }
+  }
+</style>
