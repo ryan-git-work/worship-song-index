@@ -300,6 +300,7 @@ const isHero = variant === 'hero';
     position: relative;
     width: min(100%, 21rem);
     z-index: 20;
+    color-scheme: only light;
   }
 
   .song-search--hero {
@@ -327,12 +328,30 @@ const isHero = variant === 'hero';
     padding: 0 3.2rem 0 2.8rem;
     border: 1px solid #d8ddd8;
     border-radius: 0.4rem;
-    background: #fff;
-    color: #1f2922;
+    background: #fff !important;
+    color: #1f2922 !important;
+    -webkit-text-fill-color: #1f2922 !important;
+    caret-color: #1f2922;
+    opacity: 1;
     font-size: 0.925rem;
     line-height: 1;
     box-shadow: 0 1px 2px rgba(23, 35, 26, 0.08);
     outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .song-search__input::placeholder {
+    color: #69736b !important;
+    -webkit-text-fill-color: #69736b !important;
+    opacity: 1;
+  }
+
+  .song-search__input:-webkit-autofill,
+  .song-search__input:-webkit-autofill:hover,
+  .song-search__input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2922 !important;
+    box-shadow: 0 0 0 1000px #fff inset;
   }
 
   .song-search--hero .song-search__input {
@@ -417,13 +436,14 @@ const isHero = variant === 'hero';
   }
 
   .song-search__result-copy strong {
+    color: #1f2922 !important;
     font-family: var(--font-serif);
     font-size: 1.02rem;
     line-height: 1.25;
   }
 
   .song-search__result-copy span {
-    color: #677069;
+    color: #677069 !important;
     font-size: 0.78rem;
   }
 
