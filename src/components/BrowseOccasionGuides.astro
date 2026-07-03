@@ -1,0 +1,30 @@
+---
+import type { OccasionGuideLink } from '../lib/occasionGuideIndex';
+
+interface Props {
+  guides: OccasionGuideLink[];
+}
+
+const { guides } = Astro.props;
+---
+
+<aside class="mb-10 max-w-3xl border-y py-4" style="border-color: var(--color-border);">
+  <h2 class="text-base font-semibold mb-1" style="color: var(--color-text-primary);">
+    Planning a service?
+  </h2>
+  <p class="text-sm mb-3" style="color: var(--color-text-muted);">
+    These guides use this catalog:
+  </p>
+  <ul class="flex flex-wrap gap-x-5 gap-y-2">
+    {guides.map((guide) => (
+      <li>
+        <a
+          href={`/articles/${guide.slug}/`}
+          class="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors"
+        >
+          {guide.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>

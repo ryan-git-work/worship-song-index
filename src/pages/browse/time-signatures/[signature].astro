@@ -1,10 +1,12 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
+import BrowseOccasionGuides from '../../../components/BrowseOccasionGuides.astro';
 import { getTempoLabel } from '../../../types/song';
 import { songs } from '../../../lib/songs';
 import { timeSignatureToSlug } from '../../../lib/browseSlugs';
 import { timeSignatureArticleSchemas } from '../../../lib/timeSignatureArticleSchemas';
+import { getBrowseOccasionGuides } from '../../../lib/browseOccasionGuides';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -22,6 +24,7 @@ const filteredSongs = songs.filter(s => s.time_signature === signature).sort((a,
 const signatureSlug = Astro.params.signature || '';
 const editorialEntry = (editorialsData as any)["time-signatures"]?.[signatureSlug];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+const occasionGuides = await getBrowseOccasionGuides('time-signatures', signatureSlug);
 
 const title = editorialEntry?.title ?? `Songs in ${signature} Time - Worship Song Index`;
 const description = editorialEntry?.description ?? `Browse worship songs with ${signature} time signature`;
@@ -78,6 +81,10 @@ const structuredData = [itemList, breadcrumb, ...(articleSchema ? [articleSchema
 
   {editorialHtml && (
     <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
+  )}
+
+  {occasionGuides.length > 0 && (
+    <BrowseOccasionGuides guides={occasionGuides} />
   )}
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

@@ -1,0 +1,30 @@
+---
+import type { OccasionGuideLink } from '../lib/occasionGuideIndex';
+
+interface Props {
+  guides: OccasionGuideLink[];
+}
+
+const { guides } = Astro.props;
+---
+
+<section class="border-y py-5" style="border-color: var(--color-border);">
+  <h2 class="text-xl font-semibold mb-1" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+    Service guides that feature this song
+  </h2>
+  <p class="text-sm mb-4" style="color: var(--color-text-muted);">
+    Plan this song inside a complete service.
+  </p>
+  <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+    {guides.map((guide) => (
+      <li>
+        <a
+          href={`/articles/${guide.slug}/`}
+          class="inline-flex text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors"
+        >
+          {guide.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>

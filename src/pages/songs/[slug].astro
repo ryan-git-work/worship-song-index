@@ -2,9 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import ThemeTag from '../../components/ThemeTag.astro';
 import RelatedDevotionals from '../../components/RelatedDevotionals.astro';
+import RelatedOccasionGuides from '../../components/RelatedOccasionGuides.astro';
 import type { Song } from '../../types/song';
 import { getTempoLabel, formatTheme, getYouTubeVideoId } from '../../types/song';
 import { getDevotionalsBySongSlug } from '../../lib/devotionalIndex';
+import { getOccasionGuidesBySongSlug } from '../../lib/occasionGuideIndex';
 import { songs } from '../../lib/songs';
 import { keyToSlug, slugifyBrowseValue, timeSignatureToSlug } from '../../lib/browseSlugs';
 import { marked } from 'marked';
@@ -22,6 +24,7 @@ export async function getStaticPaths() {
 
 const { song } = Astro.props;
 const relatedDevotionals = await getDevotionalsBySongSlug(song.slug);
+const relatedOccasionGuides = await getOccasionGuidesBySongSlug(song.slug);
 
 const artistSlug = slugifyBrowseValue(song.primary_artist);
 
@@ -204,6 +207,10 @@ const structuredData = [musicComposition, breadcrumb];
             </p>
           </section>
         </>
+      )}
+
+      {relatedOccasionGuides.length > 0 && (
+        <RelatedOccasionGuides guides={relatedOccasionGuides} />
       )}
 
       {song.scripture_refs.length > 0 && (
