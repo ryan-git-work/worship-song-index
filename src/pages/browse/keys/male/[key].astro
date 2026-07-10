@@ -1,10 +1,12 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
 import SongCard from '../../../../components/SongCard.astro';
+import BrowseBlogGuides from '../../../../components/BrowseBlogGuides.astro';
 import { getTempoLabel } from '../../../../types/song';
 import { songs } from '../../../../lib/songs';
 import { getKeyDescription } from '../../../../lib/keyDescriptions';
 import { formatKeySlug, keyToSlug } from '../../../../lib/browseSlugs';
+import { getBrowseBlogGuides } from '../../../../lib/browseBlogGuides';
 import editorialsData from '../../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -24,6 +26,7 @@ const filteredSongs = songs.filter(s => s.default_male_key === key).sort((a, b) 
 
 const editorialEntry = (editorialsData as any)["keys-male"]?.[keySlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
+const blogGuides = getBrowseBlogGuides('keys-male', keySlug || '');
 
 const title = editorialEntry?.title
   ?? `Worship Songs in the Key of ${key} (Male Voice) | BPM & Tempo — Worship Song Index`;
@@ -84,6 +87,10 @@ const structuredData = [itemList, breadcrumb];
 
   {editorialHtml && (
     <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
+  )}
+
+  {blogGuides.length > 0 && (
+    <BrowseBlogGuides guides={blogGuides} />
   )}
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

@@ -2,11 +2,13 @@
 import Layout from '../../../layouts/Layout.astro';
 import SongCard from '../../../components/SongCard.astro';
 import BrowseOccasionGuides from '../../../components/BrowseOccasionGuides.astro';
+import BrowseBlogGuides from '../../../components/BrowseBlogGuides.astro';
 import { getTempoLabel } from '../../../types/song';
 import { songs } from '../../../lib/songs';
 import { timeSignatureToSlug } from '../../../lib/browseSlugs';
 import { timeSignatureArticleSchemas } from '../../../lib/timeSignatureArticleSchemas';
 import { getBrowseOccasionGuides } from '../../../lib/browseOccasionGuides';
+import { getBrowseBlogGuides } from '../../../lib/browseBlogGuides';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -25,6 +27,7 @@ const signatureSlug = Astro.params.signature || '';
 const editorialEntry = (editorialsData as any)["time-signatures"]?.[signatureSlug];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
 const occasionGuides = await getBrowseOccasionGuides('time-signatures', signatureSlug);
+const blogGuides = getBrowseBlogGuides('time-signatures', signatureSlug);
 
 const title = editorialEntry?.title ?? `Songs in ${signature} Time - Worship Song Index`;
 const description = editorialEntry?.description ?? `Browse worship songs with ${signature} time signature`;
@@ -85,6 +88,10 @@ const structuredData = [itemList, breadcrumb, ...(articleSchema ? [articleSchema
 
   {occasionGuides.length > 0 && (
     <BrowseOccasionGuides guides={occasionGuides} />
+  )}
+
+  {blogGuides.length > 0 && (
+    <BrowseBlogGuides guides={blogGuides} />
   )}
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

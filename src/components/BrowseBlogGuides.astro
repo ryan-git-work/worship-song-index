@@ -1,0 +1,30 @@
+---
+import type { BrowseBlogGuideLink } from '../lib/browseBlogGuides';
+
+interface Props {
+  guides: BrowseBlogGuideLink[];
+}
+
+const { guides } = Astro.props;
+---
+
+<aside class="mb-10 max-w-3xl border-y py-4" style="border-color: var(--color-border);">
+  <h2 class="text-base font-semibold mb-1" style="color: var(--color-text-primary);">
+    Guide
+  </h2>
+  <p class="text-sm mb-3" style="color: var(--color-text-muted);">
+    Read the planning guide for this browse page:
+  </p>
+  <ul class="flex flex-wrap gap-x-5 gap-y-2">
+    {guides.map((guide) => (
+      <li>
+        <a
+          href={guide.href}
+          class="text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors"
+        >
+          {guide.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>
