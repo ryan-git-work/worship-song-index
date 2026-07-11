@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SongCard from '../components/SongCard.astro';
 import SongSearch from '../components/SongSearch.astro';
-import { songs } from '../lib/songs';
+import { songs, spanishSongs } from '../lib/songs';
 import { getTempoLabel } from '../types/song';
 import blogData from '../../public/blog-posts.json';
 
@@ -71,7 +71,7 @@ const structuredData = {
       />
       <div class="home-hero__proof" aria-label="Site highlights">
         <span><strong>3,470+</strong> English songs</span>
-        <span><strong>177</strong> canciones en español</span>
+        <span><strong>{spanishSongs.length}</strong> canciones en español</span>
         <span><strong>Free</strong> to use</span>
       </div>
     </div>
@@ -110,6 +110,12 @@ const structuredData = {
         <h3>Artist</h3>
         <p>Explore songs and practical notes by the writers you use.</p>
         <span class="browse-entry__link">Browse artists <span aria-hidden="true">→</span></span>
+      </a>
+      <a href="/canciones/" class="browse-entry">
+        <span class="browse-entry__mark" aria-hidden="true">ES</span>
+        <h3>Canciones</h3>
+        <p>Encuentra canciones de adoración en español por tema, artista y propósito pastoral.</p>
+        <span class="browse-entry__link">Abrir canciones <span aria-hidden="true">→</span></span>
       </a>
     </div>
   </section>
@@ -366,7 +372,7 @@ const structuredData = {
 
   .browse-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
   }

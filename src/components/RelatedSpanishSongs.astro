@@ -1,0 +1,32 @@
+---
+import type { SpanishSong } from '../types/song';
+
+interface Props {
+  songs: SpanishSong[];
+}
+
+const { songs } = Astro.props;
+---
+
+{songs.length > 0 && (
+  <section class="border-y py-5" style="border-color: var(--color-border);">
+    <h2 class="text-xl font-semibold mb-1" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      Canciones relacionadas
+    </h2>
+    <p class="text-sm mb-4" style="color: var(--color-text-muted);">
+      Otras canciones en español para el mismo tema o familia.
+    </p>
+    <ul class="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+      {songs.map((song) => (
+        <li>
+          <a
+            href={`/canciones/${song.slug}/`}
+            class="inline-flex text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors"
+          >
+            {song.title} <span class="font-normal" style="color: var(--color-text-muted);">&nbsp;por {song.primary_artist}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

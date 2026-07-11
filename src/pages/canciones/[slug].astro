@@ -1,9 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { spanishSongs } from '../../lib/songs';
+import CrossLanguageLink from '../../components/CrossLanguageLink.astro';
+import RelatedSpanishSongs from '../../components/RelatedSpanishSongs.astro';
+import { spanishSongs, songs } from '../../lib/songs';
 import type { SpanishSong } from '../../types/song';
 import { formatTheme, getYouTubeVideoId } from '../../types/song';
+import { getRelatedSpanishSongs } from '../../lib/spanishRelated';
+import { getSpanishAlternates, spanishToEnglishTwins } from '../../lib/spanishTwins';
 import { marked } from 'marked';
 
 export interface Props {
@@ -18,6 +22,10 @@ export async function getStaticPaths() {
 }
 
 const { song } = Astro.props;
+const relatedSongs = getRelatedSpanishSongs(song, spanishSongs);
+const englishTwinSlug = spanishToEnglishTwins[song.slug];
+const englishTwinSong = englishTwinSlug ? songs.find((candidate) => candidate.slug === englishTwinSlug) : null;
+const alternates = getSpanishAlternates(song.slug);
 const browsePages = await getCollection('spanishBrowsePages');
 const artistPageSlugs = new Set(
   browsePages.filter((entry) => entry.data.url.startsWith('/canciones/artistas/')).map((entry) => entry.data.slug)
@@ -54,7 +62,7 @@ function trimToSentence(text: string, maxLength = 155): string {
   return normalized.slice(0, cut).replace(/[.,;:!?-]+$/, '') + '...';
 }
 
-const title = `${song.title} — ${song.primary_artist} | Canción de adoración`;
+const title = `${song.title} de ${song.primary_artist} | Significado y uso en el servicio`;
 const description = trimToSentence(song.summary_theology || `${song.title} por ${song.primary_artist}: guía pastoral para dirigir esta canción de adoración en español.`);
 const canonicalURL = `https://worshipsongindex.com/canciones/${song.slug}/`;
 
@@ -92,11 +100,11 @@ const breadcrumb = {
 const structuredData = [musicComposition, breadcrumb];
 ---
 
-<Layout title={title} description={description} structuredData={structuredData} lang="es">
+<Layout title={title} description={description} structuredData={structuredData} alternates={alternates} lang="es">
   <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
     <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
     <span class="mx-2">/</span>
-    <span>Canciones</span>
+    <a href="/canciones/" class="text-primary-600 hover:text-primary-800 transition-colors">Canciones</a>
     <span class="mx-2">/</span>
     <span>{song.title}</span>
   </nav>
@@ -142,6 +150,16 @@ const structuredData = [musicComposition, breadcrumb];
       })()}
 
       <article class="prose prose-lg" style="color: var(--color-text-secondary);" set:html={marked(song.editorial_markdown)} />
+
+      {englishTwinSlug && (
+        <CrossLanguageLink
+          href={`/songs/${englishTwinSlug}/`}
+          label="Versión original en inglés:"
+          title={englishTwinSong?.title ?? 'View English version'}
+        />
+      )}
+
+      <RelatedSpanishSongs songs={relatedSongs} />
 
       {song.scripture_refs.length > 0 && (
         <section class="rounded-lg border p-6" style="background: var(--color-surface-card); border-color: var(--color-border);">

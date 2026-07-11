@@ -22,6 +22,22 @@ function redirectIfNeeded(context: Parameters<Parameters<typeof defineMiddleware
 export const onRequest = defineMiddleware((context, next) => {
   const { pathname } = context.url;
 
+  if (pathname === '/canciones') {
+    return context.redirect('/canciones/', 301);
+  }
+
+  if (pathname === '/canciones/temas' || pathname === '/canciones/temas/') {
+    return context.redirect('/canciones/', 301);
+  }
+
+  if (pathname === '/canciones/artistas' || pathname === '/canciones/artistas/') {
+    return context.redirect('/canciones/', 301);
+  }
+
+  if (pathname === '/songs/grande-y-fuerte-miel-san-marcos/' || pathname === '/songs/grande-y-fuerte-miel-san-marcos') {
+    return context.redirect('/canciones/', 301);
+  }
+
   // Canonicalize theme URLs: lowercase, hyphenated, punctuation-stripped, trailing slash.
   if (pathname.includes('/browse/themes/')) {
     const themeMatch = pathname.match(/^\/browse\/themes\/(.+?)\/?$/);

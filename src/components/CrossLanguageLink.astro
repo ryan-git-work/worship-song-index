@@ -1,0 +1,18 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  title: string;
+}
+
+const { href, label, title } = Astro.props;
+---
+
+<aside class="border-y py-4" style="border-color: var(--color-border);">
+  <p class="text-sm" style="color: var(--color-text-secondary);">
+    <strong style="color: var(--color-text-primary);">{label}</strong>{' '}
+    <a href={href} class="font-semibold text-primary-600 hover:text-primary-800 transition-colors">
+      {title}
+    </a>
+  </p>
+</aside>

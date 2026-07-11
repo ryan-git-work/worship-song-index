@@ -4,12 +4,14 @@ import ThemeTag from '../../components/ThemeTag.astro';
 import RelatedDevotionals from '../../components/RelatedDevotionals.astro';
 import RelatedOccasionGuides from '../../components/RelatedOccasionGuides.astro';
 import SongFamilyGuide from '../../components/SongFamilyGuide.astro';
+import CrossLanguageLink from '../../components/CrossLanguageLink.astro';
 import type { Song } from '../../types/song';
 import { getTempoLabel, formatTheme, getYouTubeVideoId } from '../../types/song';
 import { getDevotionalsBySongSlug } from '../../lib/devotionalIndex';
 import { getOccasionGuidesBySongSlug } from '../../lib/occasionGuideIndex';
 import { getSongFamilyGuide } from '../../lib/songFamilyGuides';
-import { songs } from '../../lib/songs';
+import { englishToSpanishTwins, getEnglishAlternates } from '../../lib/spanishTwins';
+import { songs, spanishSongs } from '../../lib/songs';
 import { keyToSlug, slugifyBrowseValue, timeSignatureToSlug } from '../../lib/browseSlugs';
 import { marked } from 'marked';
 
@@ -28,6 +30,9 @@ const { song } = Astro.props;
 const relatedDevotionals = await getDevotionalsBySongSlug(song.slug);
 const relatedOccasionGuides = await getOccasionGuidesBySongSlug(song.slug);
 const songFamilyGuide = getSongFamilyGuide(song.slug);
+const spanishTwinSlug = englishToSpanishTwins[song.slug];
+const spanishTwinSong = spanishTwinSlug ? spanishSongs.find((candidate) => candidate.slug === spanishTwinSlug) : null;
+const alternates = getEnglishAlternates(song.slug);
 
 const artistSlug = slugifyBrowseValue(song.primary_artist);
 
@@ -126,7 +131,7 @@ const breadcrumb = {
 const structuredData = [musicComposition, breadcrumb];
 ---
 
-<Layout title={title} description={description} structuredData={structuredData}>
+<Layout title={title} description={description} structuredData={structuredData} alternates={alternates}>
   <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
     <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
     <span class="mx-2">/</span>
@@ -210,6 +215,14 @@ const structuredData = [musicComposition, breadcrumb];
             </p>
           </section>
         </>
+      )}
+
+      {spanishTwinSlug && (
+        <CrossLanguageLink
+          href={`/canciones/${spanishTwinSlug}/`}
+          label="Esta canción en español:"
+          title={spanishTwinSong?.title ?? 'Ver versión en español'}
+        />
       )}
 
       {relatedOccasionGuides.length > 0 && (
