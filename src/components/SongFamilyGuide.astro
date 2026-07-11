@@ -1,0 +1,24 @@
+---
+import type { SongFamilyGuideLink } from '../lib/songFamilyGuides';
+
+interface Props {
+  guide: SongFamilyGuideLink;
+}
+
+const { guide } = Astro.props;
+---
+
+<section class="border-y py-5" style="border-color: var(--color-border);">
+  <h2 class="text-xl font-semibold mb-1" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+    Songs like this
+  </h2>
+  <p class="text-sm mb-4" style="color: var(--color-text-muted);">
+    Find songs with a similar role, theme, or congregational feel.
+  </p>
+  <a
+    href={guide.href}
+    class="inline-flex text-sm font-semibold text-primary-600 hover:text-primary-800 transition-colors"
+  >
+    {guide.title}
+  </a>
+</section>
