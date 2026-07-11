@@ -13,6 +13,7 @@ import { getSongFamilyGuide } from '../../lib/songFamilyGuides';
 import { englishToSpanishTwins, getEnglishAlternates } from '../../lib/spanishTwins';
 import { songs, spanishSongs } from '../../lib/songs';
 import { keyToSlug, slugifyBrowseValue, timeSignatureToSlug } from '../../lib/browseSlugs';
+import songPageMetaData from '../../data/songPageMeta.json';
 import { marked } from 'marked';
 
 export interface Props {
@@ -35,6 +36,7 @@ const spanishTwinSong = spanishTwinSlug ? spanishSongs.find((candidate) => candi
 const alternates = getEnglishAlternates(song.slug);
 
 const artistSlug = slugifyBrowseValue(song.primary_artist);
+const songPageMeta = songPageMetaData as Record<string, { metaTitle: string; metaDescription: string }>;
 
 // Custom SEO metadata for specific songs
 const customSEO: Record<string, { title: string; description: string }> = {
@@ -48,7 +50,8 @@ const customSEO: Record<string, { title: string; description: string }> = {
   }
 };
 
-const title = customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
+const dataForwardMeta = songPageMeta[song.slug];
+const title = dataForwardMeta?.metaTitle ?? customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
 
 function trimToSentence(text: string, maxLength = 155): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
@@ -82,7 +85,7 @@ function buildSongDescription(song: Song, editorialDesc: string): string {
 }
 
 const editorialDesc = getEditorialDescription(song.editorial_markdown);
-const description = customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc);
+const description = dataForwardMeta?.metaDescription ?? customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc);
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
 
 const musicComposition = {
