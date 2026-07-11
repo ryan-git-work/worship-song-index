@@ -1364,7 +1364,7 @@
     "default_male_key": "G",
     "default_female_key": "C",
     "tempo_bpm": 92,
-    "time_signature": "3/4",
+    "time_signature": "4/4",
     "themes": [
       "cross",
       "atonement",

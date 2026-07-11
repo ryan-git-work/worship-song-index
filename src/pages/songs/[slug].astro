@@ -34,6 +34,7 @@ const songFamilyGuide = getSongFamilyGuide(song.slug);
 const spanishTwinSlug = englishToSpanishTwins[song.slug];
 const spanishTwinSong = spanishTwinSlug ? spanishSongs.find((candidate) => candidate.slug === spanishTwinSlug) : null;
 const alternates = getEnglishAlternates(song.slug);
+const isQuarantined = song.quarantined === true;
 
 const artistSlug = slugifyBrowseValue(song.primary_artist);
 const songPageMeta = songPageMetaData as Record<string, { metaTitle: string; metaDescription: string }>;
@@ -93,8 +94,8 @@ const musicComposition = {
   "@type": "MusicComposition",
   "name": song.title,
   "url": canonicalURL,
-  "musicalKey": song.default_male_key,
-  "additionalProperty": [
+  ...(!isQuarantined && { "musicalKey": song.default_male_key }),
+  ...(!isQuarantined && { "additionalProperty": [
     {
       "@type": "PropertyValue",
       "name": "Recommended male key",
@@ -105,8 +106,8 @@ const musicComposition = {
       "name": "Recommended female key",
       "value": song.default_female_key
     }
-  ],
-  "beatsPerMinute": song.tempo_bpm,
+  ] }),
+  ...(!isQuarantined && { "beatsPerMinute": song.tempo_bpm }),
   "inLanguage": "en",
   "recordedAs": {
     "@type": "MusicRecording",
@@ -134,7 +135,7 @@ const breadcrumb = {
 const structuredData = [musicComposition, breadcrumb];
 ---
 
-<Layout title={title} description={description} structuredData={structuredData} alternates={alternates}>
+<Layout title={title} description={description} structuredData={structuredData} alternates={alternates} noindex={isQuarantined}>
   <nav class="mb-8 text-sm" style="color: var(--color-text-muted);">
     <a href="/" class="text-primary-600 hover:text-primary-800 transition-colors">Home</a>
     <span class="mx-2">/</span>
@@ -290,50 +291,56 @@ const structuredData = [musicComposition, breadcrumb];
           Song Details
         </h2>
 
-        <dl class="space-y-4">
-          <div class="flex justify-between items-center">
-            <dt style="color: var(--color-text-muted);">Male Key</dt>
-            <dd>
-              <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
-                {song.default_male_key}
-              </a>
-            </dd>
-          </div>
+        {isQuarantined ? (
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            Catalog data for this song is under verification.
+          </p>
+        ) : (
+          <dl class="space-y-4">
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">Male Key</dt>
+              <dd>
+                <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                  {song.default_male_key}
+                </a>
+              </dd>
+            </div>
 
-          <div class="flex justify-between items-center">
-            <dt style="color: var(--color-text-muted);">Female Key</dt>
-            <dd>
-              <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
-                {song.default_female_key}
-              </a>
-            </dd>
-          </div>
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">Female Key</dt>
+              <dd>
+                <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                  {song.default_female_key}
+                </a>
+              </dd>
+            </div>
 
-          <div class="border-t" style="border-color: var(--color-border-light);"></div>
+            <div class="border-t" style="border-color: var(--color-border-light);"></div>
 
-          <div class="flex justify-between items-center">
-            <dt style="color: var(--color-text-muted);">Tempo</dt>
-            <dd class="font-medium" style="color: var(--color-text-primary);">
-              {getTempoLabel(song.tempo_bpm)}
-            </dd>
-          </div>
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">Tempo</dt>
+              <dd class="font-medium" style="color: var(--color-text-primary);">
+                {getTempoLabel(song.tempo_bpm)}
+              </dd>
+            </div>
 
-          <div class="flex justify-between items-center">
-            <dt style="color: var(--color-text-muted);">BPM</dt>
-            <dd class="font-semibold" style="color: var(--color-text-primary);">
-              {song.tempo_bpm}
-            </dd>
-          </div>
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">BPM</dt>
+              <dd class="font-semibold" style="color: var(--color-text-primary);">
+                {song.tempo_bpm}
+              </dd>
+            </div>
 
-          <div class="flex justify-between items-center">
-            <dt style="color: var(--color-text-muted);">Time Signature</dt>
-            <dd>
-              <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
-                {song.time_signature}
-              </a>
-            </dd>
-          </div>
-        </dl>
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">Time Signature</dt>
+              <dd>
+                <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
+                  {song.time_signature}
+                </a>
+              </dd>
+            </div>
+          </dl>
+        )}
 
         <div class="mt-6 pt-4 border-t" style="border-color: var(--color-border-light);">
           <a

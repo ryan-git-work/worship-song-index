@@ -1281,7 +1281,7 @@
     "default_male_key": "Em",
     "default_female_key": "Am",
     "tempo_bpm": 72,
-    "time_signature": "3/4",
+    "time_signature": "6/8",
     "themes": [
       "Incarnation",
       "Christmas",

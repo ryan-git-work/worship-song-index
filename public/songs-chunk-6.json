@@ -3794,7 +3794,7 @@
     "default_male_key": "G",
     "default_female_key": "E",
     "tempo_bpm": 88,
-    "time_signature": "3/4",
+    "time_signature": "4/4",
     "themes": [
       "wonder",
       "atonement",
@@ -5501,7 +5501,7 @@
     "default_male_key": "C",
     "default_female_key": "A",
     "tempo_bpm": 58,
-    "time_signature": "3/4",
+    "time_signature": "6/8",
     "themes": [
       "incarnation",
       "christmas",
@@ -5602,7 +5602,7 @@
     "default_male_key": "D",
     "default_female_key": "B",
     "tempo_bpm": 58,
-    "time_signature": "3/4",
+    "time_signature": "6/4",
     "themes": [
       "atonement",
       "wonder",
@@ -5670,7 +5670,7 @@
     "default_male_key": "G",
     "default_female_key": "E",
     "tempo_bpm": 84,
-    "time_signature": "3/4",
+    "time_signature": "4/4",
     "themes": [
       "creation",
       "sovereignty",

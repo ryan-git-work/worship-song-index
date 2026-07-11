@@ -58,6 +58,9 @@ export interface Song {
 
   /** Content language. Existing English catalog entries default to "en" at load time. */
   language?: 'en' | 'es';
+
+  /** Temporarily noindex and suppress unverified music data while the catalog row is reviewed. */
+  quarantined?: boolean;
 }
 
 export interface SpanishSong {

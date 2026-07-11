@@ -1,8 +1,10 @@
 import { defineMiddleware } from 'astro:middleware';
 import { keyToSlug, slugifyBrowseValue } from './lib/browseSlugs';
 import { songs } from './lib/songs';
+import catalogIntegrity from './data/catalogIntegrity.json';
 
 const artistSlugs = new Set(songs.map((song) => slugifyBrowseValue(song.primary_artist)));
+const deletedSongSlugs = new Set(catalogIntegrity.deleted);
 
 function decodeSegment(value: string): string {
   try {
@@ -36,6 +38,16 @@ export const onRequest = defineMiddleware((context, next) => {
 
   if (pathname === '/songs/grande-y-fuerte-miel-san-marcos/' || pathname === '/songs/grande-y-fuerte-miel-san-marcos') {
     return context.redirect('/canciones/', 301);
+  }
+
+  const deletedSongMatch = pathname.match(/^\/songs\/([^/]+)\/?$/);
+  if (deletedSongMatch && deletedSongSlugs.has(deletedSongMatch[1])) {
+    return new Response('Gone', {
+      status: 410,
+      headers: {
+        'content-type': 'text/plain; charset=utf-8',
+      },
+    });
   }
 
   // Canonicalize theme URLs: lowercase, hyphenated, punctuation-stripped, trailing slash.
