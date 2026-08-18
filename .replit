@@ -36,9 +36,9 @@ localPort = 5001
 externalPort = 3000
 
 [deployment]
-deploymentTarget = "static"
+deploymentTarget = "cloudrun"
 build = ["npm", "run", "build"]
-publicDir = "dist"
+run = ["npm", "start"]
 
 [nix]
 channel = "stable-25_05"

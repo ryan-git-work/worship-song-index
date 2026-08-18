@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/generate-sitemap-lastmod.mjs && astro build",
+    "start": "node server.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

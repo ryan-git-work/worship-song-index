@@ -1,8 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import SongCard from '../../../components/SongCard.astro';
+import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
 import BrowseOccasionGuides from '../../../components/BrowseOccasionGuides.astro';
-import { getTempoLabel } from '../../../types/song';
 import { songs } from '../../../lib/songs';
 import { getThemeDescription } from '../../../lib/themeDescriptions';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
@@ -112,18 +111,5 @@ const structuredData = [itemList, breadcrumb];
     <BrowseOccasionGuides guides={occasionGuides} />
   )}
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    {filteredSongs.map((song) => (
-      <SongCard
-        title={song.title}
-        artist={song.primary_artist}
-        maleKey={song.default_male_key}
-        femaleKey={song.default_female_key}
-        tempo={getTempoLabel(song.tempo_bpm)}
-        bpm={song.tempo_bpm}
-        timeSignature={song.time_signature}
-        slug={song.slug}
-      />
-    ))}
-  </div>
+  <BrowseSongGrid songs={filteredSongs} />
 </Layout>

@@ -1,0 +1,34 @@
+---
+import SongCard from './SongCard.astro';
+import { getTempoLabel } from '../types/song';
+import type { Song } from '../types/song';
+
+interface Props {
+  songs: Song[];
+}
+
+const BROWSE_PAGE_LIMIT = 100;
+const { songs } = Astro.props;
+const visibleSongs = songs.slice(0, BROWSE_PAGE_LIMIT);
+---
+
+{songs.length > BROWSE_PAGE_LIMIT && (
+  <p class="mb-6 max-w-3xl text-sm" style="color: var(--color-text-muted);">
+    Showing the first {BROWSE_PAGE_LIMIT} of {songs.length.toLocaleString()} matches. Use the song search above to find a specific title or artist.
+  </p>
+)}
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {visibleSongs.map((song) => (
+    <SongCard
+      title={song.title}
+      artist={song.primary_artist}
+      maleKey={song.default_male_key}
+      femaleKey={song.default_female_key}
+      tempo={getTempoLabel(song.tempo_bpm)}
+      bpm={song.tempo_bpm}
+      timeSignature={song.time_signature}
+      slug={song.slug}
+    />
+  ))}
+</div>

@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Page Not Found | Worship Song Index';
+const description = 'The requested Worship Song Index page could not be found.';
+---
+
+<Layout title={title} description={description} noindex>
+  <section class="mx-auto max-w-3xl py-16 text-center">
+    <p class="mb-3 text-sm font-semibold text-primary-700">404</p>
+    <h1 class="mb-5 text-4xl font-bold" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+      That page could not be found
+    </h1>
+    <p class="mx-auto mb-8 max-w-xl leading-relaxed" style="color: var(--color-text-secondary);">
+      Search for a song above, or continue with one of the main catalog sections.
+    </p>
+    <nav aria-label="Page not found options" class="flex flex-wrap justify-center gap-4">
+      <a href="/songs/" class="rounded-md bg-primary-700 px-5 py-3 font-semibold text-white no-underline hover:bg-primary-800">Browse songs</a>
+      <a href="/browse/" class="rounded-md border px-5 py-3 font-semibold no-underline" style="border-color: var(--color-border); color: var(--color-primary-700);">Browse categories</a>
+      <a href="/blog/" class="rounded-md border px-5 py-3 font-semibold no-underline" style="border-color: var(--color-border); color: var(--color-primary-700);">Read guides</a>
+    </nav>
+  </section>
+</Layout>

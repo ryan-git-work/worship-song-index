@@ -1,7 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import SongCard from '../../../components/SongCard.astro';
-import { getTempoLabel, formatTheme } from '../../../types/song';
+import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
+import { formatTheme } from '../../../types/song';
 import { songs } from '../../../lib/songs';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
@@ -92,20 +92,7 @@ const structuredData = [collectionPage, breadcrumb, itemList];
     <article class="mb-12 max-w-3xl prose prose-lg" style="color: var(--color-text-secondary);" set:html={editorialHtml} />
   )}
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-    {filteredSongs.map(song => (
-      <SongCard
-        title={song.title}
-        artist={song.primary_artist}
-        maleKey={song.default_male_key}
-        femaleKey={song.default_female_key}
-        tempo={getTempoLabel(song.tempo_bpm)}
-        bpm={song.tempo_bpm}
-        timeSignature={song.time_signature}
-        slug={song.slug}
-      />
-    ))}
-  </div>
+  <BrowseSongGrid songs={filteredSongs} />
 
   <div class="mt-12">
     <a href="/browse/categories" class="text-primary-600 hover:text-primary-800 font-medium flex items-center gap-1 transition-colors">
