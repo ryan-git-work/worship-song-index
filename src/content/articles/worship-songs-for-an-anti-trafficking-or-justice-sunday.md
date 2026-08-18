@@ -1,11 +1,11 @@
 ---
-created: "2026-06-05"
-type: "occasion-page"
-brand: "wsi"
-slug: "worship-songs-for-an-anti-trafficking-or-justice-sunday"
-meta_title: "Worship Songs for Justice Sunday | Kingdom Ethics Set Lists"
-meta_description: "Worship songs for a Justice Sunday or Anti-Trafficking service. Pastoral song picks by moment, what to avoid, a full set list, and team notes."
-target_occasion: "Justice Sunday"
+created: 2026-06-05
+type: occasion-page
+brand: wsi
+slug: worship-songs-for-an-anti-trafficking-or-justice-sunday
+meta_title: Worship Songs for Justice Sunday | Kingdom Ethics Set Lists
+meta_description: Worship songs for a Justice Sunday or Anti-Trafficking service. Pastoral song picks by moment, what to avoid, a full set list, and team notes.
+target_occasion: Justice Sunday
 song_links_count: 22
 word_count: 2499
 ---
@@ -54,7 +54,7 @@ This is the load-bearing middle of a Justice Sunday. These are the songs that co
 
 [Blessed Are Poor in Spirit](/songs/blessed-are-poor-spirit-croasmun/) (Matthew Croasmun) sits directly on the Beatitudes and is one of the few contemporary songs that handles the Beatitudes with theological precision. The poor, the mourning, the meek, these are not poetic categories. They are the actual people Jesus declared blessed, and a song grounded in that text gives the congregation Scripture as the interpretive lens for everything else in the service.
 
-[Justice Will Roll Down](/songs/justice-will-roll-down-sandra-mccracken/) (Sandra McCracken) is drawn from Amos 5:24, one of the most direct prophetic statements about justice in the canon. This song requires a congregation that can handle some musical complexity, but if yours can, it is worth the rehearsal investment because the lyrical content is irreplaceable. Amos 5:24 is not a gentle suggestion. It is a torrent. The song holds that energy.
+[Justice Will Roll Down](/songs/justice-will-roll-down-sandra-mccracken/) (Sandra McCracken) is drawn from Amos 5:24, one of the most direct prophetic statements about justice in the canon. McCracken's folk setting keeps the melody within reach of a congregation hearing it for the first time, and the lyrical content is irreplaceable. Amos 5:24 is not a gentle suggestion. It is a torrent. The song holds that energy.
 
 [What God Requires](/songs/what-god-requires-porters-gate/) (The Porter's Gate) takes its language directly from Micah 6 and is accessible enough that a congregation with moderate exposure to contemporary worship can follow it. This is your best option for a theologically grounded mid-service song when the congregation does not have deep familiarity with the broader Porter's Gate catalog.
 

@@ -1,11 +1,11 @@
 ---
-created: "2026-06-05"
-type: "occasion-page"
-brand: "wsi"
-slug: "worship-songs-for-ash-wednesday"
-meta_title: "Worship Songs for Ash Wednesday | Dust and Repentance Set Lists"
-meta_description: "Worship songs for Ash Wednesday organized by service moment. Song selection guidance, songs to avoid, a complete sample set list, and team notes."
-target_occasion: "Ash Wednesday"
+created: 2026-06-05
+type: occasion-page
+brand: wsi
+slug: worship-songs-for-ash-wednesday
+meta_title: Worship Songs for Ash Wednesday | Dust and Repentance Set Lists
+meta_description: Worship songs for Ash Wednesday organized by service moment. Song selection guidance, songs to avoid, a complete sample set list, and team notes.
+target_occasion: Ash Wednesday
 song_links_count: 21
 word_count: 3077
 ---
@@ -38,7 +38,7 @@ One additional note on arrangement: Ash Wednesday services benefit enormously fr
 
 The congregation arrives from the ordinary world and needs help making the transition into a space marked by mortality and repentance. The gathering song cannot be an upbeat opener. It needs to be slow enough that people can settle in, honest enough that the tone of the evening is immediately clear, and familiar enough that the congregation can inhabit it without effort.
 
-[Lord from Sorrows Deep (Matt Boswell)](/songs/lord-from-sorrows-deep-matt-boswell/) is an ideal gathering song for Ash Wednesday because it begins in honest despair and moves through that despair toward petition, not triumph. The lyric names grief and confusion without resolving them artificially: "In the darkness, in the mourning, in the valley of the shadow." The congregation can enter that lyric without warming up. They are often already there.
+[Lord from Sorrows Deep (Matt Boswell and Matt Papa)](/songs/lord-from-sorrows-deep-matt-papa/) is an ideal gathering song for Ash Wednesday because it begins in honest despair and moves through that despair toward petition, not triumph. The lyric names grief and confusion without resolving them artificially: "In the darkness, in the mourning, in the valley of the shadow." The congregation can enter that lyric without warming up. They are often already there.
 
 [Come Ye Sinners, Poor and Needy](/songs/come-ye-sinners-poor-and-needy-joseph-hart/) has been calling people out of self-sufficiency for more than two centuries because its lyric refuses to let the congregation pretend. "Come ye sinners, poor and needy, weak and wounded, sick and sore. Jesus ready stands to save you, full of pity, love, and power." Use it for gathering and let the congregation feel the accuracy of the description before they feel the comfort of the invitation. Piano only for the first two verses.
 
@@ -92,7 +92,7 @@ The same logic applies to anything that sounds like a resolution of the thing As
 
 This set assumes a service of 60 to 75 minutes with scripture readings, a message or reflection, and the imposition of ashes as the central moment. The dynamic arc descends into the ashes and stays quiet through the departure.
 
-1. [Lord from Sorrows Deep (Matt Boswell)](/songs/lord-from-sorrows-deep-matt-boswell/), Key of B minor, approx. 64 BPM
+1. [Lord from Sorrows Deep (Matt Boswell and Matt Papa)](/songs/lord-from-sorrows-deep-matt-papa/), Key of B minor, approx. 64 BPM
    Why: Opens the service in honest lament without theatrical grief. The lyric meets the congregation in the honest place and names it before asking them to do anything else.
    Transition: End the final verse at low dynamic. No button. Let the last chord sustain under the opening words of the service.
 
@@ -134,3 +134,4 @@ For the tech team: watch your lighting. A well-lit stage with full theatrical li
 
 One more thing for everyone on the team. You will be receiving ashes too, if your church practices that, or at minimum you will be physically present to others who are. This is not a performance night. It is a service night. The same invitation extended to the congregation is extended to you. Prepare accordingly.
 
+_Sources: `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`, `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`, `01 - Projects/Worship Song Index/wsi-occasion-pages/worship-songs-for-good-friday.md`_

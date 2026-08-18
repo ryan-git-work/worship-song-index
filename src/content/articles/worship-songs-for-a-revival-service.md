@@ -1,12 +1,12 @@
 ---
-created: "2026-06-05"
-type: "occasion-page"
-brand: "wsi"
-slug: "worship-songs-for-a-revival-service"
-meta_title: "Worship Songs for Revival | Long-Form Sets for Pursuit of God"
-meta_description: "Revival and renewal night worship songs organized by service moment. Long-form sets, spontaneous worship, ministry time, and a complete sample set list."
-target_occasion: "Revival Service"
-song_links_count: 19
+created: 2026-06-05
+type: occasion-page
+brand: wsi
+slug: worship-songs-for-a-revival-service
+meta_title: Worship Songs for Revival | Long-Form Sets for Pursuit of God
+meta_description: Revival and renewal night worship songs organized by service moment. Long-form sets, spontaneous worship, ministry time, and a complete sample set list.
+target_occasion: Revival Service
+song_links_count: 20
 word_count: 2499
 ---
 
@@ -70,7 +70,7 @@ This is the section that separates a well-curated Sunday from a genuine revival 
 
 [Spontaneous Song](/songs/spontaneous-song-bethel-worship/) from Bethel Worship is not a traditional song so much as a framework for this moment. It gives the congregation and the worship team permission to sing what is on their hearts without a prescribed lyric. If this is new territory for your congregation, introduce it plainly: "We are going to take a few minutes to sing what is on your heart to God tonight, not what's on the screen." Then play a simple chord progression and hold it.
 
-[Pour Out Your Spirit](/songs/pour-out-your-spirit-lincoln-brewster/) by Lincoln Brewster works well as the transition into or out of a spontaneous moment. Its lyric is fundamentally a prayer the congregation can return to as an anchor when spontaneous worship winds down, giving the room a landing place without forcing a premature conclusion.
+The moment also needs a landing place, and the best one is usually a song the room has already sung tonight. Returning to the bridge of [Way Maker](/songs/way-maker/) or the final section of [God of Revival](/songs/god-of-revival/) gives the congregation a familiar anchor to sing back toward as spontaneous worship winds down, so the moment closes without feeling cut off or forced to a premature conclusion.
 
 ### Ministry time
 
@@ -130,3 +130,4 @@ A revival service asks the team to hold the same posture the congregation is in:
 
 **Pastor coordination:** Confirm two things before Sunday: where in the set the pastor may speak or pray aloud, and how ministry time will be initiated. If the pastor is calling people forward, the team needs to know whether they are already in Revival in Belfast when that happens or holding a pad in silence. Thirty seconds of conversation before the service prevents five minutes of awkwardness during it.
 
+_Sources: `01 - Projects/Worship Song Index/WSI Occasion Pages Playbook.md`, `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`, `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_
