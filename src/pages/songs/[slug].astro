@@ -55,10 +55,14 @@ const customSEO: Record<string, { title: string; description: string }> = {
 
 const dataForwardMeta = songPageMeta[song.slug];
 const isDataForwardHoldout = songPageMetaHoldout[song.slug] === 1;
-const dataForwardTitleWithoutBpm = `${song.title} by ${song.primary_artist} - Key of ${song.default_male_key}, Tempo & BPM | Worship Song Index`;
+const dataForwardTitleWithoutBpm = song.default_male_key
+  ? `${song.title} by ${song.primary_artist} - Key of ${song.default_male_key}, Tempo & BPM | Worship Song Index`
+  : `${song.title} by ${song.primary_artist} - Tempo & BPM | Worship Song Index`;
 const title = dataForwardMeta
   ? (isDataForwardHoldout ? dataForwardMeta.metaTitle : dataForwardTitleWithoutBpm)
-  : customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
+  : customSEO[song.slug]?.title ?? (song.default_male_key
+      ? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`
+      : `${song.title} by ${song.primary_artist} - Worship Song`);
 
 function trimToSentence(text: string, maxLength = 155): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
@@ -88,7 +92,12 @@ function buildSongDescription(song: Song, editorialDesc: string): string {
   if (editorialDesc && !isWeakEditorial) return editorialDesc;
   if (!isWeakSummary) return trimToSentence(rawSummary, 155);
 
-  return `${song.title} by ${song.primary_artist}: worship song keys, ${song.tempo_bpm} BPM, ${song.time_signature} time, Scripture references, theology notes, arrangement tips, and worship leadership guidance.`;
+  const verifiedDetails = [
+    song.tempo_bpm === null ? null : `${song.tempo_bpm} BPM`,
+    song.time_signature === null ? null : `${song.time_signature} time`,
+  ].filter(Boolean).join(', ');
+  const detailLead = verifiedDetails ? `${verifiedDetails}, ` : '';
+  return `${song.title} by ${song.primary_artist}: ${detailLead}Scripture references, theology notes, arrangement tips, and worship leadership guidance.`;
 }
 
 const editorialDesc = getEditorialDescription(song.editorial_markdown);
@@ -106,20 +115,20 @@ const musicComposition = {
   "@type": "MusicComposition",
   "name": song.title,
   "url": canonicalURL,
-  ...(!isQuarantined && { "musicalKey": song.default_male_key }),
-  ...(!isQuarantined && { "additionalProperty": [
-    {
+  ...(!isQuarantined && song.default_male_key && { "musicalKey": song.default_male_key }),
+  ...(!isQuarantined && (song.default_male_key || song.default_female_key) && { "additionalProperty": [
+    ...(song.default_male_key ? [{
       "@type": "PropertyValue",
       "name": "Recommended male key",
       "value": song.default_male_key
-    },
-    {
+    }] : []),
+    ...(song.default_female_key ? [{
       "@type": "PropertyValue",
       "name": "Recommended female key",
       "value": song.default_female_key
-    }
+    }] : [])
   ] }),
-  ...(!isQuarantined && { "beatsPerMinute": song.tempo_bpm }),
+  ...(!isQuarantined && song.tempo_bpm !== null && { "beatsPerMinute": song.tempo_bpm }),
   "inLanguage": "en",
   "recordedAs": {
     "@type": "MusicRecording",
@@ -309,23 +318,27 @@ const structuredData = [musicComposition, breadcrumb];
           </p>
         ) : (
           <dl class="space-y-4">
-            <div class="flex justify-between items-center">
-              <dt style="color: var(--color-text-muted);">Male Key</dt>
-              <dd>
-                <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
-                  {song.default_male_key}
-                </a>
-              </dd>
-            </div>
+            {song.default_male_key && (
+              <div class="flex justify-between items-center">
+                <dt style="color: var(--color-text-muted);">Male Key</dt>
+                <dd>
+                  <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                    {song.default_male_key}
+                  </a>
+                </dd>
+              </div>
+            )}
 
-            <div class="flex justify-between items-center">
-              <dt style="color: var(--color-text-muted);">Female Key</dt>
-              <dd>
-                <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
-                  {song.default_female_key}
-                </a>
-              </dd>
-            </div>
+            {song.default_female_key && (
+              <div class="flex justify-between items-center">
+                <dt style="color: var(--color-text-muted);">Female Key</dt>
+                <dd>
+                  <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                    {song.default_female_key}
+                  </a>
+                </dd>
+              </div>
+            )}
 
             <div class="border-t" style="border-color: var(--color-border-light);"></div>
 
@@ -339,18 +352,20 @@ const structuredData = [musicComposition, breadcrumb];
             <div class="flex justify-between items-center">
               <dt style="color: var(--color-text-muted);">BPM</dt>
               <dd class="font-semibold" style="color: var(--color-text-primary);">
-                {song.tempo_bpm}
+                {song.tempo_bpm === null ? 'Not verified' : song.tempo_bpm}
               </dd>
             </div>
 
-            <div class="flex justify-between items-center">
-              <dt style="color: var(--color-text-muted);">Time Signature</dt>
-              <dd>
-                <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
-                  {song.time_signature}
-                </a>
-              </dd>
-            </div>
+            {song.time_signature && (
+              <div class="flex justify-between items-center">
+                <dt style="color: var(--color-text-muted);">Time Signature</dt>
+                <dd>
+                  <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
+                    {song.time_signature}
+                  </a>
+                </dd>
+              </div>
+            )}
           </dl>
         )}
 

@@ -226,7 +226,11 @@ const isHero = variant === 'hero';
 
         const details = document.createElement('span');
         details.className = 'song-search__result-details';
-        details.textContent = `${song.m} / ${song.f} · ${song.b} BPM · ${song.x}`;
+        details.textContent = [
+          song.m && song.f ? `${song.m} / ${song.f}` : song.m || song.f,
+          song.b === null ? 'BPM not verified' : `${song.b} BPM`,
+          song.x,
+        ].filter(Boolean).join(' · ');
 
         link.append(copy, details);
         results.append(link);

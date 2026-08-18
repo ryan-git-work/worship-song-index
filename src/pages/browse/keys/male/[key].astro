@@ -10,7 +10,7 @@ import editorialsData from '../../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
 export async function getStaticPaths() {
-  const allKeys = [...new Set(songs.map(s => s.default_male_key))];
+  const allKeys = [...new Set(songs.map(s => s.default_male_key).filter((key): key is string => key !== null))];
 
   return allKeys.map(key => ({
     params: { key: keyToSlug(key) },

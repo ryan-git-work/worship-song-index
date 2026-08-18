@@ -40,7 +40,7 @@ export const spanishToEnglishTwins: Record<string, string> = {
   'dad-gracias': 'give-thanks-henry-smith',
   'majestad-es': 'majesty-jack-hayford',
   'te-amo-rey': 'i-love-you-lord-laurie-klein',
-  'tal-como-soy-es': 'just-as-i-am-without-one-plea-philip-bliss',
+  'tal-como-soy-es': 'just-as-i-am-without-one-plea-elliott',
   'como-el-ciervo': 'as-the-deer',
   'dulce-oracion': 'sweet-hour-of-prayer-walford',
   'al-cristo-vivo-sirvo': 'i-serve-a-risen-savior-ackley',

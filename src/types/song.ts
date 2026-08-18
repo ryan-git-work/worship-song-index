@@ -15,16 +15,16 @@ export interface Song {
   primary_artist: string;
   
   /** Default/suggested key for male vocalists */
-  default_male_key: string;
+  default_male_key: string | null;
   
   /** Default/suggested key for female vocalists */
-  default_female_key: string;
+  default_female_key: string | null;
   
   /** Beats per minute */
-  tempo_bpm: number;
+  tempo_bpm: number | null;
   
   /** Time signature (e.g., "4/4", "6/8", "3/4") */
-  time_signature: string;
+  time_signature: string | null;
   
   /** Array of theme tags for categorization */
   themes: string[];
@@ -120,7 +120,8 @@ export function getYouTubeVideoId(url: string): string | null {
  * @param bpm - Beats per minute
  * @returns Tempo description string
  */
-export function getTempoLabel(bpm: number): string {
+export function getTempoLabel(bpm: number | null): string {
+  if (bpm === null) return 'Not verified';
   if (bpm < 66) return 'Slow';
   if (bpm < 90) return 'Medium';
   if (bpm < 120) return 'Upbeat';

@@ -6,6 +6,7 @@ import { brotliCompressSync, constants, gzipSync } from 'node:zlib';
 const DIST_ROOT = resolve('dist');
 const PORT = Number(process.env.PORT || 5000);
 const compressedCache = new Map();
+const songRedirects = JSON.parse(readFileSync(new URL('./src/data/songRedirects.json', import.meta.url), 'utf8'));
 
 const contentTypes = new Map([
   ['.avif', 'image/avif'],
@@ -129,6 +130,15 @@ createServer((request, response) => {
   }
 
   let file = null;
+  const songMatch = pathname.match(/^\/songs\/([^/]+)\/?$/);
+  const redirectSlug = songMatch ? songRedirects[songMatch[1]] : null;
+  if (redirectSlug) {
+    response.statusCode = 301;
+    response.setHeader('Location', `/songs/${redirectSlug}/`);
+    response.end();
+    return;
+  }
+
   try {
     file = resolveRequestFile(pathname);
   } catch {

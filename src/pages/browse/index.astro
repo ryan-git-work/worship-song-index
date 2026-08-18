@@ -6,9 +6,9 @@ import { keyToSlug, timeSignatureToSlug } from '../../lib/browseSlugs';
 const artistCount = [...new Set(songs.map(s => s.primary_artist))].length;
 const themeCount = [...new Set(songs.flatMap(s => s.themes))].length;
 const tagCount = [...new Set(songs.flatMap(s => s.tags))].length;
-const allMaleKeys = [...new Set(songs.map(s => s.default_male_key))].sort();
-const allFemaleKeys = [...new Set(songs.map(s => s.default_female_key))].sort();
-const allTimeSignatures = [...new Set(songs.map(s => s.time_signature))].sort();
+const allMaleKeys = [...new Set(songs.map(s => s.default_male_key).filter((key): key is string => key !== null))].sort();
+const allFemaleKeys = [...new Set(songs.map(s => s.default_female_key).filter((key): key is string => key !== null))].sort();
+const allTimeSignatures = [...new Set(songs.map(s => s.time_signature).filter((signature): signature is string => signature !== null))].sort();
 
 const title = "Browse Songs - Worship Song Index";
 const description = "Browse worship songs by artist, category, key, or time signature. Find the perfect song for your worship set.";
