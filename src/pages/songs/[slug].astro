@@ -14,6 +14,7 @@ import { englishToSpanishTwins, getEnglishAlternates } from '../../lib/spanishTw
 import { songs, spanishSongs } from '../../lib/songs';
 import { keyToSlug, slugifyBrowseValue, timeSignatureToSlug } from '../../lib/browseSlugs';
 import songPageMetaData from '../../data/songPageMeta.json';
+import songPageMetaHoldoutData from '../../data/songPageMetaHoldout.json';
 import { marked } from 'marked';
 
 export interface Props {
@@ -38,6 +39,7 @@ const isQuarantined = song.quarantined === true;
 
 const artistSlug = slugifyBrowseValue(song.primary_artist);
 const songPageMeta = songPageMetaData as Record<string, { metaTitle: string; metaDescription: string }>;
+const songPageMetaHoldout = songPageMetaHoldoutData as Record<string, 0 | 1>;
 
 // Custom SEO metadata for specific songs
 const customSEO: Record<string, { title: string; description: string }> = {
@@ -52,7 +54,11 @@ const customSEO: Record<string, { title: string; description: string }> = {
 };
 
 const dataForwardMeta = songPageMeta[song.slug];
-const title = dataForwardMeta?.metaTitle ?? customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
+const isDataForwardHoldout = songPageMetaHoldout[song.slug] === 1;
+const dataForwardTitleWithoutBpm = `${song.title} by ${song.primary_artist} - Key of ${song.default_male_key}, Tempo & BPM | Worship Song Index`;
+const title = dataForwardMeta
+  ? (isDataForwardHoldout ? dataForwardMeta.metaTitle : dataForwardTitleWithoutBpm)
+  : customSEO[song.slug]?.title ?? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`;
 
 function trimToSentence(text: string, maxLength = 155): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
@@ -86,7 +92,13 @@ function buildSongDescription(song: Song, editorialDesc: string): string {
 }
 
 const editorialDesc = getEditorialDescription(song.editorial_markdown);
-const description = dataForwardMeta?.metaDescription ?? customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc);
+const dataForwardDescriptionWithoutBpm = dataForwardMeta?.metaDescription.replace(
+  /,\s*\d+(?:\.\d+)?\s*BPM,/,
+  ', tempo and BPM guidance,',
+);
+const description = dataForwardMeta
+  ? (isDataForwardHoldout ? dataForwardMeta.metaDescription : dataForwardDescriptionWithoutBpm)
+  : customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc);
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
 
 const musicComposition = {

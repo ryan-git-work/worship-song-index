@@ -42,6 +42,7 @@ const songTemplateDate = maxDate(
   layoutDate,
   fileDate(join(ROOT, 'src/pages/songs/[slug].astro')),
   fileDate(join(ROOT, 'src/data/songPageMeta.json')),
+  fileDate(join(ROOT, 'src/data/songPageMetaHoldout.json')),
 );
 const songDataFiles = filesIn(join(ROOT, 'public'), '.json')
   .filter((file) => basename(file).startsWith('songs-chunk-'));
