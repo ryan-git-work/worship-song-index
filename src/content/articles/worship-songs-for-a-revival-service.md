@@ -129,5 +129,3 @@ A revival service asks the team to hold the same posture the congregation is in:
 **Lighting:** The transition from the long-form block into the spontaneous moment, and from spontaneous worship into ministry time, should each have a corresponding lighting shift. Confirm both cues with the worship leader before the service. Dimmer, warmer, lower as the set progresses. The room should feel like it is going deeper, not wrapping up.
 
 **Pastor coordination:** Confirm two things before Sunday: where in the set the pastor may speak or pray aloud, and how ministry time will be initiated. If the pastor is calling people forward, the team needs to know whether they are already in Revival in Belfast when that happens or holding a pad in silence. Thirty seconds of conversation before the service prevents five minutes of awkwardness during it.
-
-_Sources: `01 - Projects/Worship Song Index/WSI Occasion Pages Playbook.md`, `01 - Projects/Worship Song Index/wsi-occasion-candidates.json`, `01 - Projects/Worship Song Index/wsi-enrichment-progress.json`_

@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/generate-sitemap-lastmod.mjs && astro build",
+    "build": "node scripts/check-no-internal-leaks.mjs && node scripts/generate-sitemap-lastmod.mjs && astro build",
     "start": "node server.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:leaks": "node scripts/check-no-internal-leaks.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

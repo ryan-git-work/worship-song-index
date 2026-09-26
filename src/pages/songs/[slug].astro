@@ -37,6 +37,28 @@ const spanishTwinSong = spanishTwinSlug ? spanishSongs.find((candidate) => candi
 const alternates = getEnglishAlternates(song.slug);
 const isQuarantined = song.quarantined === true;
 
+// Added 2026-08-30. The 44 songs restored from the July quarantine were verified
+// to EXIST, but their key/BPM were never verified and came from a default-fill
+// band (keys G/D, BPM 70/75/80/85/90). The song is real; the numbers are not
+// sourced. So the page publishes normally and stays indexable, but suppresses
+// the unverified metadata everywhere it would otherwise be asserted as fact:
+// the Song Details table, the JSON-LD, and the <title>/meta description.
+// Two values, same effect on this page:
+//   'song_verified_metadata_unverified' — the 44 restored from quarantine on
+//      2026-08-03: the song is confirmed real, the key/BPM never were.
+//   'unverified_metadata' — the wider 2026-08-11 suspect list: the record itself
+//      is unconfirmed, and its key/BPM came from the same default-fill band.
+// Neither is deleted and neither is deindexed. Ryan's call 2026-08-30: keep
+// everything earning Google attention. What stops is asserting numbers we
+// cannot source as though they were facts.
+const metadataUnverified =
+  song.metadata_confidence === 'song_verified_metadata_unverified' ||
+  song.metadata_confidence === 'unverified_metadata';
+
+// Suppress key/BPM claims for either reason. Quarantine also suppresses the page
+// itself (noindex); unverified metadata does not.
+const suppressMetadata = isQuarantined || metadataUnverified;
+
 const artistSlug = slugifyBrowseValue(song.primary_artist);
 const songPageMeta = songPageMetaData as Record<string, { metaTitle: string; metaDescription: string }>;
 const songPageMetaHoldout = songPageMetaHoldoutData as Record<string, 0 | 1>;
@@ -55,12 +77,15 @@ const customSEO: Record<string, { title: string; description: string }> = {
 
 const dataForwardMeta = songPageMeta[song.slug];
 const isDataForwardHoldout = songPageMetaHoldout[song.slug] === 1;
-const dataForwardTitleWithoutBpm = song.default_male_key
+const dataForwardTitleWithoutBpm = (!suppressMetadata && song.default_male_key)
   ? `${song.title} by ${song.primary_artist} - Key of ${song.default_male_key}, Tempo & BPM | Worship Song Index`
   : `${song.title} by ${song.primary_artist} - Tempo & BPM | Worship Song Index`;
+// suppressMetadata wins over the holdout: the holdout's stored metaTitle is the
+// pre-generated BPM-bearing string, so an unverified song in the holdout arm
+// would otherwise still publish an invented key and tempo in its <title>.
 const title = dataForwardMeta
-  ? (isDataForwardHoldout ? dataForwardMeta.metaTitle : dataForwardTitleWithoutBpm)
-  : customSEO[song.slug]?.title ?? (song.default_male_key
+  ? ((isDataForwardHoldout && !suppressMetadata) ? dataForwardMeta.metaTitle : dataForwardTitleWithoutBpm)
+  : customSEO[song.slug]?.title ?? ((!suppressMetadata && song.default_male_key)
       ? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`
       : `${song.title} by ${song.primary_artist} - Worship Song`);
 
@@ -81,7 +106,7 @@ function getEditorialDescription(md: string | undefined): string {
   return trimToSentence(match[1], 155);
 }
 
-function buildSongDescription(song: Song, editorialDesc: string): string {
+function buildSongDescription(song: Song, editorialDesc: string, hideMetadata = false): string {
   const rawSummary = song.summary_theology || '';
   const normalizedSummary = rawSummary.trim();
   const weakSummaryPattern = /^(the|this) song[\s.,;:!?]*$/i;
@@ -92,7 +117,7 @@ function buildSongDescription(song: Song, editorialDesc: string): string {
   if (editorialDesc && !isWeakEditorial) return editorialDesc;
   if (!isWeakSummary) return trimToSentence(rawSummary, 155);
 
-  const verifiedDetails = [
+  const verifiedDetails = hideMetadata ? '' : [
     song.tempo_bpm === null ? null : `${song.tempo_bpm} BPM`,
     song.time_signature === null ? null : `${song.time_signature} time`,
   ].filter(Boolean).join(', ');
@@ -101,13 +126,20 @@ function buildSongDescription(song: Song, editorialDesc: string): string {
 }
 
 const editorialDesc = getEditorialDescription(song.editorial_markdown);
-const dataForwardDescriptionWithoutBpm = dataForwardMeta?.metaDescription.replace(
-  /,\s*\d+(?:\.\d+)?\s*BPM,/,
-  ', tempo and BPM guidance,',
-);
+const dataForwardDescriptionWithoutBpm = suppressMetadata
+  // Unverified metadata: strip the whole "male key A, female key C, 88 BPM, 4/4"
+  // run, not just the BPM clause, since every value in it is default-fill.
+  ? dataForwardMeta?.metaDescription
+      .replace(/:\s*male key[^.]*?\.\s*/i, ': ')
+      .replace(/,?\s*\d+(?:\.\d+)?\s*BPM,?/gi, '')
+      .replace(/\s{2,}/g, ' ')
+  : dataForwardMeta?.metaDescription.replace(
+      /,\s*\d+(?:\.\d+)?\s*BPM,/,
+      ', tempo and BPM guidance,',
+    );
 const description = dataForwardMeta
-  ? (isDataForwardHoldout ? dataForwardMeta.metaDescription : dataForwardDescriptionWithoutBpm)
-  : customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc);
+  ? ((isDataForwardHoldout && !suppressMetadata) ? dataForwardMeta.metaDescription : dataForwardDescriptionWithoutBpm)
+  : customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc, suppressMetadata);
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
 
 const musicComposition = {
@@ -115,8 +147,8 @@ const musicComposition = {
   "@type": "MusicComposition",
   "name": song.title,
   "url": canonicalURL,
-  ...(!isQuarantined && song.default_male_key && { "musicalKey": song.default_male_key }),
-  ...(!isQuarantined && (song.default_male_key || song.default_female_key) && { "additionalProperty": [
+  ...(!suppressMetadata && song.default_male_key && { "musicalKey": song.default_male_key }),
+  ...(!suppressMetadata && (song.default_male_key || song.default_female_key) && { "additionalProperty": [
     ...(song.default_male_key ? [{
       "@type": "PropertyValue",
       "name": "Recommended male key",
@@ -128,7 +160,7 @@ const musicComposition = {
       "value": song.default_female_key
     }] : [])
   ] }),
-  ...(!isQuarantined && song.tempo_bpm !== null && { "beatsPerMinute": song.tempo_bpm }),
+  ...(!suppressMetadata && song.tempo_bpm !== null && { "beatsPerMinute": song.tempo_bpm }),
   "inLanguage": "en",
   "recordedAs": {
     "@type": "MusicRecording",
@@ -312,9 +344,11 @@ const structuredData = [musicComposition, breadcrumb];
           Song Details
         </h2>
 
-        {isQuarantined ? (
+        {suppressMetadata ? (
           <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
-            Catalog data for this song is under verification.
+            {isQuarantined
+              ? 'Catalog data for this song is under verification.'
+              : 'Key and tempo for this song are not yet verified against a published source, so we are not listing them.'}
           </p>
         ) : (
           <dl class="space-y-4">
