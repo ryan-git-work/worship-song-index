@@ -7,7 +7,13 @@ interface Props {
   songs: Song[];
 }
 
-const BROWSE_PAGE_LIMIT = 100;
+// 100-row cap from 20ad072 is held (added 2026-09-26): the pages it would cut
+// (/browse/time-signatures/4-4/, 6-8/, 3-4/, themes, keys) are the pages that
+// recovered in September. Cutting their song links now would perturb the exact
+// set that is growing. Set BROWSE_GRID_CAP_ENABLED = true to restore the cap,
+// ideally with pagination so no song loses its internal link.
+const BROWSE_GRID_CAP_ENABLED = false;
+const BROWSE_PAGE_LIMIT = BROWSE_GRID_CAP_ENABLED ? 100 : Number.POSITIVE_INFINITY;
 const { songs } = Astro.props;
 const visibleSongs = songs.slice(0, BROWSE_PAGE_LIMIT);
 ---

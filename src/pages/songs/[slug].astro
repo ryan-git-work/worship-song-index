@@ -76,7 +76,14 @@ const customSEO: Record<string, { title: string; description: string }> = {
 };
 
 const dataForwardMeta = songPageMeta[song.slug];
-const isDataForwardHoldout = songPageMetaHoldout[song.slug] === 1;
+// BPM title test switch (added 2026-09-26). The 08-18 holdout test (9e74798)
+// strips the BPM number from ~90% of song titles. Traffic has been climbing
+// since Sep 8 and a sitewide title change would confound that read, so the
+// test ships DISABLED: every song keeps the live BPM-bearing data-forward
+// title (with the 08-18 corrected values). Flip to true to start the test.
+// suppressMetadata still wins either way.
+const BPM_TITLE_TEST_ENABLED = false;
+const isDataForwardHoldout = !BPM_TITLE_TEST_ENABLED || songPageMetaHoldout[song.slug] === 1;
 const dataForwardTitleWithoutBpm = (!suppressMetadata && song.default_male_key)
   ? `${song.title} by ${song.primary_artist} - Key of ${song.default_male_key}, Tempo & BPM | Worship Song Index`
   : `${song.title} by ${song.primary_artist} - Tempo & BPM | Worship Song Index`;
