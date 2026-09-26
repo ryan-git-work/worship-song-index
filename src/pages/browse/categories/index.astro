@@ -8,7 +8,13 @@ const themeCounts: Record<string, number> = {};
 const tagCounts: Record<string, number> = {};
 
 const allThemes = [...new Set(songs.flatMap(s => s.themes))].sort();
-const allTags = [...new Set(songs.flatMap(s => s.tags))].sort();
+// Tags whose slug matches an artist have no /browse/tags/ page (they
+// consolidate onto /browse/artists/), so listing them here produced ~310 broken
+// links. Artists are browsable from the artists index instead.
+const artistSlugs = new Set(songs.map((s) => slugifyBrowseValue(s.primary_artist)));
+const allTags = [...new Set(songs.flatMap(s => s.tags))]
+  .filter((tag) => !artistSlugs.has(slugifyBrowseValue(tag)))
+  .sort();
 
 allThemes.forEach(theme => {
   themeCounts[theme] = songs.filter(s => s.themes.includes(theme)).length;

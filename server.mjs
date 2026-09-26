@@ -114,6 +114,85 @@ function serveFile(request, response, file, statusCode = 200) {
   createReadStream(file).pipe(response);
 }
 
+const catalogIntegrity = JSON.parse(readFileSync(new URL('./src/data/catalogIntegrity.json', import.meta.url), 'utf8'));
+const deletedSongSlugs = new Set(catalogIntegrity.deleted || []);
+
+// Fixed one-off redirects for URLs Google reports as 404 (GSC, 2026-09-26).
+const staticRedirects = new Map([
+  ['/canciones/artistas', '/canciones/'],
+  ['/canciones/artistas/', '/canciones/'],
+  ['/canciones/temas', '/canciones/'],
+  ['/canciones/temas/', '/canciones/'],
+  ['/canciones', '/canciones/'],
+]);
+
+// Mirrors src/lib/browseSlugs.ts. Astro middleware does not run in a static
+// build, so the canonicalization in src/middleware.ts never reached production.
+// GSC listed 926 404s on 2026-09-26; 900+ were non-canonical spellings of real
+// browse pages ("/browse/tags/Holy Spirit/", "/browse/themes/gods_power",
+// "/browse/keys/male/A"). This does the same canonicalization at serve time and
+// only redirects when the canonical page actually exists in dist.
+function slugifyBrowseValue(value) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\/\\]/g, '-')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function keyToSlug(key) {
+  const normalized = key.trim()
+    .replace(/\s*minor$/i, 'm')
+    .replace(/\s*major$/i, '');
+  return slugifyBrowseValue(normalized.replace('#', '-sharp'));
+}
+
+function decodeSegment(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function distPageExists(pathname) {
+  try {
+    return statSync(join(DIST_ROOT, pathname, 'index.html')).isFile();
+  } catch {
+    return false;
+  }
+}
+
+function canonicalBrowsePath(pathname) {
+  const facet = pathname.match(/^\/browse\/(tags|themes|artists)\/(.+?)\/?$/);
+  if (facet) {
+    const [, kind, raw] = facet;
+    const slug = slugifyBrowseValue(decodeSegment(raw));
+    if (!slug) return null;
+    if (kind === 'tags' && distPageExists(`/browse/artists/${slug}/`) && !distPageExists(`/browse/tags/${slug}/`)) {
+      return `/browse/artists/${slug}/`;
+    }
+    const candidate = `/browse/${kind}/${slug}/`;
+    return distPageExists(candidate) ? candidate : null;
+  }
+  const key = pathname.match(/^\/browse\/keys\/(male|female)\/(.+?)\/?$/);
+  if (key) {
+    const candidate = `/browse/keys/${key[1]}/${keyToSlug(decodeSegment(key[2]))}/`;
+    return distPageExists(candidate) ? candidate : null;
+  }
+  return null;
+}
+
+function redirect(response, location) {
+  response.statusCode = 301;
+  response.setHeader('Location', location);
+  response.end();
+}
+
 createServer((request, response) => {
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     response.statusCode = 405;
@@ -130,12 +209,25 @@ createServer((request, response) => {
   }
 
   let file = null;
+  const staticTarget = staticRedirects.get(pathname);
+  if (staticTarget) {
+    redirect(response, staticTarget);
+    return;
+  }
+
   const songMatch = pathname.match(/^\/songs\/([^/]+)\/?$/);
   const redirectSlug = songMatch ? songRedirects[songMatch[1]] : null;
   if (redirectSlug) {
     response.statusCode = 301;
     response.setHeader('Location', `/songs/${redirectSlug}/`);
     response.end();
+    return;
+  }
+
+  if (songMatch && deletedSongSlugs.has(songMatch[1])) {
+    response.statusCode = 410;
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    response.end('Gone');
     return;
   }
 
@@ -148,6 +240,14 @@ createServer((request, response) => {
   if (file) {
     serveFile(request, response, file);
     return;
+  }
+
+  if (pathname.startsWith('/browse/')) {
+    const canonical = canonicalBrowsePath(pathname);
+    if (canonical && canonical !== pathname) {
+      redirect(response, canonical);
+      return;
+    }
   }
 
   const notFound = join(DIST_ROOT, '404.html');

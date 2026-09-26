@@ -6,6 +6,43 @@ const articles = (await getCollection('articles')).sort((a, b) =>
   a.data.target_occasion.localeCompare(b.data.target_occasion)
 );
 
+// Church-calendar block (added 2026-09-26): surfaces the guides for the next
+// stretch of the year so seasonal pages (Advent, Christmas Eve, Watchnight,
+// New Year's Eve, Thanksgiving) are linked prominently instead of sitting in an
+// alphabetical grid. Month-based, so it rolls forward on every build. Only
+// slugs that exist in the collection render.
+const calendar: { slug: string; month: number; when: string }[] = [
+  { slug: 'worship-songs-for-church-homecoming-sunday', month: 9, when: 'Fall' },
+  { slug: 'worship-songs-for-world-communion-sunday', month: 10, when: 'First Sunday of October' },
+  { slug: 'worship-songs-for-pastor-appreciation-sunday', month: 10, when: 'October' },
+  { slug: 'worship-songs-for-reformation-sunday', month: 10, when: 'Last Sunday of October' },
+  { slug: 'worship-songs-for-all-saints-day', month: 11, when: 'November 1' },
+  { slug: 'worship-songs-for-veterans-day-sunday', month: 11, when: 'Sunday near November 11' },
+  { slug: 'worship-songs-for-stewardship-sunday', month: 11, when: 'Fall giving season' },
+  { slug: 'worship-songs-for-christ-the-king-sunday', month: 11, when: 'Sunday before Advent' },
+  { slug: 'worship-songs-for-thanksgiving-service', month: 11, when: 'Thanksgiving week' },
+  { slug: 'worship-songs-for-advent', month: 11.5, when: 'Four Sundays before Christmas' },
+  { slug: 'worship-songs-for-a-blue-christmas-service', month: 12, when: 'Around December 21' },
+  { slug: 'worship-songs-for-christmas-eve-service', month: 12.2, when: 'December 24' },
+  { slug: 'worship-songs-for-the-sunday-after-christmas', month: 12.4, when: 'Sunday after Christmas' },
+  { slug: 'worship-songs-for-a-watchnight-service', month: 12.6, when: 'December 31' },
+  { slug: 'worship-songs-for-new-years-eve-service', month: 12.6, when: 'December 31' },
+  { slug: 'worship-songs-for-epiphany-sunday', month: 13, when: 'Early January' },
+  { slug: 'worship-songs-for-baptism-of-the-lord-sunday', month: 13, when: 'January' },
+  { slug: 'worship-songs-for-mlk-sunday', month: 13, when: 'Mid January' },
+  { slug: 'worship-songs-for-sanctity-of-life-sunday', month: 13, when: 'January' },
+  { slug: 'worship-songs-for-lent', month: 14, when: 'February to Easter' },
+  { slug: 'worship-songs-for-ash-wednesday', month: 14, when: 'Start of Lent' },
+];
+const bySlug = new Map(articles.map((entry) => [entry.data.slug, entry]));
+const buildMonth = new Date().getMonth() + 1;
+const upcoming = calendar
+  .map((item) => ({ ...item, sortKey: ((item.month - buildMonth + 12) % 12) }))
+  .filter((item) => bySlug.has(item.slug) && item.sortKey < 5)
+  .sort((a, b) => a.sortKey - b.sortKey)
+  .slice(0, 15)
+  .map((item) => ({ ...item, entry: bySlug.get(item.slug)! }));
+
 const title = 'Worship Occasion Song Guides — Worship Song Index';
 const description = 'Browse worship song guides for church calendar moments, pastoral occasions, and special services.';
 const canonicalURL = 'https://worshipsongindex.com/articles/';
@@ -63,6 +100,33 @@ const breadcrumbSchema = {
       Service-specific song planning guides for church calendar moments, pastoral occasions, and special Sundays.
     </p>
   </header>
+
+  {upcoming.length > 0 && (
+    <section id="coming-up" class="mb-12" aria-labelledby="coming-up-heading">
+      <h2 id="coming-up-heading" class="text-2xl font-semibold mb-2" style="font-family: var(--font-serif); color: var(--color-text-primary);">
+        Coming up on the church calendar
+      </h2>
+      <p class="text-sm mb-5 max-w-3xl" style="color: var(--color-text-secondary);">
+        Most worship leaders plan four to eight weeks out. These are the services on the horizon, in calendar order.
+      </p>
+      <ol class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+        {upcoming.map((item) => (
+          <li>
+            <a
+              href={`/articles/${item.entry.data.slug}/`}
+              class="flex h-full flex-col rounded-lg border p-4 transition-colors hover:border-primary-300"
+              style="background: var(--color-surface-card); border-color: var(--color-border);"
+            >
+              <span class="text-xs uppercase tracking-widest mb-1" style="color: var(--color-text-muted);">{item.when}</span>
+              <span class="text-lg font-semibold leading-snug" style="font-family: var(--font-serif); color: var(--color-text-primary);">{item.entry.data.target_occasion}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  <h2 class="text-2xl font-semibold mb-5" style="font-family: var(--font-serif); color: var(--color-text-primary);">All occasion guides</h2>
 
   <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
     {articles.map((entry) => (

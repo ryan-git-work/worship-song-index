@@ -6,6 +6,7 @@ import type { Song } from '../../types/song';
 import { getTempoLabel } from '../../types/song';
 import { songs } from '../../lib/songs';
 import { marked } from 'marked';
+import { slugifyBrowseValue } from '../../lib/browseSlugs';
 
 export async function getStaticPaths() {
   return blogData.map(post => ({
@@ -21,6 +22,18 @@ const linkedSongs = (post.songLinks || [])
 const formattedDate = new Date(post.publishDate).toLocaleDateString('en-US', {
   year: 'numeric', month: 'long', day: 'numeric'
 });
+
+// Guide tags used to link to /browse/tags/{raw-tag}, and most of those pages do
+// not exist (e.g. "worship-planning", "bpm"), which put 404 links on every guide.
+// Link a tag only when a real tag or artist browse page exists for it.
+const artistSlugSet = new Set(songs.map((s) => slugifyBrowseValue(s.primary_artist)));
+const tagSlugSet = new Set(songs.flatMap((s) => s.tags).map((t) => slugifyBrowseValue(t)));
+function tagHref(tag: string): string | null {
+  const slug = slugifyBrowseValue(tag);
+  if (artistSlugSet.has(slug)) return `/browse/artists/${slug}/`;
+  if (tagSlugSet.has(slug)) return `/browse/tags/${slug}/`;
+  return null;
+}
 
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
 
@@ -132,11 +145,18 @@ const htmlBody = marked.parse(post.body) as string;
 
     <div class="mt-10 pt-8 border-t" style="border-color: var(--color-border);">
       <div class="flex flex-wrap gap-2">
-        {post.tags.map((tag: string) => (
-          <a href={`/browse/tags/${tag}`} class="text-xs px-3 py-1 rounded-full transition-colors hover:opacity-80" style="background: var(--color-bg-tag); color: var(--color-text-muted);">
-            {tag.replace(/-/g, ' ')}
-          </a>
-        ))}
+        {post.tags.map((tag: string) => {
+          const href = tagHref(tag);
+          return href ? (
+            <a href={href} class="text-xs px-3 py-1 rounded-full transition-colors hover:opacity-80" style="background: var(--color-bg-tag); color: var(--color-text-muted);">
+              {tag.replace(/-/g, ' ')}
+            </a>
+          ) : (
+            <span class="text-xs px-3 py-1 rounded-full" style="background: var(--color-bg-tag); color: var(--color-text-muted);">
+              {tag.replace(/-/g, ' ')}
+            </span>
+          );
+        })}
       </div>
     </div>
 

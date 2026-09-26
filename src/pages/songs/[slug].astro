@@ -60,6 +60,15 @@ const metadataUnverified =
 const suppressMetadata = isQuarantined || metadataUnverified;
 
 const artistSlug = slugifyBrowseValue(song.primary_artist);
+// Tag pages are not generated for tags that match an artist slug (those
+// consolidate onto /browse/artists/). Linking /browse/tags/{artist}/ produced
+// ~310 unique broken internal URLs across song pages (e.g. /browse/tags/modern/,
+// /browse/tags/elevation-worship/). Point those tags at the artist page.
+const artistSlugSetForTags = new Set(songs.map((candidate) => slugifyBrowseValue(candidate.primary_artist)));
+function tagHref(tag: string): string {
+  const slug = slugifyBrowseValue(tag);
+  return artistSlugSetForTags.has(slug) ? `/browse/artists/${slug}/` : `/browse/tags/${slug}/`;
+}
 const songPageMeta = songPageMetaData as Record<string, { metaTitle: string; metaDescription: string }>;
 const songPageMetaHoldout = songPageMetaHoldoutData as Record<string, 0 | 1>;
 
@@ -332,7 +341,7 @@ const structuredData = [musicComposition, breadcrumb];
           <h2 class="text-lg font-semibold mb-3" style="font-family: var(--font-serif); color: var(--color-text-primary);">Tags</h2>
           <div class="flex flex-wrap gap-2">
             {song.tags.map((tag) => (
-              <a href={`/browse/tags/${slugifyBrowseValue(tag)}/`} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-accent-100 text-accent-800 hover:bg-accent-200 transition-colors">
+              <a href={tagHref(tag)} class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-accent-100 text-accent-800 hover:bg-accent-200 transition-colors">
                 {formatTheme(tag)}
               </a>
             ))}
