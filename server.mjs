@@ -1,3 +1,8 @@
+// NOTE (2026-09-26, release/2026-09-26-fixes): production stays on Replit STATIC
+// hosting (.replit deploymentTarget = "static", publicDir = "dist"), so this
+// server does NOT run in production and none of its 301/410 rules apply there.
+// It is kept for a future switch to an app deployment (deploymentTarget =
+// "cloudrun", run = ["npm", "start"]). The static build does not depend on it.
 import { createReadStream, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve, sep } from 'node:path';
