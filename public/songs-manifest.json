@@ -1,6 +1,6 @@
 {
-  "total_songs": 3452,
-  "chunks": 22,
+  "total_songs": 3455,
+  "chunks": 23,
   "chunk_files": [
     "public/songs-chunk-1.json",
     "public/songs-chunk-2.json",
@@ -23,8 +23,9 @@
     "public/songs-chunk-16.json",
     "public/songs-chunk-17-1.json",
     "public/songs-chunk-17-2.json",
-    "public/songs-chunk-18.json"
+    "public/songs-chunk-18.json",
+    "public/songs-chunk-19.json"
   ],
   "note": "public/songs.json (11.3MB) was too large for direct GitHub API upload. Download all chunk files and concatenate their arrays to reconstruct the full dataset.",
-  "last_updated": "2026-08-19"
+  "last_updated": "2026-10-01"
 }
