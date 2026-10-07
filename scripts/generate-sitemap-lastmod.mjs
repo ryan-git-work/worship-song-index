@@ -77,10 +77,33 @@ for (const file of filesIn(join(ROOT, 'src/content/devotionals'), '.mdx')) {
   routes[`/worship-team-devotionals/${parts.join('/')}/`] = maxDate(devotionalTemplateDate, fileDate(file));
 }
 
-const blogDate = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/blog/[slug].astro')), fileDate(join(ROOT, 'public/blog-posts.json')));
+const blogTemplateDate = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/blog/[slug].astro')));
 const blogRows = JSON.parse(readFileSync(join(ROOT, 'public/blog-posts.json'), 'utf8'));
+// A shared JSON file changing does not mean every guide was revised. Walk the
+// file's history once and date each row from its most recent content change.
+const pendingBlogRows = new Map(blogRows.filter((post) => post.slug).map((post) =>
+  [post.slug, { content: JSON.stringify(post), date: TODAY }],
+));
+const blogContentDates = new Map();
+for (const revision of gitText(['log', '--format=%H|%cs', '--', 'public/blog-posts.json']).split('\n').filter(Boolean)) {
+  if (!pendingBlogRows.size) break;
+  const [sha, date] = revision.split('|');
+  let historical;
+  try { historical = JSON.parse(gitText(['show', `${sha}:public/blog-posts.json`])); }
+  catch { break; }
+  const priorRows = new Map(historical.map((post) => [post.slug, JSON.stringify(post)]));
+  for (const [slug, current] of pendingBlogRows) {
+    if (priorRows.get(slug) === current.content) current.date = date;
+    else {
+      blogContentDates.set(slug, current.date);
+      pendingBlogRows.delete(slug);
+    }
+  }
+}
+for (const [slug, current] of pendingBlogRows) blogContentDates.set(slug, current.date);
+const blogDate = maxDate(blogTemplateDate, ...blogContentDates.values());
 for (const post of blogRows) {
-  if (post.slug) routes[`/blog/${post.slug}/`] = blogDate;
+  if (post.slug) routes[`/blog/${post.slug}/`] = maxDate(blogTemplateDate, blogContentDates.get(post.slug));
 }
 
 const output = {
