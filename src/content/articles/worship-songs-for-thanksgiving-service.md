@@ -4,10 +4,10 @@ type: "occasion-page"
 brand: "wsi"
 slug: "worship-songs-for-thanksgiving-service"
 meta_title: "Worship Songs for Thanksgiving | Gratitude Sets for Sunday or Eve"
-meta_description: "Worship songs for a Thanksgiving service, organized by service moment. Song picks, a full set list with keys and BPM, and team notes for Sunday or eve."
+meta_description: "Worship songs for a Thanksgiving service by service moment, with songs that make room for grief, a set list with keys and a short testimony set."
 target_occasion: "Thanksgiving Service"
-song_links_count: 16
-word_count: 3025
+song_links_count: 27
+word_count: 3873
 ---
 
 ## What this Sunday actually asks of you
@@ -56,6 +56,16 @@ Many Thanksgiving services include a time of congregational testimony, either fo
 
 [How Great Is Our God](/songs/how-great-is-our-god/) (Chris Tomlin) works as an alternative, particularly for congregations where the testimony window generated a high-energy response. Its declarative structure gives the room a single focal point after what may have been a wide-ranging set of sharings. Practical note: the bridge ("Name above all names") often functions as the most congregational moment in the song; let it loop once if the room is locked in before you bring it home.
 
+### When the room is grieving
+
+When several families are grieving, the gratitude songs above can still serve the room. Include a song that names suffering before moving to thanksgiving. These three offer different ways into that moment.
+
+[Yes I Will](/songs/yes-i-will/) (Vertical Worship) frames praise as a decision made in the valley, which is the only kind of gratitude the grieving family can offer this morning. It sits naturally after a testimony window that included pain as well as joy. Practical note: keep the arrangement steady rather than building to a big finish. The decision in the lyric is the point; a triumphant band undercuts it.
+
+[It Is Well](/songs/it-is-well/) (Kristene DiMarco and Bethel Music) lets the congregation confess trust without pretending the pain is gone. It works as a quiet response after the sermon or as the song under communion when the year has been heavy. Practical note: patient and prayerful. If you extend it, stay on the main lyric so the room stays present instead of drifting.
+
+[Never Once](/songs/never-once/) (Matt Redman) looks back over the road the congregation has actually walked this year and names God's presence on every step of it. That retrospective shape makes it a natural partner to testimony: people have just described the road, and this song says who was on it with them. Practical note: it carries more weight late in the set than early. Let the testimonies come first.
+
 ### Family-oriented congregational moment
 
 Thanksgiving services tend to skew multigenerational. Extended families visit together. Kids who are usually in children's church are in the main service. Grandparents who do not normally attend are there. The set needs at least one moment that the whole room, including the people who do not know the modern worship canon, can enter without translation.
@@ -63,6 +73,12 @@ Thanksgiving services tend to skew multigenerational. Extended families visit to
 [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/) (Thomas Chisholm / William Runyan) is the load-bearing song for this moment across nearly every church tradition. Its familiarity in the older generation and its theological depth give it something rare: a floor that keeps it accessible to the unfamiliar ear and a ceiling that rewards the worshiper who knows what they are singing. The three-part lyrical movement through the seasons, the forgiveness, and the "all I have needed thy hand hath provided" chorus gives a multigenerational room a shared vocabulary without requiring anyone to learn something new. Practical note: consider an arrangement that opens with piano and voice only for the first verse before the band enters. This lets the multigenerational room find its footing before the modern production arrives. The person who has sung this hymn since 1972 will thank you for it.
 
 [Doxology](/songs/doxology/) (traditional, various arrangements) is the congregational anchor if the service needs a shorter, shareable moment. Its four lines contain a complete theology of gratitude and a cross-generational entry point that requires almost no rehearsal. In a service that already has four or five other songs, the Doxology functions as a liturgical punctuation mark rather than a full song. It is worth using for that reason alone.
+
+[Now Thank We All Our God](/songs/now-thank-we-all-our-god-martin-rinkart/) (Martin Rinkart, traditional) gives the whole room a shared language of thanksgiving. Pair it with Great Is Thy Faithfulness when you want gratitude grounded in God's character rather than a list of good outcomes. Practical note: if the hymn is familiar to your congregation, let the organ or piano carry the first verse and bring the band in on the second.
+
+[Come, Ye Thankful People, Come](/songs/come-ye-thankful-people-come-alford/) (Henry Alford) starts as a harvest hymn and ends at the final harvest, when Christ gathers his people home. That turn from the fields to the kingdom keeps a Thanksgiving service from drifting into the civil-religion frame described below. Practical note: include a later stanza so the move from the harvest to the kingdom is heard. A choir anthem arrangement works well here if you have one.
+
+[Give Thanks](/songs/give-thanks-henry-smith/) (Henry Smith) is short, slow and known across more traditions than almost any other gratitude chorus. Its central move, the weak and the poor saying they are strong and rich because of what Christ has done, is the exact sentence the complicated November needs to sing. Practical note: it works as a one-chorus response after testimony or as the song that gathers the children back into the room. Do not over-arrange it.
 
 ### Communion option
 
@@ -78,7 +94,7 @@ The closing of a Thanksgiving service should not land the congregation in a post
 
 [Blessed Be Your Name](/songs/blessed-be-your-name/) (Matt and Beth Redman) is the most honest sending song available for a Thanksgiving service. Its explicit acknowledgment that there are seasons of abundance and seasons of desert, and that God's name is blessed in both, does not tidy up what the service has held. It names it. "You give and take away, my heart will choose to say, Lord blessed be your name" is not a simple gratitude lyric. It is a theological statement of trust that has survived pastoral use in rooms that have endured real loss. This is the song for sending the complicated November out the door with something that will hold it. Band note: the final chorus benefits from full congregational energy. If the room has been emotionally engaged through the service, this song will find its footing quickly. If the room has been quiet, start the final chorus with reduced dynamics and let the congregation pull the band up rather than the reverse.
 
-[Build My Life](/songs/build-my-life/) (Housefires, arranged by Pat Barrett) offers a more contemporary sending option. Its posture of orientation toward God regardless of circumstance, "worthy of every song we could ever sing," carries the same theological weight as Blessed Be Your Name in a more current musical idiom. Practical note: the bridge often functions as the emotional resolution of the service; give it space before you cut.
+[Build My Life](/songs/build-my-life/) (Pat Barrett) offers a more contemporary sending option. Its posture of orientation toward God regardless of circumstance, "worthy of every song we could ever sing," carries the same theological weight as Blessed Be Your Name in a more current musical idiom. Practical note: the bridge often functions as the emotional resolution of the service; give it space before you cut.
 
 ## Songs to avoid (and why)
 
@@ -94,27 +110,45 @@ A second category to avoid: songs that lean into a specifically American Thanksg
 
 ## A complete sample set list
 
-This set assumes a 30-40 minute worship arc in a Thanksgiving Sunday or Thanksgiving Eve service.
+This set assumes a 30-40 minute worship arc in a Thanksgiving Sunday or Thanksgiving Eve service. Set keys below are the keys each song page lists for a male and a female lead; they are starting points for your vocalist's range, not a claim about any recording. Tempos are described as a feel rather than a number, because the right number for your room depends on the arrangement you actually play.
 
-1. [Ten Thousand Reasons](/songs/ten-thousand-reasons/) (Matt Redman), Key of G, approx. 73 BPM
+1. [Ten Thousand Reasons](/songs/ten-thousand-reasons/) (Matt Redman). Set key: G (male lead) or Bb (female lead). Feel: unhurried mid-tempo.
    Why: Unhurried gathering theology. Frames gratitude as a choice of the will before the room is emotionally warmed up.
    Transition: End the final chorus with a dynamic pull-back, then let the congregation settle before the next song. No hard cut.
 
-2. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/) (Thomas Chisholm), Key of D or Eb, approx. 68 BPM
+2. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/) (Thomas Chisholm). Set key: C (male lead) or Eb (female lead). Feel: steady hymn tempo, slower than you think.
    Why: Covenant-grounded gratitude. Carries the multigenerational room. Works for the person who had a hard November without asking them to pretend otherwise.
    Transition: After the final chorus, hold the chord and move into pastoral remarks or a scripture reading. This song creates natural space for the spoken word.
 
-3. [Goodness of God](/songs/goodness-of-god/) (Bethel Music), Key of B, approx. 67 BPM
+3. [Goodness of God](/songs/goodness-of-god/) (Bethel Music, Jenn Johnson). Set key: Ab (male lead) or C (female lead). Feel: slow 6/8. [Worship Together's publisher resource](https://www.worshiptogether.com/songs/goodness-of-god-bethel/) lists the original key as Ab at 63 BPM, which matches the song page here.
    Why: Past-tense theological frame. "All my life you have been faithful" holds both the grateful and the grieving without requiring the same emotional temperature from both.
    Transition: Drop to a single instrument after the final chorus. Use this space for testimony or communion elements if the service includes them.
 
-4. [Cornerstone](/songs/cornerstone-hillsong/) (Hillsong Worship), Key of E, approx. 73 BPM
+4. [Cornerstone](/songs/cornerstone-hillsong/) (Hillsong Worship). Set key: E (male lead); the song page lists C# for a female lead. Feel: slow build.
    Why: Communion anchor or response song. Theological center is not circumstances but the character of Christ. Works for the whole room regardless of what November delivered.
    Transition: If used for communion, keep the final instrumental loop going until the elements are fully received. Do not rush the resolution.
 
-5. [Blessed Be Your Name](/songs/blessed-be-your-name/) (Matt and Beth Redman), Key of A, approx. 140 BPM
+5. [Blessed Be Your Name](/songs/blessed-be-your-name/) (Matt and Beth Redman). Set key: A (male lead) or D (female lead). Feel: driving, full band on the last chorus.
    Why: The most honest sending song available for this service. Explicitly holds both the abundant season and the desert road without collapsing the tension.
    Transition: None. This is the send. Let the final chorus land at full energy and hold the last note before the benediction.
+
+### A shorter set with a testimony window (about 25 minutes)
+
+Many Thanksgiving Eve services and most Thanksgiving Sundays with a sermon cannot carry five full songs. This version keeps four and builds the testimony window into the music instead of bolting it on.
+
+1. [Ten Thousand Reasons](/songs/ten-thousand-reasons/). Gather the room. Two verses and the chorus, no bridge loop.
+
+2. [Give Thanks](/songs/give-thanks-henry-smith/). One chorus, piano only, and let it hang. The worship leader or pastor invites testimony straight out of the last line. This is the handoff; agree on it in rehearsal.
+
+   Testimony window. Three to five people, pre-arranged, two minutes each. Keep a pad running underneath at a level the congregation barely notices.
+
+3. [Goodness of God](/songs/goodness-of-god/). Begin on the pad that was already playing. The congregation has just heard the stories; this song turns them toward God without anyone needing to summarize.
+
+4. [Yes I Will](/songs/yes-i-will/) or [Blessed Be Your Name](/songs/blessed-be-your-name/). Pick by the room. If the testimonies were heavy, Yes I Will keeps the decision to praise in the valley; if the room is already standing, Blessed Be Your Name sends them.
+
+### Planning around this Sunday
+
+For a US Thanksgiving service, check where the date falls relative to Advent and [Christ the King Sunday](/articles/worship-songs-for-christ-the-king-sunday/) before planning the surrounding weeks. The [Advent guide](/articles/worship-songs-for-advent/) picks up where this one leaves off. If grief is the main story in your room rather than one thread of it, the [Grief Support Sunday guide](/articles/worship-songs-for-a-grief-support-sunday/) is the better starting point. For more songs in this lane, browse the catalog by [thanksgiving](/browse/themes/thanksgiving/) and [gratitude](/browse/themes/gratitude/), or work through the song families in [Songs Like Gratitude](/blog/songs-like-gratitude/), [Songs Like Goodness of God](/blog/songs-like-goodness-of-god/) and [Worship Songs Based on Psalm 103](/blog/worship-songs-based-on-psalm-103/).
 
 ## A note for the team behind you (techs, vocalists, band)
 
