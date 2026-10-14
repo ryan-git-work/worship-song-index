@@ -36,6 +36,11 @@ const songFamilyGuides: Record<string, SongFamilyGuideLink> = {
     title: 'Songs Like What a Beautiful Name',
     href: '/blog/songs-like-what-a-beautiful-name/',
   },
+  // Stage 1 guide (5bef7da) shipped without a link from its anchor song page.
+  'in-christ-alone': {
+    title: 'Songs Like In Christ Alone',
+    href: '/blog/songs-like-in-christ-alone/',
+  },
 };
 
 export function getSongFamilyGuide(songSlug: string): SongFamilyGuideLink | null {

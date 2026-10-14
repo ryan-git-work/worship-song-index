@@ -18,6 +18,20 @@ const songRedirects = JSON.parse(
 const songRedirectRoutes = Object.fromEntries(
   Object.entries(songRedirects).map(([from, to]) => [`/songs/${from}`, `/songs/${to}/`])
 );
+// Same mechanism for retired /browse/ URLs that GSC still reports (legacy
+// artist-name tag pages, accent-stripped artist slugs). The explicit list is
+// generated and verified by scripts/generate-legacy-aliases.mjs. Added 2026-10-14.
+const legacyAliases = JSON.parse(
+  fs.readFileSync(new URL('./src/data/legacyAliases.json', import.meta.url), 'utf8')
+).aliases;
+const legacyAliasRoutes = Object.fromEntries(
+  legacyAliases.map(({ from, to }) => [from.replace(/\/$/, ''), to])
+);
+const redirectRoutes = { ...songRedirectRoutes, ...legacyAliasRoutes };
+// Every redirect page is noindex with a canonical elsewhere, so none belongs in the sitemap.
+const redirectSourcePaths = new Set(
+  Object.keys(redirectRoutes).map((route) => (route.endsWith('/') ? route : `${route}/`))
+);
 const sitemapLastmod = JSON.parse(
   fs.readFileSync(new URL('./src/data/sitemapLastmod.json', import.meta.url), 'utf8')
 );
@@ -29,7 +43,7 @@ const sitemapExcludedSongSlugs = new Set([
 
 // https://astro.build/config
 export default defineConfig({
-  redirects: songRedirectRoutes,
+  redirects: redirectRoutes,
   site: 'https://worshipsongindex.com',
   output: 'static',
   build: {
@@ -41,6 +55,7 @@ export default defineConfig({
         const songMatch = page.match(/^https:\/\/worshipsongindex\.com\/songs\/([^/]+)\/$/);
         if (songMatch && sitemapExcludedSongSlugs.has(songMatch[1])) return false;
         if (songMatch && Object.hasOwn(songRedirects, songMatch[1])) return false;
+        if (redirectSourcePaths.has(new URL(page).pathname)) return false;
         return true;
       },
       serialize(item) {

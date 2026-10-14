@@ -2,10 +2,12 @@
 import Layout from '../../../layouts/Layout.astro';
 import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
 import BrowseOccasionGuides from '../../../components/BrowseOccasionGuides.astro';
+import BrowseBlogGuides from '../../../components/BrowseBlogGuides.astro';
 import { songs } from '../../../lib/songs';
 import { getThemeDescription } from '../../../lib/themeDescriptions';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import { getBrowseOccasionGuides } from '../../../lib/browseOccasionGuides';
+import { getBrowseBlogGuides } from '../../../lib/browseBlogGuides';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
 
@@ -48,6 +50,7 @@ const description = `Browse ${filteredSongs.length} worship songs about ${normal
 const editorialEntry = (editorialsData as any)["themes"]?.[themeSlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
 const occasionGuides = await getBrowseOccasionGuides('themes', themeSlug);
+const blogGuides = getBrowseBlogGuides('themes', themeSlug);
 
 const itemList = {
   "@context": "https://schema.org",
@@ -109,6 +112,10 @@ const structuredData = [itemList, breadcrumb];
 
   {occasionGuides.length > 0 && (
     <BrowseOccasionGuides guides={occasionGuides} />
+  )}
+
+  {blogGuides.length > 0 && (
+    <BrowseBlogGuides guides={blogGuides} />
   )}
 
   <BrowseSongGrid songs={filteredSongs} />
