@@ -3,8 +3,8 @@
  * Explicit legacy alias map for retired /browse/ URLs (static hosting).
  *
  * Production is Replit STATIC hosting (.replit deploymentTarget = "static"), so
- * server.mjs and src/middleware.ts never run there and nothing can send a 301.
- * The only working mechanism is the one already used for retired song slugs
+ * server.mjs and src/middleware.ts do not run there. This patch reuses the
+ * mechanism already tested for retired song slugs
  * (astro.config.mjs `redirects`, since 1c14e29): a small HTML page at the old
  * URL that is HTTP 200, carries rel=canonical to the target, meta robots
  * noindex, and an immediate meta refresh. This script writes the explicit list
@@ -29,8 +29,8 @@
  * Deliberately NOT emitted: paths with uppercase, spaces, apostrophes, colons
  * or underscores. Case and space variants are not safe as static file paths and
  * the underscore themes (second_coming) resolve to a different page than the
- * hyphen theme (second-coming), so they are ambiguous. Those need app hosting
- * (server.mjs already canonicalizes them) or a host-level redirect rule.
+ * hyphen theme (second-coming), so they are ambiguous. Those need separate
+ * host/path validation; no hosting migration is part of this patch.
  *
  * Usage:  node scripts/generate-legacy-aliases.mjs            # write the file
  *         node scripts/generate-legacy-aliases.mjs --check    # verify, exit 1 on drift
