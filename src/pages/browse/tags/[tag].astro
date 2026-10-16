@@ -6,6 +6,7 @@ import { songs } from '../../../lib/songs';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
+import reviewedBrowseAliases from '../../../data/reviewedBrowseAliases.json';
 
 export async function getStaticPaths() {
   const tagBySlug = new Map<string, string>();
@@ -13,6 +14,7 @@ export async function getStaticPaths() {
   songs.flatMap(s => s.tags).forEach((tag) => {
     const slug = slugifyBrowseValue(tag);
     if (artistSlugs.has(slug)) return;
+    if (reviewedBrowseAliases.aliases.some(({ from }) => from === `/browse/tags/${slug}/`)) return;
     if (!tagBySlug.has(slug)) tagBySlug.set(slug, tag);
   });
 

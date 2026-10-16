@@ -45,7 +45,7 @@ const displayTheme = themeSlug
   .join(' ');
 
 const title = `Worship Songs About ${displayTheme} | Worship Song Index`;
-const description = `Browse ${filteredSongs.length} worship songs about ${normalizedTheme}, with complete song data, BPM, keys, and theological insights for every song.`;
+const description = themeSlug === 'borders' ? 'Browse the current Borders song entry and related kingdom and immigration collections. Review song context before choosing music for your service.' : `Browse ${filteredSongs.length} worship songs about ${normalizedTheme}, with complete song data, BPM, keys, and theological insights for every song.`;
 
 const editorialEntry = (editorialsData as any)["themes"]?.[themeSlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
@@ -103,6 +103,13 @@ const structuredData = [itemList, breadcrumb];
       <p class="text-base leading-relaxed" style="color: var(--color-text-muted);">
         {themeDescription}
       </p>
+    </div>
+  )}
+
+  {themeSlug === 'borders' && (
+    <div class="mb-8 max-w-3xl space-y-3" style="color: var(--color-text-secondary);">
+      <p>This collection currently contains one catalog entry. Open its song page to review the context before including it in a service.</p>
+      <p>For a broader selection, browse <a href="/browse/themes/kingdom/" class="text-primary-600 underline">kingdom songs</a> or <a href="/browse/themes/immigration/" class="text-primary-600 underline">immigration songs</a>, or compare other <a href="/browse/artists/propaganda/" class="text-primary-600 underline">Propaganda songs</a>.</p>
     </div>
   )}
 

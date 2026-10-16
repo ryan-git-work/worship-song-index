@@ -1,0 +1,95 @@
+{
+  "about": "Explicit independently reviewed aliases. Preserve exact case and spaces; no normalization or wildcard. Existing Static HTML redirect mechanism (200, noindex, canonical, meta refresh).",
+  "aliases": [
+    {
+      "from": "/browse/tags/Tasha Cobbs Leonard/",
+      "to": "/browse/artists/tasha-cobbs-leonard/",
+      "historicalSongs": [
+        "fill-me-up",
+        "for-your-glory",
+        "im-still-standing",
+        "something-happens",
+        "this-is-a-move",
+        "you-know-my-name",
+        "your-spirit"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/Bifrost-Arts",
+      "to": "/browse/artists/bifrost-arts/",
+      "historicalSongs": [
+        "all-creatures-bifrost",
+        "come-behold-the-wondrous-mystery-bifrost",
+        "guide-me-o-thou-great-jehovah-arts",
+        "holy-is-your-name-bifrost",
+        "in-the-bleak-midwinter-bifrost"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/Micah-Tyler/",
+      "to": "/browse/artists/micah-tyler/",
+      "historicalSongs": [
+        "different-micah-tyler",
+        "never-been-a-moment-micah-tyler"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/Crowder-Band/",
+      "to": "/browse/tags/crowder-band/",
+      "historicalSongs": [
+        "how-he-loves-crowder-band",
+        "o-praise-him-all-this-for-a-king-crowder"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/Psalm-88/",
+      "to": "/browse/tags/psalm-88/",
+      "historicalSongs": [
+        "night-seasons-dark-night-of-soul"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/Proverbs-3",
+      "to": "/browse/tags/proverbs-3/",
+      "historicalSongs": [
+        "trust-in-god-elevation-worship-chris-brown"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/Genesis-1/",
+      "to": "/browse/tags/genesis-1/",
+      "historicalSongs": [
+        "all-things-bright-and-beautiful-alexander"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/themes/gods_power",
+      "to": "/browse/themes/godspower/",
+      "historicalSongs": [
+        "another-one",
+        "make-a-way",
+        "mighty-god-another-hallelujah",
+        "power",
+        "sun-stand-still",
+        "theres-no-way-red-rocks-worship",
+        "what-a-miracle"
+      ],
+      "evidence": "Historical exact route at 98d9d686; all original song identities retained on target, reviewed October 14\u201316, 2026."
+    },
+    {
+      "from": "/browse/tags/borders/",
+      "to": "/browse/themes/borders/",
+      "historicalSongs": [
+        "no-borders-in-kingdom-propaganda"
+      ],
+      "evidence": "October 16 catalog and public readback: identical single-song tag/theme collections; retain theme and its contextual discovery links."
+    }
+  ]
+}

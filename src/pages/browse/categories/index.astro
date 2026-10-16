@@ -1,4 +1,5 @@
 ---
+import reviewedBrowseAliases from '../../../data/reviewedBrowseAliases.json';
 import Layout from '../../../layouts/Layout.astro';
 import { formatTheme } from '../../../types/song';
 import { songs } from '../../../lib/songs';
@@ -14,6 +15,7 @@ const allThemes = [...new Set(songs.flatMap(s => s.themes))].sort();
 const artistSlugs = new Set(songs.map((s) => slugifyBrowseValue(s.primary_artist)));
 const allTags = [...new Set(songs.flatMap(s => s.tags))]
   .filter((tag) => !artistSlugs.has(slugifyBrowseValue(tag)))
+  .filter((tag) => !reviewedBrowseAliases.aliases.some(({ from }) => from === `/browse/tags/${slugifyBrowseValue(tag)}/`))
   .sort();
 
 allThemes.forEach(theme => {

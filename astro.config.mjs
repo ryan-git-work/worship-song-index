@@ -27,7 +27,13 @@ const legacyAliases = JSON.parse(
 const legacyAliasRoutes = Object.fromEntries(
   legacyAliases.map(({ from, to }) => [from.replace(/\/$/, ''), to])
 );
-const redirectRoutes = { ...songRedirectRoutes, ...legacyAliasRoutes };
+const reviewedBrowseAliases = JSON.parse(
+  fs.readFileSync(new URL('./src/data/reviewedBrowseAliases.json', import.meta.url), 'utf8')
+).aliases;
+const reviewedAliasRoutes = Object.fromEntries(
+  reviewedBrowseAliases.map(({ from, to }) => [from.replace(/\/$/, ''), to])
+);
+const redirectRoutes = { ...songRedirectRoutes, ...legacyAliasRoutes, ...reviewedAliasRoutes };
 // Every redirect page is noindex with a canonical elsewhere, so none belongs in the sitemap.
 const redirectSourcePaths = new Set(
   Object.keys(redirectRoutes).map((route) => (route.endsWith('/') ? route : `${route}/`))
