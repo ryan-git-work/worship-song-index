@@ -10,6 +10,8 @@ import { getBrowseOccasionGuides } from '../../../lib/browseOccasionGuides';
 import { getBrowseBlogGuides } from '../../../lib/browseBlogGuides';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
+import catalogIntegrity from '../../../data/catalogIntegrity.json';
+import songRedirects from '../../../data/songRedirects.json';
 
 export async function getStaticPaths() {
   const allThemes = new Set<string>();
@@ -30,11 +32,16 @@ const { theme: themeProp } = Astro.props;
 const themeSlug = Astro.params.theme;
 const themeDescription = getThemeDescription(themeSlug);
 
+// Bounded integrity pass for the three collections reviewed in October16.
+// Keep quarantined/deleted/retired song entries out of their recommendations.
+const reviewedTheme = ['obedience', 'transformation', 'borders'].includes(themeSlug);
+const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted, ...Object.keys(songRedirects)]);
+
 // Normalize theme for comparison
 const normalizedTheme = themeSlug.replace(/-/g, ' ');
 const filteredSongs = songs
   .filter(s => 
-    s.themes?.some(t => slugifyBrowseValue(t) === themeSlug)
+    s.themes?.some(t => slugifyBrowseValue(t) === themeSlug) && (!reviewedTheme || !hiddenSongs.has(s.slug))
   )
   .sort((a, b) => a.title.localeCompare(b.title));
 

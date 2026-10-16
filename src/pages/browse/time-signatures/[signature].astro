@@ -10,6 +10,8 @@ import { getBrowseOccasionGuides } from '../../../lib/browseOccasionGuides';
 import { getBrowseBlogGuides } from '../../../lib/browseBlogGuides';
 import editorialsData from '../../../../public/browse-editorials.json';
 import { marked } from 'marked';
+import catalogIntegrity from '../../../data/catalogIntegrity.json';
+import songRedirects from '../../../data/songRedirects.json';
 
 export async function getStaticPaths() {
   const allSignatures = [...new Set(songs.map(s => s.time_signature).filter((signature): signature is string => signature !== null))];
@@ -21,7 +23,8 @@ export async function getStaticPaths() {
 }
 
 const { signature } = Astro.props;
-const filteredSongs = songs.filter(s => s.time_signature === signature).sort((a, b) => a.title.localeCompare(b.title));
+const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted, ...Object.keys(songRedirects)]);
+const filteredSongs = songs.filter(s => s.time_signature === signature && (signature !== '6/8' || !hiddenSongs.has(s.slug))).sort((a, b) => a.title.localeCompare(b.title));
 const signatureSlug = Astro.params.signature || '';
 const editorialEntry = (editorialsData as any)["time-signatures"]?.[signatureSlug];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;

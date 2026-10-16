@@ -44,3 +44,15 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Building exact legacy aliases
+
+The reviewed legacy browse aliases include case-distinct paths such as
+`/browse/tags/Psalm-88/` and `/browse/tags/psalm-88/`. Build on a case-sensitive
+filesystem, as in the existing Linux Replit workspace. `npm run build` checks
+this before generating output and stops on a case-insensitive filesystem so an
+alias cannot overwrite its canonical page. On macOS, use a case-sensitive
+checkout for builds; the ordinary checkout remains suitable for editing.
+
+Aliases use the existing Static HTML mechanism: HTTP 200 with `noindex`, an
+immediate meta refresh and a canonical target. They are not server 301s.

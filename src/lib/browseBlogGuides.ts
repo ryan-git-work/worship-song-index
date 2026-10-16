@@ -60,6 +60,15 @@ const browseBlogGuides: Record<string, BrowseBlogGuideLink[]> = {
       href: '/blog/songs-like-build-my-life/',
     },
   ],
+  // Added 2026-10-16. The transformation editorial frames its songs as
+  // testimony (before-and-after sung in the first person); the Goodness of God
+  // guide maps that testimony family and already sits one click from it.
+  'themes/transformation': [
+    {
+      title: 'Songs Like Goodness of God',
+      href: '/blog/songs-like-goodness-of-god/',
+    },
+  ],
 };
 
 export function getBrowseBlogGuides(
