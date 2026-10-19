@@ -32,9 +32,9 @@ const { theme: themeProp } = Astro.props;
 const themeSlug = Astro.params.theme;
 const themeDescription = getThemeDescription(themeSlug);
 
-// Bounded integrity pass for the three collections reviewed in October16.
+// Bounded integrity pass for the collections reviewed in October16 and October19.
 // Keep quarantined/deleted/retired song entries out of their recommendations.
-const reviewedTheme = ['obedience', 'transformation', 'borders'].includes(themeSlug);
+const reviewedTheme = ['obedience', 'transformation', 'borders', 'covenant', 'consecration', 'justification'].includes(themeSlug);
 const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted, ...Object.keys(songRedirects)]);
 
 // Normalize theme for comparison
