@@ -32,9 +32,9 @@ const { theme: themeProp } = Astro.props;
 const themeSlug = Astro.params.theme;
 const themeDescription = getThemeDescription(themeSlug);
 
-// Bounded integrity pass for the collections reviewed in October16 and October19.
+// Bounded integrity pass for the collections reviewed in October16, October19, and the Prayer and refuge release.
 // Keep quarantined/deleted/retired song entries out of their recommendations.
-const reviewedTheme = ['obedience', 'transformation', 'borders', 'covenant', 'consecration', 'justification'].includes(themeSlug);
+const reviewedTheme = ['obedience', 'transformation', 'borders', 'covenant', 'consecration', 'justification', 'protection', 'cleansing', 'intercession'].includes(themeSlug);
 const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted, ...Object.keys(songRedirects)]);
 
 // Normalize theme for comparison
@@ -52,9 +52,10 @@ const displayTheme = themeSlug
   .join(' ');
 
 const title = `Worship Songs About ${displayTheme} | Worship Song Index`;
-const description = themeSlug === 'borders' ? 'Browse the current Borders song entry and related kingdom and immigration collections. Review song context before choosing music for your service.' : `Browse ${filteredSongs.length} worship songs about ${normalizedTheme}, with complete song data, BPM, keys, and theological insights for every song.`;
-
 const editorialEntry = (editorialsData as any)["themes"]?.[themeSlug || ''];
+const prayerRefugeTheme = ['protection', 'cleansing', 'intercession'].includes(themeSlug);
+const description = prayerRefugeTheme ? editorialEntry.description : themeSlug === 'borders' ? 'Browse the current Borders song entry and related kingdom and immigration collections. Review song context before choosing music for your service.' : `Browse ${filteredSongs.length} worship songs about ${normalizedTheme}, with complete song data, BPM, keys, and theological insights for every song.`;
+
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;
 const occasionGuides = await getBrowseOccasionGuides('themes', themeSlug);
 const blogGuides = getBrowseBlogGuides('themes', themeSlug);
@@ -63,7 +64,7 @@ const itemList = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": `Worship Songs About ${displayTheme}`,
-  "description": `${filteredSongs.length} worship songs on the theme of ${normalizedTheme}, with keys, BPM, and tempo for each.`,
+  "description": prayerRefugeTheme ? description : `${filteredSongs.length} worship songs on the theme of ${normalizedTheme}, with keys, BPM, and tempo for each.`,
   "numberOfItems": filteredSongs.length,
   "itemListElement": filteredSongs.slice(0, 30).map((song, i) => ({
     "@type": "ListItem",
