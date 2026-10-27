@@ -106,8 +106,11 @@ for (const post of blogRows) {
   if (post.slug) routes[`/blog/${post.slug}/`] = maxDate(blogTemplateDate, blogContentDates.get(post.slug));
 }
 
+// A homepage edit changes the homepage, not every route that falls back to the
+// default date. Keep that date stable and date the homepage explicitly.
+routes['/'] = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/index.astro')));
 const output = {
-  default: maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/index.astro'))),
+  default: maxDate(layoutDate, existing.default),
   prefixes: {
     '/articles/': articleTemplateDate,
     '/blog/': blogDate,

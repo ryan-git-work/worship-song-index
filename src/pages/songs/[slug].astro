@@ -224,7 +224,86 @@ const structuredData = [musicComposition, breadcrumb];
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-    <div class="lg:col-span-2 space-y-8">
+    <aside class="lg:col-span-1 lg:col-start-3 lg:row-start-1">
+      <div class="rounded-lg border p-6 sticky top-8" style="background: var(--color-surface-card); border-color: var(--color-border);">
+        <h2 class="text-lg font-semibold mb-4 pb-3 border-b" style="font-family: var(--font-serif); color: var(--color-text-primary); border-color: var(--color-border-light);">
+          Song Details
+        </h2>
+
+        {suppressMetadata ? (
+          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
+            {isQuarantined
+              ? 'Catalog data for this song is under verification.'
+              : 'Key and tempo for this song are not yet verified against a published source, so we are not listing them.'}
+          </p>
+        ) : (
+          <dl class="space-y-4">
+            {song.default_male_key && (
+              <div class="flex justify-between items-center">
+                <dt style="color: var(--color-text-muted);">Male Key</dt>
+                <dd>
+                  <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                    {song.default_male_key}
+                  </a>
+                </dd>
+              </div>
+            )}
+
+            {song.default_female_key && (
+              <div class="flex justify-between items-center">
+                <dt style="color: var(--color-text-muted);">Female Key</dt>
+                <dd>
+                  <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
+                    {song.default_female_key}
+                  </a>
+                </dd>
+              </div>
+            )}
+
+            <div class="border-t" style="border-color: var(--color-border-light);"></div>
+
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">Tempo</dt>
+              <dd class="font-medium" style="color: var(--color-text-primary);">
+                {getTempoLabel(song.tempo_bpm)}
+              </dd>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <dt style="color: var(--color-text-muted);">BPM</dt>
+              <dd class="font-semibold" style="color: var(--color-text-primary);">
+                {song.tempo_bpm === null ? 'Not verified' : song.tempo_bpm}
+              </dd>
+            </div>
+
+            {song.time_signature && (
+              <div class="flex justify-between items-center">
+                <dt style="color: var(--color-text-muted);">Time Signature</dt>
+                <dd>
+                  <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
+                    {song.time_signature}
+                  </a>
+                </dd>
+              </div>
+            )}
+          </dl>
+        )}
+
+        <div class="mt-6 pt-4 border-t" style="border-color: var(--color-border-light);">
+          <a
+            href="/songs/"
+            class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-800 font-medium transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to All Songs
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <div class="lg:col-span-2 lg:col-start-1 lg:row-start-1 space-y-8">
 
       {song.youtube && (() => {
         const videoId = getYouTubeVideoId(song.youtube || '');
@@ -354,83 +433,6 @@ const structuredData = [musicComposition, breadcrumb];
       )}
     </div>
 
-    <aside class="lg:col-span-1">
-      <div class="rounded-lg border p-6 sticky top-8" style="background: var(--color-surface-card); border-color: var(--color-border);">
-        <h2 class="text-lg font-semibold mb-4 pb-3 border-b" style="font-family: var(--font-serif); color: var(--color-text-primary); border-color: var(--color-border-light);">
-          Song Details
-        </h2>
 
-        {suppressMetadata ? (
-          <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
-            {isQuarantined
-              ? 'Catalog data for this song is under verification.'
-              : 'Key and tempo for this song are not yet verified against a published source, so we are not listing them.'}
-          </p>
-        ) : (
-          <dl class="space-y-4">
-            {song.default_male_key && (
-              <div class="flex justify-between items-center">
-                <dt style="color: var(--color-text-muted);">Male Key</dt>
-                <dd>
-                  <a href={`/browse/keys/male/${keyToSlug(song.default_male_key)}/`} class="font-semibold bg-primary-100 hover:bg-primary-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
-                    {song.default_male_key}
-                  </a>
-                </dd>
-              </div>
-            )}
-
-            {song.default_female_key && (
-              <div class="flex justify-between items-center">
-                <dt style="color: var(--color-text-muted);">Female Key</dt>
-                <dd>
-                  <a href={`/browse/keys/female/${keyToSlug(song.default_female_key)}/`} class="font-semibold bg-accent-100 hover:bg-accent-200 px-3 py-1 rounded-md text-sm transition-colors" style="color: var(--color-text-primary);">
-                    {song.default_female_key}
-                  </a>
-                </dd>
-              </div>
-            )}
-
-            <div class="border-t" style="border-color: var(--color-border-light);"></div>
-
-            <div class="flex justify-between items-center">
-              <dt style="color: var(--color-text-muted);">Tempo</dt>
-              <dd class="font-medium" style="color: var(--color-text-primary);">
-                {getTempoLabel(song.tempo_bpm)}
-              </dd>
-            </div>
-
-            <div class="flex justify-between items-center">
-              <dt style="color: var(--color-text-muted);">BPM</dt>
-              <dd class="font-semibold" style="color: var(--color-text-primary);">
-                {song.tempo_bpm === null ? 'Not verified' : song.tempo_bpm}
-              </dd>
-            </div>
-
-            {song.time_signature && (
-              <div class="flex justify-between items-center">
-                <dt style="color: var(--color-text-muted);">Time Signature</dt>
-                <dd>
-                  <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
-                    {song.time_signature}
-                  </a>
-                </dd>
-              </div>
-            )}
-          </dl>
-        )}
-
-        <div class="mt-6 pt-4 border-t" style="border-color: var(--color-border-light);">
-          <a
-            href="/"
-            class="inline-flex items-center gap-2 text-primary-600 hover:text-primary-800 font-medium transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to All Songs
-          </a>
-        </div>
-      </div>
-    </aside>
   </div>
 </Layout>

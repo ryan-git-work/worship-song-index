@@ -8,7 +8,9 @@
     "start": "node server.mjs",
     "preview": "astro preview",
     "astro": "astro",
-    "check:leaks": "node scripts/check-no-internal-leaks.mjs"
+    "check:leaks": "node scripts/check-no-internal-leaks.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check:release": "npm test && npm run build"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

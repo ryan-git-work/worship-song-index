@@ -56,3 +56,16 @@ checkout for builds; the ordinary checkout remains suitable for editing.
 
 Aliases use the existing Static HTML mechanism: HTTP 200 with `noindex`, an
 immediate meta refresh and a canonical target. They are not server 301s.
+
+## Local regression and release checks
+
+Run `npm test` for the search, catalog-count and real-Git sitemap-date regressions.
+Before a candidate is considered for release, run `npm run check:release` in a
+case-sensitive checkout. It runs the full regression suite followed by the
+production build (including alias-filesystem and internal-path leak guards).
+Neither command pushes, publishes or deploys. Inspect the generated sitemap
+and rendered affected-page checks as part of review; a passing build alone does
+not verify metadata suppression, responsive navigation or live publication.
+
+The song-details block uses the existing catalog confidence/quarantine gates;
+its earlier placement does not verify previously unsourced musical numbers.

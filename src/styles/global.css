@@ -155,3 +155,23 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.25rem;
   font-size: 0.85em;
 }
+
+/* Keep the existing Occasions link reachable on narrow screens. These scoped
+   overrides avoid changing the shared layout's metadata or desktop navigation. */
+@media (max-width: 639px) {
+  body .site-header .site-nav .site-brand {
+    grid-column: 1 / -1;
+  }
+
+  body .site-header .site-nav .site-links {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  body .site-header .site-nav .site-links a[href="/articles/"] {
+    display: inline-flex !important; /* Override the existing scoped nth-child hide. */
+  }
+}

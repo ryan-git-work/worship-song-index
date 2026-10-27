@@ -36,7 +36,7 @@ const recentPosts = [...blogData]
   }));
 
 const title = 'Worship Song Index | Keys, BPM, Meaning and Leadership Notes';
-const description = 'Search 3,470+ worship songs by title or artist. Find recommended keys, BPM, time signature, scripture, song meaning, and practical notes for leading each song.';
+const description = `Search ${songs.length.toLocaleString()} worship songs by title or artist. Find recommended keys, BPM, time signature, scripture, song meaning, and practical notes for leading each song.`;
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -70,7 +70,7 @@ const structuredData = {
         placeholder="Try “Goodness of God” or “Phil Wickham”"
       />
       <div class="home-hero__proof" aria-label="Site highlights">
-        <span><strong>3,470+</strong> English songs</span>
+        <span><strong>{songs.length.toLocaleString()}</strong> English songs</span>
         <span><strong>{spanishSongs.length}</strong> canciones en español</span>
         <span><strong>Free</strong> to use</span>
       </div>
