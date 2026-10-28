@@ -90,6 +90,14 @@
         "no-borders-in-kingdom-propaganda"
       ],
       "evidence": "October 16 catalog and public readback: identical single-song tag/theme collections; retain theme and its contextual discovery links."
+    },
+    {
+      "to": "/browse/artists/aaron-williams/",
+      "historicalSongs": [
+        "abide"
+      ],
+      "evidence": "October28 source recording selection: Aaron Williams / Jon Reddick, Abide; same sole historical Abide composition retained on corrected artist collection. Existing Static 200/noindex canonical meta-refresh mechanism.",
+      "from": "/browse/artists/aaron-williams-the-worship-initiative/"
     }
   ]
 }

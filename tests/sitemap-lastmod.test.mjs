@@ -57,3 +57,39 @@ test('a real shared-layout edit retains the existing template date policy',()=>f
   assert.equal(after.routes['/songs/example/'],today);
   assert.ok(Object.values(after.prefixes).every(date=>date===today));
 }));
+
+test('a song revision preserves the date of an unchanged chunk neighbor',()=>fixture(async({root,generate})=>{
+  const data='public/songs-chunk-1.json';
+  await writeFile(join(root,data),JSON.stringify([{slug:'example',title:'Before'},{slug:'neighbor',title:'Unchanged'}]));
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env});
+  execFileSync('git',['commit','-qm','two source songs'],{cwd:root,env});
+  const before=await generate();
+  await writeFile(join(root,data),JSON.stringify([{slug:'example',title:'Revised'},{slug:'neighbor',title:'Unchanged'}]));
+  const after=await generate();
+  assert.equal(after.routes['/songs/example/'],today);
+  assert.equal(after.routes['/songs/neighbor/'],before.routes['/songs/neighbor/']);
+  assert.equal(after.routes['/songs/neighbor/'],baselineDate);
+}));
+
+test('new songs get their introduction date and committed rebuilds remain stable',()=>fixture(async({root,generate})=>{
+  const data='public/songs-chunk-new.json';
+  await writeFile(join(root,data),JSON.stringify([{slug:'new-song',title:'New'}]));
+  const uncommitted=await generate();assert.equal(uncommitted.routes['/songs/new-song/'],today);
+  assert.equal(uncommitted.routes['/'],today, 'the homepage count changes with the catalog');
+  const env={...process.env,GIT_AUTHOR_DATE:today+'T12:00:00Z',GIT_COMMITTER_DATE:today+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env});
+  execFileSync('git',['commit','-qm','introduce new song'],{cwd:root,env});
+  const first=await generate();const second=await generate();assert.deepEqual(first,second);
+  assert.equal(first.routes['/songs/new-song/'],today);
+  assert.equal(first.routes['/songs/example/'],baselineDate);
+}));
+
+test('real-sized song chunks do not overflow Git reads and get false current dates',()=>fixture(async({root,generate})=>{
+  const data='public/songs-chunk-1.json';
+  await writeFile(join(root,data),JSON.stringify([{slug:'example',editorial_markdown:'source '.repeat(180000)}]));
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env});
+  execFileSync('git',['commit','-qm','real sized source chunk'],{cwd:root,env});
+  const dates=await generate();assert.equal(dates.routes['/songs/example/'],baselineDate);
+}));

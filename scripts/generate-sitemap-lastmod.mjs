@@ -13,7 +13,7 @@ function repoPath(file) {
 
 function gitText(args) {
   try {
-    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8' }).trim();
+    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).trim();
   } catch {
     return '';
   }
@@ -54,14 +54,41 @@ const browseDate = maxDate(
 );
 
 const routes = {};
+// A song chunk is storage, not an editorial unit. Date each song from its own
+// content history so revising one entry cannot redate its untouched neighbors.
+function songContentDates(file, rows) {
+  const floor = rows.map(song => existing.routes?.[`/songs/${song.slug}/`])
+    .filter(Boolean).sort().at(0);
+  const pending = new Map(rows.filter(song => song.slug).map(song =>
+    [song.slug, { content: JSON.stringify(song), date: TODAY }],
+  ));
+  const dates = new Map();
+  for (const revision of gitText(['log', '--format=%H|%cs', '--', repoPath(file)]).split('\n').filter(Boolean)) {
+    if (!pending.size) break;
+    const [sha, date] = revision.split('|');
+    let historical;
+    try { historical = JSON.parse(gitText(['show', `${sha}:${repoPath(file)}`])); }
+    catch { throw new Error(`Cannot read song history for ${repoPath(file)} at ${sha}`); }
+    const prior = new Map(historical.map(song => [song.slug, JSON.stringify(song)]));
+    for (const [slug, current] of pending) {
+      if (prior.get(slug) === current.content) current.date = date;
+      else { dates.set(slug, current.date); pending.delete(slug); }
+    }
+    // Earlier history cannot advance a date already recorded for this page.
+    if (floor && date < floor) break;
+  }
+  for (const [slug, current] of pending) dates.set(slug, current.date);
+  return dates;
+}
 for (const file of songDataFiles) {
-  const dataDate = fileDate(file);
   const rows = JSON.parse(readFileSync(file, 'utf8'));
+  const contentDates = songContentDates(file, rows);
   for (const song of rows) {
     if (!song.slug) continue;
-    routes[`/songs/${song.slug}/`] = maxDate(songTemplateDate, dataDate);
+    const dataDate = contentDates.get(song.slug);
+    routes[`/songs/${song.slug}/`] = maxDate(existing.routes?.[`/songs/${song.slug}/`], songTemplateDate, dataDate);
     if (file.endsWith('songs-chunk-spanish.json')) {
-      routes[`/canciones/${song.slug}/`] = maxDate(layoutDate, dataDate, fileDate(join(ROOT, 'src/pages/canciones/[slug].astro')));
+      routes[`/canciones/${song.slug}/`] = maxDate(existing.routes?.[`/canciones/${song.slug}/`], layoutDate, dataDate, fileDate(join(ROOT, 'src/pages/canciones/[slug].astro')));
     }
   }
 }
@@ -108,7 +135,8 @@ for (const post of blogRows) {
 
 // A homepage edit changes the homepage, not every route that falls back to the
 // default date. Keep that date stable and date the homepage explicitly.
-routes['/'] = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/index.astro')));
+routes['/'] = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/index.astro')),
+  ...songDataFiles.map(file => fileDate(file)));
 const output = {
   default: maxDate(layoutDate, existing.default),
   prefixes: {
