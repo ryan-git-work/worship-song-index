@@ -93,3 +93,61 @@ test('real-sized song chunks do not overflow Git reads and get false current dat
   execFileSync('git',['commit','-qm','real sized source chunk'],{cwd:root,env});
   const dates=await generate();assert.equal(dates.routes['/songs/example/'],baselineDate);
 }));
+
+test('a browse guide edit dates only that guide, not its dictionary neighbors or browse prefix',()=>fixture(async({root,generate})=>{
+  const data='public/browse-editorials.json';
+  const entries={themes:{eternity:{editorial_markdown:'Original'},hope:{editorial_markdown:'Unchanged'}}};
+  await writeFile(join(root,data),JSON.stringify(entries));
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env});
+  execFileSync('git',['commit','-qm','two existing guides'],{cwd:root,env});
+  const before=await generate();
+  entries.themes.eternity.editorial_markdown='Revised';
+  entries.themes['following-jesus']={editorial_markdown:'New guide on existing collection'};
+  await writeFile(join(root,data),JSON.stringify(entries));
+  const after=await generate();
+  assert.equal(after.routes['/browse/themes/eternity/'],today);
+  assert.equal(after.routes['/browse/themes/following-jesus/'],today);
+  assert.equal(after.routes['/browse/themes/hope/'],before.routes['/browse/themes/hope/']);
+  assert.equal(after.prefixes['/browse/'],before.prefixes['/browse/']);
+  assert.equal(after.routes['/songs/example/'],before.routes['/songs/example/']);
+  execFileSync('git',['add',data],{cwd:root,env});
+  execFileSync('git',['commit','-qm','reviewed guide update'],{cwd:root,env:{...env,GIT_AUTHOR_DATE:today+'T12:00:00Z',GIT_COMMITTER_DATE:today+'T12:00:00Z'}});
+  const clean=await generate();assert.deepEqual(await generate(),clean);
+  assert.equal(clean.routes['/browse/themes/eternity/'],today);
+  assert.equal(clean.routes['/browse/themes/hope/'],baselineDate);
+}));
+
+test('an occasion edit dates its page and rendered index without redating other occasions',()=>fixture(async({root,generate})=>{
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  for (const slug of ['veterans-day','advent']) await writeFile(join(root,'src/content/articles',slug+'.md'),slug);
+  execFileSync('git',['add','src/content/articles'],{cwd:root,env});
+  execFileSync('git',['commit','-qm','existing occasions'],{cwd:root,env});
+  const before=await generate();
+  await writeFile(join(root,'src/content/articles/veterans-day.md'),'corrected facts and word count');
+  const after=await generate();
+  assert.equal(after.routes['/articles/veterans-day/'],today);
+  assert.equal(after.routes['/articles/'],today);
+  assert.equal(after.routes['/articles/advent/'],before.routes['/articles/advent/']);
+  assert.equal(after.prefixes['/articles/'],before.prefixes['/articles/']);
+}));
+
+test('nested key guide routes and committed guide removals retain accurate per-page dates',()=>fixture(async({root,generate})=>{
+  const data='public/browse-editorials.json';
+  const entries={themes:{eternity:{editorial_markdown:'Original'}},'keys-female':{d:{editorial_markdown:'Original key guide'}}};
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  await writeFile(join(root,data),JSON.stringify(entries));
+  execFileSync('git',['add',data],{cwd:root,env});execFileSync('git',['commit','-qm','existing guides'],{cwd:root,env});
+  const before=await generate();assert.equal(before.routes['/browse/keys/female/d/'],baselineDate);
+  delete entries.themes.eternity;entries['keys-female'].d.editorial_markdown='Revised key guide';
+  await writeFile(join(root,data),JSON.stringify(entries));
+  const after=await generate();
+  assert.equal(after.routes['/browse/themes/eternity/'],today);
+  assert.equal(after.routes['/browse/keys/female/d/'],today);
+  assert.equal(after.routes['/browse/keys-female/d/'],undefined);
+  const currentEnv={...env,GIT_AUTHOR_DATE:today+'T12:00:00Z',GIT_COMMITTER_DATE:today+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env:currentEnv});execFileSync('git',['commit','-qm','remove guide and revise key guide'],{cwd:root,env:currentEnv});
+  const clean=await generate();assert.deepEqual(await generate(),clean);
+  assert.equal(clean.routes['/browse/themes/eternity/'],today);
+  assert.equal(clean.routes['/browse/keys/female/d/'],today);
+}));

@@ -47,13 +47,52 @@ const songTemplateDate = maxDate(
 const songDataFiles = filesIn(join(ROOT, 'public'), '.json')
   .filter((file) => basename(file).startsWith('songs-chunk-'));
 const browseDate = maxDate(
+  existing.prefixes?.['/browse/'],
   layoutDate,
   ...filesIn(join(ROOT, 'src/pages/browse'), '.astro').map((file) => fileDate(file)),
-  fileDate(join(ROOT, 'public/browse-editorials.json')),
   ...songDataFiles.map((file) => fileDate(file)),
 );
 
 const routes = {};
+// The editorial dictionary is storage, not a shared page template. Preserve the
+// established browse floor while dating each guide from its own content history.
+const editorialPath = 'public/browse-editorials.json';
+const editorialRows = JSON.parse(readFileSync(join(ROOT, editorialPath), 'utf8'));
+function editorialRoute(kind, slug) {
+  const directory = { 'keys-female': 'keys/female', 'keys-male': 'keys/male' }[kind] || kind;
+  return `/browse/${directory}/${slug}/`;
+}
+const pendingEditorials = new Map(Object.entries(editorialRows).flatMap(([kind, entries]) =>
+  Object.entries(entries).map(([slug, entry]) =>
+    [editorialRoute(kind, slug), { kind, slug, content: JSON.stringify(entry), date: TODAY }]),
+));
+// Removing a guide still revises its existing collection page. Keep its dated
+// route in the history walk even though it is absent from the current dictionary.
+for (const route of Object.keys(existing.routes || {})) {
+  const match = route.match(/^\/browse\/(keys\/(?:female|male)|[^/]+)\/([^/]+)\/$/);
+  if (!match || pendingEditorials.has(route)) continue;
+  const kind = match[1].replace('keys/', 'keys-');
+  if (editorialRows[kind]) pendingEditorials.set(route, { kind, slug: match[2], content: undefined, date: TODAY });
+}
+const editorialDates = new Map();
+for (const revision of gitText(['log', '--format=%H|%cs', '--', editorialPath]).split('\n').filter(Boolean)) {
+  if (!pendingEditorials.size) break;
+  const [sha, date] = revision.split('|');
+  let historical;
+  try { historical = JSON.parse(gitText(['show', `${sha}:${editorialPath}`])); }
+  catch { throw new Error(`Cannot read browse editorial history at ${sha}`); }
+  for (const [route, current] of pendingEditorials) {
+    if (JSON.stringify(historical[current.kind]?.[current.slug]) === current.content) current.date = date;
+    else { editorialDates.set(route, current.date); pendingEditorials.delete(route); }
+  }
+  // Earlier changes cannot advance the already published shared browse floor.
+  if (existing.prefixes?.['/browse/'] && date < existing.prefixes['/browse/']) break;
+}
+for (const [route, current] of pendingEditorials) editorialDates.set(route, current.date);
+for (const [route, date] of editorialDates) {
+  routes[route] = maxDate(existing.routes?.[route], browseDate, date);
+}
+
 // A song chunk is storage, not an editorial unit. Date each song from its own
 // content history so revising one entry cannot redate its untouched neighbors.
 function songContentDates(file, rows) {
@@ -94,9 +133,14 @@ for (const file of songDataFiles) {
 }
 
 const articleTemplateDate = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/articles/[slug].astro')));
+const articleDates = [];
 for (const file of filesIn(join(ROOT, 'src/content/articles'), '.md')) {
-  routes[`/articles/${basename(file, '.md')}/`] = maxDate(articleTemplateDate, fileDate(file));
+  const date = maxDate(articleTemplateDate, fileDate(file));
+  routes[`/articles/${basename(file, '.md')}/`] = date;
+  articleDates.push(date);
 }
+// The index renders each guide's title, description and word count.
+routes['/articles/'] = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/articles/index.astro')), ...articleDates);
 
 const devotionalTemplateDate = maxDate(layoutDate, fileDate(join(ROOT, 'src/pages/worship-team-devotionals/[pillar]/[slug].astro')));
 for (const file of filesIn(join(ROOT, 'src/content/devotionals'), '.mdx')) {
