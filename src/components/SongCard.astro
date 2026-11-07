@@ -12,7 +12,11 @@ interface Props {
 
 import { keyToSlug, timeSignatureToSlug } from '../lib/browseSlugs';
 
-const { title, artist, maleKey, femaleKey, tempo, bpm, timeSignature, slug } = Astro.props;
+import { displayedTempo, displayedMeter, tempoIsHeld } from '../lib/musicalClaims.mjs';
+const { title, artist, maleKey, femaleKey, tempo: rawTempo, bpm: rawBpm, timeSignature: rawMeter, slug } = Astro.props;
+const bpm = displayedTempo(slug, rawBpm);
+const timeSignature = displayedMeter(slug, rawMeter);
+const tempo = tempoIsHeld(slug) ? 'Not verified' : rawTempo;
 ---
 
 <article class="rounded-lg border transition-all duration-200 hover:shadow-md hover:-translate-y-0.5" style="background: var(--color-surface-card); border-color: var(--color-border);">

@@ -151,3 +151,54 @@ test('nested key guide routes and committed guide removals retain accurate per-p
   assert.equal(clean.routes['/browse/themes/eternity/'],today);
   assert.equal(clean.routes['/browse/keys/female/d/'],today);
 }));
+
+test('song prose preserves collection dates while a verified BPM correction dates only dependent cards',()=>fixture(async({root,generate})=>{
+  const data='public/songs-chunk-1.json';
+  const rows=[{slug:'example',title:'Example',primary_artist:'Artist A',themes:['hope'],tags:['prayer'],default_male_key:'E',default_female_key:'F',tempo_bpm:72,time_signature:'4/4',editorial_markdown:'Original'}, {slug:'neighbor',title:'Neighbor',primary_artist:'Artist B',themes:['peace'],tags:[],default_male_key:'G',default_female_key:'A',tempo_bpm:90,time_signature:'6/8'}];
+  await writeFile(join(root,data),JSON.stringify(rows));
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env});execFileSync('git',['commit','-qm','existing cards'],{cwd:root,env});
+  const before=await generate(); rows[0].editorial_markdown='Corrected source wording';
+  await writeFile(join(root,data),JSON.stringify(rows)); const prose=await generate();
+  assert.equal(prose.routes['/songs/example/'],today);
+  for (const route of ['/browse/artists/artist-a/','/browse/themes/hope/','/browse/keys/male/e/','/songs/']) assert.equal(prose.routes[route],before.routes[route],route);
+  rows[0].tempo_bpm=68; await writeFile(join(root,data),JSON.stringify(rows)); const music=await generate();
+  for (const route of ['/browse/artists/artist-a/','/browse/themes/hope/','/browse/keys/male/e/','/songs/']) assert.equal(music.routes[route],today,route);
+  for (const route of ['/browse/artists/artist-b/','/browse/themes/peace/','/browse/keys/male/g/']) assert.equal(music.routes[route],before.routes[route],route);
+  assert.equal(music.prefixes['/browse/'],before.prefixes['/browse/']);
+}));
+
+test('shared key-intro corrections date only their two voice routes',()=>fixture(async({root,generate})=>{
+  await mkdir(join(root,'src/lib'),{recursive:true});
+  const data='src/lib/keyDescriptions.js';
+  await writeFile(join(root,data),'export const keyDescriptions = {\n  "g": "Original G",\n  "d": "Unchanged D"\n};\n');
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  execFileSync('git',['add',data],{cwd:root,env});execFileSync('git',['commit','-qm','existing intros'],{cwd:root,env});
+  const before=await generate();
+  await writeFile(join(root,data),'export const keyDescriptions = {\n  "g": "Corrected G",\n  "d": "Unchanged D"\n};\n');
+  const after=await generate();
+  for(const voice of ['male','female']){
+    assert.equal(after.routes[`/browse/keys/${voice}/g/`],today);
+    assert.equal(after.routes[`/browse/keys/${voice}/d/`],before.routes[`/browse/keys/${voice}/d/`]);
+  }
+  assert.equal(after.prefixes['/browse/'],before.prefixes['/browse/']);
+}));
+
+test('a corrected card dates a linked blog without revising unrelated blog bodies',()=>fixture(async({root,generate})=>{
+  const songFile='public/songs-chunk-1.json',blogFile='public/blog-posts.json';
+  await writeFile(join(root,songFile),JSON.stringify([{slug:'example',title:'Example',tempo_bpm:72}]));
+  await writeFile(join(root,blogFile),JSON.stringify([{slug:'linked',body:'Guide',songLinks:['example']},{slug:'other',body:'Other',songLinks:[]} ]));
+  const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};
+  execFileSync('git',['add',songFile,blogFile],{cwd:root,env});execFileSync('git',['commit','-qm','existing linked cards'],{cwd:root,env});
+  const before=await generate();
+  await writeFile(join(root,songFile),JSON.stringify([{slug:'example',title:'Example',tempo_bpm:68}]));
+  const after=await generate(); assert.equal(after.routes['/blog/linked/'],today);
+  assert.equal(after.routes['/blog/other/'],before.routes['/blog/other/']);
+}));
+
+test('a scoped musical presentation hold dates its cards without changing route membership',()=>fixture(async({root,generate})=>{
+ const data='public/songs-chunk-1.json';const rows=[{slug:'example',title:'Example',primary_artist:'Artist A',default_male_key:'D',tempo_bpm:172,time_signature:'12/8',themes:['trust'],tags:[]},{slug:'neighbor',title:'Neighbor',primary_artist:'Artist B',default_male_key:'G',tempo_bpm:90,time_signature:'4/4',themes:[],tags:[]}];
+ await writeFile(join(root,data),JSON.stringify(rows));const env={...process.env,GIT_AUTHOR_DATE:baselineDate+'T12:00:00Z',GIT_COMMITTER_DATE:baselineDate+'T12:00:00Z'};execFileSync('git',['add',data],{cwd:root,env});execFileSync('git',['commit','-qm','existing source rows'],{cwd:root,env});const before=await generate();
+ const hold='src/data/musicalClaimHolds.json';await writeFile(join(root,hold),JSON.stringify({example:{tempo:true,meter:true}}));const after=await generate();assert.equal(after.routes['/browse/artists/artist-a/'],today);assert.equal(after.routes['/browse/time-signatures/12-8/'],today);assert.equal(after.routes['/browse/artists/artist-b/'],before.routes['/browse/artists/artist-b/']);assert.equal(after.prefixes['/browse/'],before.prefixes['/browse/']);assert.deepEqual(JSON.parse(await readFile(join(root,data),'utf8')),rows);
+ const current={...env,GIT_AUTHOR_DATE:today+'T12:00:00Z',GIT_COMMITTER_DATE:today+'T12:00:00Z'};execFileSync('git',['add',hold],{cwd:root,env:current});execFileSync('git',['commit','-qm','reviewed display hold'],{cwd:root,env:current});const clean=await generate();assert.equal(clean.routes['/browse/artists/artist-a/'],today);assert.deepEqual(await generate(),clean);
+}));

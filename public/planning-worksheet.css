@@ -1,0 +1,42 @@
+.planning-worksheet {margin-top:3rem;border-top:2px solid var(--color-border);padding-top:1.5rem;color:var(--color-text-primary);}
+.worksheet-heading {display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.worksheet-heading h2 {margin:0;}
+.worksheet-heading button {border:1px solid #4a5a49;border-radius:.375rem;padding:.55rem .85rem;background:#4a5a49;color:#fff;font:600 .9rem system-ui;cursor:pointer;}
+.worksheet-heading button:focus-visible {outline:3px solid #1f1f1f;outline-offset:3px;}
+.worksheet-intro {font-size:.95rem;}
+.worksheet-fields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem 1.5rem;}
+.worksheet-fields dt {font-weight:600;font-size:.85rem;}
+.worksheet-fields dd {margin:0;}
+.write-line {display:block;min-height:1.5rem;border-bottom:1px solid #777;}
+.planning-worksheet table {width:100%;table-layout:fixed;border-collapse:collapse;font-size:.8rem;line-height:1.35;}
+.planning-worksheet th,.planning-worksheet td {padding:.45rem;border:1px solid #777;overflow-wrap:anywhere;text-align:left;vertical-align:top;}
+.planning-worksheet thead th {background:#f2f5f2;}
+.write-space {display:block;min-height:2.5rem;}
+.worksheet-checks {list-style:none!important;padding:0!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem 1rem;font-size:.9rem;line-height:1.45;}
+.worksheet-checks li {display:flex;gap:.5rem;margin:0!important;padding:0!important;}
+.write-checkbox {width:.8rem;height:.8rem;flex:0 0 .8rem;border:1px solid #555;margin-top:.2rem;}
+@media (max-width:480px) {
+ .worksheet-fields,.worksheet-checks {grid-template-columns:1fr;}
+ .planning-worksheet table {font-size:.68rem;}
+ .planning-worksheet th,.planning-worksheet td {padding:.25rem;}
+}
+@media print {
+ @page {size:auto;margin:12mm;}
+ html,body {margin:0!important;padding:0!important;background:white!important;}
+ body>header,body>footer,main>nav,main>article>header,main>article>div:not(.prose) {display:none!important;}
+ main>article>.prose>:not([data-planning-worksheet]) {display:none!important;}
+ main,main>article,main>article>.prose {margin:0!important;padding:0!important;max-width:none!important;width:auto!important;}
+ .planning-worksheet {margin:0!important;padding:0!important;border:0!important;break-inside:avoid;font:10pt/1.3 Arial,sans-serif!important;}
+ .planning-worksheet,.planning-worksheet * {color:#111!important;box-shadow:none!important;}
+ .worksheet-heading h2 {font:700 17pt/1.2 Georgia,serif!important;}
+ [data-print-worksheet] {display:none!important;}
+ .worksheet-intro {font:10pt/1.3 Arial,sans-serif!important;margin:3mm 0!important;}
+ .worksheet-fields {grid-template-columns:repeat(2,minmax(0,1fr));gap:2mm 5mm;margin:3mm 0!important;}
+ .worksheet-fields dt {font-size:9pt;}
+ .write-line {min-height:6mm;}
+ .planning-worksheet table {font:9pt/1.25 Arial,sans-serif!important;margin:4mm 0!important;}
+ .planning-worksheet th,.planning-worksheet td {padding:2mm!important;border:1px solid #555!important;}
+ .write-space {min-height:12mm;}
+ .worksheet-checks {grid-template-columns:repeat(2,minmax(0,1fr));gap:2mm 4mm;font:9pt/1.3 Arial,sans-serif!important;margin:3mm 0!important;}
+ .write-checkbox {width:3mm;height:3mm;flex-basis:3mm;margin-top:.3mm;}
+}

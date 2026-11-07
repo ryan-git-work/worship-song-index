@@ -10,7 +10,11 @@ interface Props {
   slug: string;
 }
 
-const { title, artist, maleKey, femaleKey, tempo, bpm, timeSignature, slug } = Astro.props;
+import { displayedTempo, displayedMeter, tempoIsHeld } from '../lib/musicalClaims.mjs';
+const { title, artist, maleKey, femaleKey, tempo: rawTempo, bpm: rawBpm, timeSignature: rawMeter, slug } = Astro.props;
+const bpm = displayedTempo(slug, rawBpm);
+const timeSignature = displayedMeter(slug, rawMeter);
+const tempo = tempoIsHeld(slug) ? 'Not verified' : rawTempo;
 ---
 
 <a href={`/songs/${slug}`} class="block border-b transition-colors hover:bg-primary-50/40" style="border-color: var(--color-border-light);">

@@ -16,6 +16,7 @@ import { keyToSlug, slugifyBrowseValue, timeSignatureToSlug } from '../../lib/br
 import songPageMetaData from '../../data/songPageMeta.json';
 import songPageMetaHoldoutData from '../../data/songPageMetaHoldout.json';
 import { marked } from 'marked';
+import { applyMusicalClaimHold, tempoIsHeld } from '../../lib/musicalClaims.mjs';
 
 export interface Props {
   song: Song;
@@ -28,7 +29,9 @@ export async function getStaticPaths() {
   }));
 }
 
-const { song } = Astro.props;
+const { song: catalogSong } = Astro.props;
+const song = applyMusicalClaimHold(catalogSong);
+const tempoOnHold = tempoIsHeld(song.slug);
 const relatedDevotionals = await getDevotionalsBySongSlug(song.slug);
 const relatedOccasionGuides = await getOccasionGuidesBySongSlug(song.slug);
 const songFamilyGuide = getSongFamilyGuide(song.slug);
@@ -93,13 +96,18 @@ const dataForwardMeta = songPageMeta[song.slug];
 // suppressMetadata still wins either way.
 const BPM_TITLE_TEST_ENABLED = false;
 const isDataForwardHoldout = !BPM_TITLE_TEST_ENABLED || songPageMetaHoldout[song.slug] === 1;
-const dataForwardTitleWithoutBpm = (!suppressMetadata && song.default_male_key)
+const dataForwardTitleWithoutBpm = (suppressMetadata || song.tempo_bpm === null)
+  ? `${song.title} by ${song.primary_artist} - Worship Song`
+  : song.default_male_key
   ? `${song.title} by ${song.primary_artist} - Key of ${song.default_male_key}, Tempo & BPM | Worship Song Index`
   : `${song.title} by ${song.primary_artist} - Tempo & BPM | Worship Song Index`;
 // suppressMetadata wins over the holdout: the holdout's stored metaTitle is the
 // pre-generated BPM-bearing string, so an unverified song in the holdout arm
 // would otherwise still publish an invented key and tempo in its <title>.
-const title = dataForwardMeta
+// Missing/suppressed tempo must not be advertised as a supplied BPM fact.
+const title = (suppressMetadata || song.tempo_bpm === null)
+  ? `${song.title} by ${song.primary_artist} - Worship Song`
+  : dataForwardMeta
   ? ((isDataForwardHoldout && !suppressMetadata) ? dataForwardMeta.metaTitle : dataForwardTitleWithoutBpm)
   : customSEO[song.slug]?.title ?? ((!suppressMetadata && song.default_male_key)
       ? `${song.title} by ${song.primary_artist} - Worship Song | Key: ${song.default_male_key}`
@@ -153,7 +161,9 @@ const dataForwardDescriptionWithoutBpm = suppressMetadata
       /,\s*\d+(?:\.\d+)?\s*BPM,/,
       ', tempo and BPM guidance,',
     );
-const description = dataForwardMeta
+const description = tempoOnHold
+  ? buildSongDescription(song, editorialDesc, true)
+  : dataForwardMeta
   ? ((isDataForwardHoldout && !suppressMetadata) ? dataForwardMeta.metaDescription : dataForwardDescriptionWithoutBpm)
   : customSEO[song.slug]?.description ?? buildSongDescription(song, editorialDesc, suppressMetadata);
 const canonicalURL = `https://worshipsongindex.com${Astro.url.pathname}`;
@@ -163,7 +173,9 @@ const musicComposition = {
   "@type": "MusicComposition",
   "name": song.title,
   "url": canonicalURL,
-  ...(!suppressMetadata && song.default_male_key && { "musicalKey": song.default_male_key }),
+  // default_male_key is explicitly a suggested vocal key (types/song.ts),
+  // not evidence of the composition's key. Keep the named recommendations
+  // below, but do not promote that legacy default into musicalKey.
   ...(!suppressMetadata && (song.default_male_key || song.default_female_key) && { "additionalProperty": [
     ...(song.default_male_key ? [{
       "@type": "PropertyValue",
@@ -230,6 +242,7 @@ const structuredData = [musicComposition, breadcrumb];
           Song Details
         </h2>
 
+        {tempoOnHold && <p class="text-sm mb-4" style="color: var(--color-text-secondary);">Tempo for this catalog arrangement is under verification.</p>}
         {suppressMetadata ? (
           <p class="text-sm leading-relaxed" style="color: var(--color-text-secondary);">
             {isQuarantined

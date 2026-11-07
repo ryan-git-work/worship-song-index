@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { songs } from '../lib/songs';
+import { displayedTempo, displayedMeter } from '../lib/musicalClaims.mjs';
 
 export const GET: APIRoute = () => {
   const seen = new Set<string>();
@@ -17,8 +18,8 @@ export const GET: APIRoute = () => {
       a: song.primary_artist,
       m: song.default_male_key,
       f: song.default_female_key,
-      b: song.tempo_bpm,
-      x: song.time_signature,
+      b: displayedTempo(song.slug, song.tempo_bpm),
+      x: displayedMeter(song.slug, song.time_signature),
     }];
   });
 

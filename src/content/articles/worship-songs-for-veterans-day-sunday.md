@@ -6,11 +6,22 @@ slug: "worship-songs-for-veterans-day-sunday"
 meta_title: "Worship Songs for Veterans Day Sunday"
 meta_description: "Curated worship songs for Veterans Day Sunday, with guidance on holding the full room, honoring service, and leading with theological depth."
 target_occasion: "Veterans Day Sunday"
-song_links_count: 26
-word_count: 2212
+song_links_count: 30
+word_count: 2489
 ---
 
 You're leading worship on Veterans Day Sunday. Imagine, as a planning exercise, a veteran who has been to church his whole life and knows all the words. He might also know things the words don't say. He might be glad to be seen when veterans are invited to stand, or he might prefer to stay seated. You don't know his story, and this page doesn't invent one for him. Planning for this Sunday means holding that unknown, and everyone around it, at once.
+
+## Four hymns for Veterans Day Sunday
+
+If you came here for hymns, start with these four. Each one appears again in the service plan below, each links to its full page, and each carries a line on where it fits. The credits follow Hymnary.org.
+
+- [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/), with Thomas O. Chisholm's 1923 text and William M. Runyan's tune FAITHFULNESS, is the one to open with, because it names faithfulness across a whole life without naming what the need was, and every history in the room fits inside it.
+- [It Is Well](/songs/it-is-well-traditional/), Horatio G. Spafford's 1873 text set to Philip P. Bliss's tune VILLE DU HAVRE, belongs after the message. Spafford wrote it after losing his daughters at sea, and the hymn declares peace on the ground of the gospel rather than on how the week felt.
+- [Abide with Me](/songs/abide-with-me/), Henry F. Lyte's 1847 text set to William H. Monk's tune EVENTIDE, is the communion hymn for this Sunday, since Lyte wrote it with death in view.
+- [Be Thou My Vision](/songs/be-thou-my-vision/), an Old Irish text in Mary E. Byrne's 1905 translation as versified by Eleanor Hull in 1912 and sung to SLANE, fits the recognition moment or a closing prayer, because it asks God to reorient what the singer sees, a specific request for anyone whose sense of what is good and real has been shaken.
+
+Those credits come from the text and tune pages at [Hymnary.org](https://hymnary.org/). Confirm the version, stanzas and any arrangement credit on the chart or hymnal your church uses, since hymnals don't all print the same stanzas.
 
 ## What this Sunday actually asks of you
 

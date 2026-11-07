@@ -1,0 +1,27 @@
+{
+  "our-god-tomlin": {
+    "tempo": true,
+    "reason": "Legacy 120 BPM conflicts with the publisher resource 105 BPM. Exact catalog arrangement is unresolved; withhold rather than replace.",
+    "source": "https://www.worshiptogether.com/songs/our-god-chris-tomlin/",
+    "checked": "2026-11-07"
+  },
+  "holy-is-the-lord-chris-tomlin": {
+    "tempo": true,
+    "reason": "Legacy 132 BPM conflicts with the publisher resource 84 BPM. Exact catalog arrangement is unresolved; withhold rather than replace.",
+    "source": "https://www.worshiptogether.com/songs/holy-is-the-lord-chris-tomlin/",
+    "checked": "2026-11-07"
+  },
+  "see-a-victory-elevation": {
+    "tempo": true,
+    "reason": "Legacy 128 BPM conflicts with publisher 77 BPM and At Midnight 77.5 BPM. Exact catalog arrangement is unresolved; no replacement value is asserted.",
+    "source": "https://new.worshiponline.com/store/songs/418?tab=multi_tracks",
+    "checked": "2026-11-07"
+  },
+  "take-you-at-your-word": {
+    "tempo": true,
+    "meter": true,
+    "reason": "Legacy 172 BPM/12-8 conflicts with God Is Good! Live 115 BPM/4-4; other arrangements/counts exist. Exact catalog arrangement is unresolved, so tempo/meter are withheld, not replaced.",
+    "source": "https://app.worshiponline.com/store/songs/593",
+    "checked": "2026-11-07"
+  }
+}

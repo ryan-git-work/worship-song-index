@@ -13,7 +13,7 @@ function repoPath(file) {
 
 function gitText(args) {
   try {
-    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).trim();
+    return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 }).trim();
   } catch {
     return '';
   }
@@ -50,10 +50,66 @@ const browseDate = maxDate(
   existing.prefixes?.['/browse/'],
   layoutDate,
   ...filesIn(join(ROOT, 'src/pages/browse'), '.astro').map((file) => fileDate(file)),
-  ...songDataFiles.map((file) => fileDate(file)),
 );
 
+
+// A chunk is storage, not a shared page. Only changed card data revises its
+// rendered collections; revising a song's prose leaves those dates alone.
+const englishFiles = songDataFiles.filter(file => !file.endsWith('songs-chunk-spanish.json'));
+const slugify = value => String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[\/\\]/g, '-').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+const keySlug = value => slugify(value.replace('#', '-sharp'));
+const holdPath = 'src/data/musicalClaimHolds.json';
+const currentHolds = existsSync(join(ROOT,holdPath)) ? JSON.parse(readFileSync(join(ROOT,holdPath),'utf8')) : {};
+const historicalHolds = sha => { const text=gitText(['show',`${sha}:${holdPath}`]); return text ? JSON.parse(text) : {}; };
+const card = (song,holds) => [song.slug, song.title, song.primary_artist, song.default_male_key, song.default_female_key, holds[song.slug]?.tempo ? null : song.tempo_bpm, holds[song.slug]?.meter ? null : song.time_signature];
+function collectionProjections(rows,holds={}) {
+  const cardFor = song => card(song,holds);
+  const groups = new Map();
+  const add = (route, song) => { if (!groups.has(route)) groups.set(route, []); groups.get(route).push(cardFor(song)); };
+  const artists = [...new Set(rows.map(song => song.primary_artist).filter(Boolean))];
+  for (const song of rows) {
+    groups.set(`@song/${song.slug}`, [cardFor(song)]);
+    for (const artist of artists) if ((song.primary_artist || '').toLowerCase().includes(artist.toLowerCase())) add(`/browse/artists/${slugify(artist)}/`, song);
+    for (const theme of new Set(song.themes || [])) add(`/browse/themes/${slugify(theme)}/`, song);
+    for (const tag of new Set(song.tags || [])) add(`/browse/tags/${slugify(tag)}/`, song);
+    for (const [voice, field] of [['male','default_male_key'],['female','default_female_key']]) if (song[field]) add(`/browse/keys/${voice}/${keySlug(song[field])}/`, song);
+    if (song.time_signature) add(`/browse/time-signatures/${song.time_signature.replace('/', '-')}/`, song);
+  }
+  const sorted = [...rows].sort((a,b) => (a.title || '').localeCompare(b.title || '') || (a.primary_artist || '').localeCompare(b.primary_artist || ''));
+  for (let i=0; i<sorted.length; i+=100) groups.set(i ? `/songs/page/${i/100+1}/` : '/songs/', sorted.slice(i,i+100).map(cardFor));
+  return new Map([...groups].map(([route, values]) => [route, JSON.stringify(values.sort((a,b) => String(a[0]).localeCompare(String(b[0]))))]));
+}
+const currentEnglish = englishFiles.flatMap(file => JSON.parse(readFileSync(file,'utf8')));
+const collectionPending = new Map([...collectionProjections(currentEnglish,currentHolds)].map(([route, content]) => [route, {content, date:TODAY}]));
+const collectionDates = new Map();
+const collectionFloor = existing.prefixes?.['/browse/'];
+for (const revision of gitText(['log','--format=%H|%cs','--',...englishFiles.map(repoPath),holdPath]).split('\n').filter(Boolean)) {
+  const [sha,date] = revision.split('|');
+  if (collectionFloor && date < collectionFloor) {
+    // Compare the first older snapshot before stopping: uncommitted changes
+    // must retain today's date even when the published floor is newer.
+    const priorRows = englishFiles.flatMap(file => { const text=gitText(['show',`${sha}:${repoPath(file)}`]); return text ? JSON.parse(text) : []; });
+    const prior = collectionProjections(priorRows,historicalHolds(sha));
+    for (const [route,current] of collectionPending) collectionDates.set(route, prior.get(route) === current.content ? collectionFloor : current.date);
+    collectionPending.clear(); break;
+  }
+  const priorRows = englishFiles.flatMap(file => { const text=gitText(['show',`${sha}:${repoPath(file)}`]); return text ? JSON.parse(text) : []; });
+  const prior = collectionProjections(priorRows,historicalHolds(sha));
+  for (const [route,current] of collectionPending) {
+    if (prior.get(route) === current.content) current.date = date;
+    else { collectionDates.set(route,current.date); collectionPending.delete(route); }
+  }
+  if (!collectionPending.size) break;
+}
+for (const [route,current] of collectionPending) collectionDates.set(route,current.date);
 const routes = {};
+for (const [route,date] of collectionDates) {
+  if (route.startsWith('@song/')) continue;
+  const floor = existing.routes?.[route] || (route.startsWith('/songs/') ? existing.prefixes?.['/songs/'] : existing.prefixes?.['/browse/']) || existing.default;
+  const next = maxDate(floor, route.startsWith('/songs/') ? songTemplateDate : browseDate, date);
+  if (existing.routes?.[route] || next > floor) routes[route] = next;
+}
+
 // The editorial dictionary is storage, not a shared page template. Preserve the
 // established browse floor while dating each guide from its own content history.
 const editorialPath = 'public/browse-editorials.json';
@@ -90,7 +146,29 @@ for (const revision of gitText(['log', '--format=%H|%cs', '--', editorialPath]).
 }
 for (const [route, current] of pendingEditorials) editorialDates.set(route, current.date);
 for (const [route, date] of editorialDates) {
-  routes[route] = maxDate(existing.routes?.[route], browseDate, date);
+  routes[route] = maxDate(routes[route], existing.routes?.[route], browseDate, date);
+}
+
+// Shared short key intros are also per-entry content, used by both voice routes.
+const keyDescriptionPath = 'src/lib/keyDescriptions.js';
+if (existsSync(join(ROOT,keyDescriptionPath))) {
+  const parseIntros = text => new Map([...text.matchAll(/^\s*"([^"]+)":\s*(".*")\s*,?$/gm)].map(([,key,value]) => [key,JSON.parse(value)]));
+  const pending = new Map([...parseIntros(readFileSync(join(ROOT,keyDescriptionPath),'utf8'))].map(([key,content]) => [key,{content,date:TODAY}]));
+  const dates = new Map();
+  for (const revision of gitText(['log','--format=%H|%cs','--',keyDescriptionPath]).split('\n').filter(Boolean)) {
+    const [sha,date] = revision.split('|'); const prior=parseIntros(gitText(['show',`${sha}:${keyDescriptionPath}`]));
+    for (const [key,current] of pending) {
+      if (prior.get(key) === current.content) current.date=date;
+      else {dates.set(key,current.date);pending.delete(key);}
+    }
+    if (!pending.size) break;
+  }
+  for (const [key,current] of pending) dates.set(key,current.date);
+  for (const [key,date] of dates) for (const voice of ['male','female']) {
+    const route=`/browse/keys/${voice}/${key}/`;
+    const next=maxDate(routes[route],existing.routes?.[route],browseDate,date);
+    if (routes[route] || existing.routes?.[route] || next > browseDate) routes[route]=next;
+  }
 }
 
 // A song chunk is storage, not an editorial unit. Date each song from its own
@@ -174,7 +252,7 @@ for (const revision of gitText(['log', '--format=%H|%cs', '--', 'public/blog-pos
 for (const [slug, current] of pendingBlogRows) blogContentDates.set(slug, current.date);
 const blogDate = maxDate(blogTemplateDate, ...blogContentDates.values());
 for (const post of blogRows) {
-  if (post.slug) routes[`/blog/${post.slug}/`] = maxDate(blogTemplateDate, blogContentDates.get(post.slug));
+  if (post.slug) routes[`/blog/${post.slug}/`] = maxDate(blogTemplateDate, blogContentDates.get(post.slug), ...(post.songLinks || []).map(slug => collectionDates.get(`@song/${slug}`)));
 }
 
 // A homepage edit changes the homepage, not every route that falls back to the
