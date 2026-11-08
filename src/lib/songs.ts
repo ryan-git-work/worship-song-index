@@ -24,6 +24,7 @@ import chunk172 from '../../public/songs-chunk-17-2.json';
 import chunk18 from '../../public/songs-chunk-18.json';
 import chunk19 from '../../public/songs-chunk-19.json';
 import chunk20 from '../../public/songs-chunk-20.json';
+import chunk21 from '../../public/songs-chunk-21.json';
 import spanishChunk from '../../public/songs-chunk-spanish.json';
 
 const englishChunks = [
@@ -51,6 +52,7 @@ const englishChunks = [
   ...chunk18,
   ...chunk19,
   ...chunk20,
+  ...chunk21,
 ];
 
 export const songs: Song[] = englishChunks.map((song) => ({

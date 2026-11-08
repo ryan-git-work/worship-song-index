@@ -6,8 +6,8 @@ slug: "worship-songs-for-christmas-eve-service"
 meta_title: "Worship Songs for Christmas Eve | Candlelight & Lessons Sets"
 meta_description: "The best worship songs for Christmas Eve by service moment, with reading-paired carols, candlelight picks, a short family format, keys and a set list."
 target_occasion: "Christmas Eve Service"
-song_links_count: 42
-word_count: 4366
+song_links_count: 45
+word_count: 4731
 ---
 
 ## What this Sunday actually asks of you
@@ -68,6 +68,9 @@ Few carols match this one for combining theological density with a melody the ro
 [O Come O Come Emmanuel](/songs/o-come-o-come-emmanuel/), traditional
 The minor-key longing of this carol creates an emotional contrast that makes the joy of "Emmanuel shall come to thee" feel earned rather than assumed. For a room that includes people carrying real grief this season, the lament underneath this carol creates space for them specifically. Practical note: keep it in its minor key, in your lead's range, at a slow walking pace. Transition carefully into more celebratory material if you use this early.
 
+[Sing We the Song of Emmanuel](/songs/sing-we-the-song-of-emmanuel/), Matt Boswell, Matt Papa, Keith Getty and Stuart Townend
+For a room that wants one modern carol in the opening stretch, this one gathers the congregation into singing and then turns them outward, a useful direction to establish before the readings. It names the child as Emmanuel and treats the news as something to carry, so it sets up both the Luke 2 readings and the closing carol. Practical note: this song has more than one resource listing, and only one of them carries a verified key and tempo; the song page says which. Build from the version you actually use, and consider keeping the first verse light so the growth is heard.
+
 ### Reading-paired carols
 
 Most Christmas Eve services include scripture readings, often a Lessons and Carols format. The songs in this slot must coordinate with the text being read. The goal is seamless movement between word and song. The simplest way to plan it is to assign each reading its carol in advance and print both in the program, so nobody on stage has to announce anything.
@@ -92,12 +95,18 @@ The shepherds get the first stanzas and the wise men get the rest, so this carol
 [Away in a Manger](/songs/away-in-a-manger/), traditional
 Paired with readings about the lowliness of the nativity setting, this carol meets children and adults alike at the same level. For a family-heavy Christmas Eve service, the simplicity of this carol is a feature. Practical note: C or Eb, the keys the song page lists, soft and unhurried. Avoid over-producing it; its power is in its plainness.
 
+[Joy Has Dawned](/songs/joy-has-dawned-getty-townend/), Keith Getty and Stuart Townend
+If you read Luke 2:1-20 as one passage, this carol answers the birth and the shepherds and then keeps going: its magi verse belongs with Matthew 2, and its last verses carry the child to the cross, which no nativity reading contains. The congregation sings where the story leads rather than where the reading stops. Practical note: choose the verses that match your readings, then decide on purpose whether the verses that go beyond them stay. The last verse is where the carol makes its point. A steady tempo across verses helps a narrative carol hold together. The song page lists the key and tempo each published source gives, by source.
+
 ### The grieving row
 
 The couple who lost someone this year, from the first paragraph of this guide, needs one song that does not pretend. Most Christmas Eve sets never give them one.
 
 [I Heard the Bells on Christmas Day](/songs/i-heard-the-bells-on-christmas-day/), Casting Crowns
 [Longfellow wrote the poem during the Civil War](https://www.nps.gov/long/learn/historyculture/christmas-bells.htm), after his wife's death and his son's wounding, and the text admits that hate seemed to be mocking the song of peace before it insists that God is neither dead nor asleep. It is the one carol that names the gap between what the night promises and what the year delivered, and then stays on the promise. Practical note: place it after the readings and before the candle-lighting, not as the closer. Lead it congregationally rather than as a solo performance; the grieving row needs to sing it, not watch it. If the room does not know this version, [O Come O Come Emmanuel](/songs/o-come-o-come-emmanuel/) carries the same honesty in a melody everyone has.
+
+[O Come, All You Unfaithful](/songs/o-come-all-you-unfaithful-sovereign-grace-music/), Bob Kauflin and Lisa Clow
+The other song that does not pretend. It addresses the weary, the wounded and the ashamed by name and tells them the manger is for them. It grounds the welcome in the cross rather than in the mood of the evening. The publisher files it as both a call to worship and an assurance of pardon, and either placement serves the person who assumed this night was for someone else. Practical note: try one voice and one instrument on the first verse so the invitation is heard as an invitation, then test whether a plain ending or a build serves the room. Before the candle lighting is one placement that works, and the song page describes others.
 
 ### Candle-lighting moment
 

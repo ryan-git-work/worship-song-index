@@ -6,8 +6,8 @@ slug: "worship-songs-for-advent"
 meta_title: "Worship Songs for Advent | The Four-Week Waiting Set"
 meta_description: "Worship songs for Advent by week (hope, peace, joy, love), with a four-week planning arc, candle-lighting songs, keys and a sample set."
 target_occasion: "Advent"
-song_links_count: 36
-word_count: 5164
+song_links_count: 38
+word_count: 5365
 ---
 
 ## What this Sunday actually asks of you
@@ -115,6 +115,9 @@ This song is almost perfectly calibrated for Love Sunday. The title alone is the
 [Emmanuel (Hallowed Manger Ground)](/songs/emmanuel-hallowed-manger-ground/), Chris Tomlin
 Where God With Us states the doctrine, this song kneels in front of it. It is a sparse, reverent Emmanuel song for a contemporary room, and it stays on the threshold: the manger is named, but the posture is wonder rather than celebration. Practical note: keep the instrumentation simple and the lyric projection clear. Reading Matthew 1:23 before the first verse frames the whole thing, and it gives the pastor a natural handoff into the candle-lighting.
 
+[He Who Is Mighty](/songs/he-who-is-mighty-sovereign-grace-music/), Rebecca Elliott and Kate DeGraide
+If your fourth Sunday reads Mary's song in Luke 1, this gives the congregation her response in their own mouths. It marvels that the Mighty One did great things by coming low. It keeps the wonder and the power in the same breath, which is where Love Sunday wants to stand. Practical note: sing it directly after the Luke 1 reading and keep it reflective. The publisher's recorded-key chart is in a slow 6/8, and the song page gives its key with the version it belongs to. Decide in rehearsal how it ends, then hand off to the candle.
+
 [Good Good Father](/songs/good-good-father/), Chris Tomlin and Pat Barrett
 The fatherhood language in this song makes it particularly suited for a Sunday focused on the love of God. "You're a good good Father, it's who you are." For Love Sunday, this becomes a statement about the nature of the God who is coming near: not a distant deity but a father who loves. Practical note: A or C, the keys the song page lists. The chorus is immediately accessible, which matters on a fourth Advent Sunday when the room may be bringing a lot of emotional weight from the season.
 
@@ -130,6 +133,9 @@ Choose a stanza of longing and its familiar refrain from the version your church
 
 [Wait for the Lord](/songs/wait-for-the-lord-taize/), Taizé Community
 If you want one candle-lighting response that is identical every week, this short, repeated chant offers a useful option. Its prayer for the Lord whose day is near keeps the focus on waiting. Practical note: teach the response before the lighting in the first week, then sing it three or four times through, unaccompanied or over a single sustained pad. Keep the words available as the congregation learns it.
+
+[Come Light Our Hearts](/songs/come-light-our-hearts-sandra-mccracken/), Sandra McCracken
+A second option for a response that is identical every week. The song is a short prayer for light in hearts that are still waiting. It came out of a church's Advent liturgy, which is the kind of moment it was written for. Practical note: one instrument and one voice the first week, with the congregation joining as they learn it. Decide the repeat count in advance and tell the person lighting the candle which repetition is theirs. The song page carries the recording and chart details.
 
 [Lo, How a Rose E'er Blooming](/songs/lo-how-a-rose-eer-blooming-german/), traditional German
 This traditional German carol traces Jesus back through Isaiah's image of a shoot from Jesse's stem, giving it a useful place in Advent as well as Christmas. Practical note: try a cappella, a small vocal group, or a single voice over piano. Use it under the lighting or immediately after the reading when you want to save Silent Night for Christmas Eve.
