@@ -1,9 +1,10 @@
 ---
 import SongDirectoryPage from '../../components/SongDirectoryPage.astro';
+import { canonicalSongSelection } from '../../lib/songSelection.mjs';
 import { songs } from '../../lib/songs';
 
 const PAGE_SIZE = 100;
-const sortedSongs = [...songs].sort(
+const sortedSongs = canonicalSongSelection(songs, songs).sort(
   (left, right) =>
     left.title.localeCompare(right.title) ||
     left.primary_artist.localeCompare(right.primary_artist),

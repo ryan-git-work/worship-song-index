@@ -69,3 +69,21 @@ not verify metadata suppression, responsive navigation or live publication.
 
 The song-details block uses the existing catalog confidence/quarantine gates;
 its earlier placement does not verify previously unsourced musical numbers.
+
+## Catalog integrity audit
+
+Run `npm run audit:catalog` for a read-only census of the exact English catalog
+imports, hidden discovery rows, musical-confidence holds and duplicated
+normalized title/artist identities. To retain all per-song evidence, run
+`npm run audit:catalog -- --output /absolute/path/catalog-audit.json`.
+
+Identity groups are review candidates, not automatic merge instructions.
+Different hymn tunes, recordings and arrangements require source verification.
+The audit fails on duplicate route slugs but never changes catalog records,
+redirects, indexing rules or publication state. Search omits quarantined,
+deleted and retired rows before deduplicating, and withholds unsupported
+musical values while retaining otherwise-findable songs.
+
+Reviewed song aliases resolve to the canonical record before collection cards are rendered. Source rows stay in the catalog for provenance, but alias routes render redirect stubs and internal links point directly at their target. Musical values belong to the canonical record, not to an alias.
+
+After the build canonicalizes links, `reconcile-sitemap-content.mjs` compares rendered HTML with `src/data/sitemapContentHashes.json`. Unchanged pages retain their previous sitemap date even if a shared template or dictionary changed. Changed/new output gets the build date (or a later supplied source date). Keep both generated sitemap data files with the release candidate; the initial ledger was seeded from the verified 2026-11-08 build.

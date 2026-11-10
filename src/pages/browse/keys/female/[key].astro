@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
 import BrowseSongGrid from '../../../../components/BrowseSongGrid.astro';
+import { canonicalSongSelection } from '../../../../lib/songSelection.mjs';
 import { songs } from '../../../../lib/songs';
 import { getKeyDescription } from '../../../../lib/keyDescriptions';
 import { formatKeySlug, keyToSlug } from '../../../../lib/browseSlugs';
@@ -19,7 +20,8 @@ export async function getStaticPaths() {
 const { key } = Astro.props;
 const keySlug = Astro.params.key;
 const keyDescription = getKeyDescription(keySlug);
-const filteredSongs = songs.filter(s => s.default_female_key === key).sort((a, b) => a.title.localeCompare(b.title));
+const sourceMatches = songs.filter(s => s.default_female_key === key).sort((a, b) => a.title.localeCompare(b.title));
+const filteredSongs = canonicalSongSelection(sourceMatches, songs).filter(song => song.default_female_key === key).sort((a,b) => a.title.localeCompare(b.title));
 
 const editorialEntry = (editorialsData as any)["keys-female"]?.[keySlug || ''];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;

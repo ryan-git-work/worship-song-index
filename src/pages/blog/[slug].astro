@@ -4,6 +4,7 @@ import SongCard from '../../components/SongCard.astro';
 import blogData from '../../../public/blog-posts.json';
 import type { Song } from '../../types/song';
 import { getTempoLabel } from '../../types/song';
+import { canonicalSongSelection } from '../../lib/songSelection.mjs';
 import { songs } from '../../lib/songs';
 import { marked } from 'marked';
 import { slugifyBrowseValue } from '../../lib/browseSlugs';
@@ -16,9 +17,10 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const linkedSongs = (post.songLinks || [])
+const sourceLinkedSongs = (post.songLinks || [])
   .map((slug: string) => songs.find(s => s.slug === slug))
   .filter(Boolean) as Song[];
+const linkedSongs = canonicalSongSelection(sourceLinkedSongs, songs);
 const formattedDate = new Date(post.publishDate).toLocaleDateString('en-US', {
   year: 'numeric', month: 'long', day: 'numeric'
 });

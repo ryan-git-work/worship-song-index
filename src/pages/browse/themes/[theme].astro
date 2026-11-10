@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
 import BrowseOccasionGuides from '../../../components/BrowseOccasionGuides.astro';
 import BrowseBlogGuides from '../../../components/BrowseBlogGuides.astro';
+import { canonicalSongSelection } from '../../../lib/songSelection.mjs';
 import { songs } from '../../../lib/songs';
 import { getThemeDescription } from '../../../lib/themeDescriptions';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
@@ -34,16 +35,17 @@ const themeDescription = getThemeDescription(themeSlug);
 
 // Bounded integrity pass for the collections reviewed in October16, October19, and the Prayer and refuge release.
 // Keep quarantined/deleted/retired song entries out of their recommendations.
-const reviewedTheme = ['obedience', 'transformation', 'borders', 'covenant', 'consecration', 'justification', 'protection', 'cleansing', 'intercession'].includes(themeSlug);
-const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted, ...Object.keys(songRedirects)]);
+const reviewedTheme = ['obedience', 'transformation', 'borders', 'covenant', 'consecration', 'justification', 'protection', 'cleansing', 'intercession', 'christmas'].includes(themeSlug);
+const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted]);
 
 // Normalize theme for comparison
 const normalizedTheme = themeSlug.replace(/-/g, ' ');
-const filteredSongs = songs
+const sourceMatches = songs
   .filter(s => 
     s.themes?.some(t => slugifyBrowseValue(t) === themeSlug) && (!reviewedTheme || !hiddenSongs.has(s.slug))
   )
   .sort((a, b) => a.title.localeCompare(b.title));
+const filteredSongs = canonicalSongSelection(sourceMatches, songs).sort((a,b) => a.title.localeCompare(b.title));
 
 // Format theme name for display
 const displayTheme = themeSlug
@@ -51,9 +53,9 @@ const displayTheme = themeSlug
   .map(word => word.charAt(0).toUpperCase() + word.slice(1))
   .join(' ');
 
-const title = `Worship Songs About ${displayTheme} | Worship Song Index`;
+const title = (editorialsData as any).themes?.[themeSlug]?.title ?? `Worship Songs About ${displayTheme} | Worship Song Index`;
 const editorialEntry = (editorialsData as any)["themes"]?.[themeSlug || ''];
-const prayerRefugeTheme = ['protection', 'cleansing', 'intercession'].includes(themeSlug);
+const prayerRefugeTheme = ['protection', 'cleansing', 'intercession', 'christmas'].includes(themeSlug);
 const description = prayerRefugeTheme ? editorialEntry.description : themeSlug === 'borders' ? 'Browse the current Borders song entry and related kingdom and immigration collections. Review song context before choosing music for your service.' : `Browse ${filteredSongs.length} worship songs about ${normalizedTheme}, with complete song data, BPM, keys, and theological insights for every song.`;
 
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;

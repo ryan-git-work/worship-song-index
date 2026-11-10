@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
 import { formatTheme } from '../../../types/song';
+import { canonicalSongSelection } from '../../../lib/songSelection.mjs';
 import { songs } from '../../../lib/songs';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
@@ -25,9 +26,10 @@ export async function getStaticPaths() {
 }
 
 const { tag, tagSlug } = Astro.props;
-const filteredSongs = songs
+const sourceMatches = songs
   .filter(s => s.tags.some((songTag) => slugifyBrowseValue(songTag) === tagSlug))
   .sort((a, b) => a.title.localeCompare(b.title));
+const filteredSongs = canonicalSongSelection(sourceMatches, songs).sort((a,b) => a.title.localeCompare(b.title));
 
 const title = `${formatTheme(tag)} Worship Songs | BPM, Tempo & Keys — Worship Song Index`;
 const description = `Browse ${filteredSongs.length} worship songs tagged "${formatTheme(tag)}". Find songs with the ${formatTheme(tag).toLowerCase()} style for your worship set.`;

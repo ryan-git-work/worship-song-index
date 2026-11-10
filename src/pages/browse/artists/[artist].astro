@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
+import { canonicalSongSelection } from '../../../lib/songSelection.mjs';
 import { songs } from '../../../lib/songs';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 import editorialsData from '../../../../public/browse-editorials.json';
@@ -17,10 +18,11 @@ export function getStaticPaths() {
 
 const { artist } = Astro.props;
 const artistLower = artist.toLowerCase();
-const filteredSongs = songs.filter(s => {
+const sourceMatches = songs.filter(s => {
   const songArtist = (s.primary_artist || '').toLowerCase();
   return songArtist === artistLower || songArtist.includes(artistLower);
 }).sort((a, b) => a.title.localeCompare(b.title));
+const filteredSongs = canonicalSongSelection(sourceMatches, songs).sort((a,b) => a.title.localeCompare(b.title));
 
 const artistSlug = slugifyBrowseValue(artist);
 const title = `${artist} Worship Songs | BPM, Tempo & Keys — Worship Song Index`;

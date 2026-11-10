@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import { canonicalSongSelection } from '../../../lib/songSelection.mjs';
 import { songs } from '../../../lib/songs';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 
@@ -8,10 +9,10 @@ const allArtists = [...new Set(songs.map(s => s.primary_artist))].sort();
 
 allArtists.forEach(artist => {
   const artistLower = artist.toLowerCase();
-  artistCounts[artist] = songs.filter(s => {
+  artistCounts[artist] = canonicalSongSelection(songs.filter(s => {
     const songArtist = (s.primary_artist || '').toLowerCase();
     return songArtist === artistLower || songArtist.includes(artistLower);
-  }).length;
+  }), songs).length;
 });
 
 const title = "Browse by Artist - Worship Song Index";

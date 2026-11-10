@@ -2,6 +2,7 @@
 import reviewedBrowseAliases from '../../../data/reviewedBrowseAliases.json';
 import Layout from '../../../layouts/Layout.astro';
 import { formatTheme } from '../../../types/song';
+import { canonicalSongSelection } from '../../../lib/songSelection.mjs';
 import { songs } from '../../../lib/songs';
 import { slugifyBrowseValue } from '../../../lib/browseSlugs';
 
@@ -19,11 +20,11 @@ const allTags = [...new Set(songs.flatMap(s => s.tags))]
   .sort();
 
 allThemes.forEach(theme => {
-  themeCounts[theme] = songs.filter(s => s.themes.includes(theme)).length;
+  themeCounts[theme] = canonicalSongSelection(songs.filter(s => s.themes.includes(theme)), songs).length;
 });
 
 allTags.forEach(tag => {
-  tagCounts[tag] = songs.filter(s => s.tags.includes(tag)).length;
+  tagCounts[tag] = canonicalSongSelection(songs.filter(s => s.tags.includes(tag)), songs).length;
 });
 
 const title = "Browse by Category - Worship Song Index";

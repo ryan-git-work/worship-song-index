@@ -20,6 +20,8 @@ The last Sunday of the year is not a time for the worship leader to manufacture 
 
 Psalm 90:12 gives the frame: "Teach us to number our days, that we may gain a heart of wisdom." The end of the year is the moment when the invitation to number the days becomes unavoidable. The music's job is to make that numbering feel like a grace rather than an audit.
 
+If your church also gathers on December 31, the [New Year's Eve guide](/articles/worship-songs-for-new-years-eve-service/) plans a single evening service and the [Watchnight guide](/articles/worship-songs-for-a-watchnight-service/) plans a vigil that runs to midnight. If carols are still in your set this Sunday, the [Christmas theme page](/browse/themes/christmas/) sorts them by service.
+
 ## How to think about song selection for an end-of-year service
 
 The theological error most end-of-year services make is collapsing too quickly into either gratitude or anticipation. Both are appropriate. Neither is sufficient on its own.
@@ -64,7 +66,7 @@ The service needs a moment of declaration that anchors the congregation's backwa
 
 [Be Thou My Vision](/songs/be-thou-my-vision/) (traditional Irish hymn) is the right song for the transition from backward to forward. Its petition, that God would be the singular priority and the steady wisdom for whatever is ahead, is more durable than any resolution or vision statement. The congregation leaves not with promises they may not keep but with a posture of dependence. Consider letting this one sit lower in dynamics than the declaration section that preceded it. The service is turning a corner here, from naming what God has been to trusting what God will be, and the arrangement should make that turn audible.
 
-[Doxology](/songs/doxology/) (traditional) closes the year the way every service should close: with praise for who God is regardless of what the year contained. The oldest song in the room on the last day of the year is the right note. If your church rarely sings it, that unfamiliarity works in your favor for once. Thirty seconds of ancient words, sung simply, lands as a benediction rather than as another song.
+[Doxology](/songs/doxology/) (traditional) closes the year the way every service should close: with praise for who God is regardless of what the year contained. A short, old doxology on the last Sunday of the year is the right note. If your church rarely sings it, that unfamiliarity works in your favor for once. Thirty seconds of ancient words, sung simply, lands as a benediction rather than as another song.
 
 ## Songs to avoid (and why)
 
@@ -76,26 +78,26 @@ Songs with explicit "new year" lyrical content tend to date poorly and feel prog
 
 ## A complete sample set list
 
-This set assumes a 30-40 minute worship arc with a pastoral reflection on the year and a brief commissioning into what is ahead.
+This set assumes a 30-40 minute worship arc with a pastoral reflection on the year and a brief commissioning into what is ahead. Keys are left to you and your leader, and tempos are given as a feel, because the right key and the right number depend on your chart, your arrangement and your room.
 
-1. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/), Thomas O. Chisholm, Key of D, approx. 64 BPM
+1. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/), Thomas O. Chisholm. Feel: slow.
    Why: Sets the covenant-faithfulness frame before a word is spoken. Slower than usual.
    Transition: Let the congregation carry the final chorus at a lower dynamic. The pastor opens the service in the space that follows.
 
-2. [It Is Well with My Soul](/songs/it-is-well-traditional/), Horatio Spafford, Key of Bb, approx. 70 BPM
+2. [It Is Well with My Soul](/songs/it-is-well-traditional/), Horatio Spafford. Feel: unhurried.
    Why: Gives the congregation permission to bring the hard year. Remind them of Spafford before you begin.
    Transition: Hold the final chord quietly. Let the room sit in what was just sung before moving forward.
 
-3. [In Christ Alone](/songs/in-christ-alone/), Getty and Townend, Key of D, approx. 76 BPM
+3. [In Christ Alone](/songs/in-christ-alone/), Getty and Townend. Feel: steady and declarative.
    Why: The full gospel arc. Anchors the backward look in the full story rather than a single year's experience.
    Transition: Move through the pastoral message or reflection here. Return with Be Thou My Vision.
 
-4. [Be Thou My Vision](/songs/be-thou-my-vision/), traditional Irish, Key of D, approx. 72 BPM
+4. [Be Thou My Vision](/songs/be-thou-my-vision/), traditional Irish. Feel: gentle, lower in dynamics.
    Why: The transition from backward to forward. Not resolution-making but dependence-posturing.
    Transition: Carry directly into the Doxology without announcement.
 
-5. [Doxology](/songs/doxology/), traditional, Key of G, a capella or piano-led
-   Why: The last song of the year is the oldest song in the room. The right close.
+5. [Doxology](/songs/doxology/), traditional, a cappella or piano-led
+   Why: A few lines of praise the whole room knows. The right close.
    Transition: None. Let the benediction follow in the silence.
 
 ## A note for the team behind you (techs, vocalists, band)

@@ -24,6 +24,8 @@ That is the theological core. The turn of the calendar is not the thing that ren
 
 Your job is to make that true by the time the service ends. Not inspiring. Not motivational. True.
 
+Two neighboring services have their own guides. The [Watchnight guide](/articles/worship-songs-for-a-watchnight-service/) is for a multi-hour vigil in the tradition Black churches have kept since December 31, 1862. The [end of year guide](/articles/worship-songs-for-an-end-of-year-service/) is for the last Sunday morning of the year.
+
 ## How to think about song selection for New Year's
 
 The most common mistake is building a set that sounds like a resolution list. Songs that center the worshiper's strength or commitment for the year ahead smuggle in a framing the service cannot support: that what matters most about January 1st is what you are going to do. A congregation that just survived twelve months of real life knows, in the parts of themselves they do not say out loud, that their own resolve is not what they need most. What they need is an anchor that is not them.
@@ -44,7 +46,7 @@ The opening should create space for the room to arrive with everything they are 
 
 [Goodness of God](/songs/goodness-of-god/) (Bethel Music) serves the same opening function for congregations less familiar with the hymn tradition. Its lyric moves between personal testimony, "all my life you have been faithful," and corporate declaration, "your goodness is running after me." Both registers are right for a room reviewing a year with the clarity of hindsight.
 
-[Gratitude](/songs/gratitude-brandon-lake/) (Brandon Lake) works for gatherings that need a little more momentum. Its pace is steadier, but the lyric stays theologically grounded in what God has done rather than in what the congregation is promising.
+[Gratitude](/songs/gratitude/) (Brandon Lake) suits a gathering that wants a newer song in the same posture. It is a slow song in 6/8 and the live recording is long, so decide your cut before rehearsal. The lyric stays on what God has done and makes no promises on the congregation's behalf.
 
 ### Confession and honest acknowledgment
 
@@ -58,7 +60,7 @@ This is the movement most worship services skip. Do not skip it on New Year's Ev
 
 This is the theological center of the New Year's service. Consecration is not the same as resolution. A resolution is something you are committing to do. Consecration is something you are handing over to God. The language, the posture, the songs, should all reflect that distinction.
 
-[Be Thou My Vision](/songs/be-thou-my-vision/) is the song this service was built for. Its core request, "be thou my vision, O Lord of my heart," is the opposite of self-help. Every verse is a surrender of something the congregation might otherwise lean on: wealth, power, personal glory, their own wisdom. The final verse, asking that God be the inheritance and not a reward the person has earned, lands the theology exactly where a New Year's service needs to land it. Practical note: the modern arrangement in A works for most rooms. If your congregation knows the traditional tune, that familiarity carries its own weight.
+[Be Thou My Vision](/songs/be-thou-my-vision/) is the song this service was built for. Its core request, "be thou my vision, O Lord of my heart," is the opposite of self-help. Every verse is a surrender of something the congregation might otherwise lean on: wealth, power, personal glory, their own wisdom. The final verse, asking that God be the inheritance and not a reward the person has earned, lands the theology exactly where a New Year's service needs to land it. Practical note: take the key from the chart your team uses and test it with your leader. If your congregation knows the traditional tune, that familiarity carries its own weight.
 
 [I Surrender All](/songs/i-surrender-all/) carries the consecration theme in a more direct register. No ambiguity: you are placing the year ahead into hands that are not yours. That simplicity is exactly right for a service that could otherwise become abstract.
 
@@ -92,29 +94,29 @@ Finally, avoid high-energy openers. The room has not arrived in a celebration po
 
 ## A complete sample set list
 
-This set assumes a 40-minute worship arc with the pastor transitioning between movements 3 and 4.
+This set assumes a 40-minute worship arc with the pastor transitioning between movements 3 and 4. Keys are left to you and your leader, and tempos are given as a feel, because the right key and the right number depend on your chart, your arrangement and your room.
 
-1. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/) (Thomas Chisholm), Key of D, approx. 72 BPM
+1. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/) (Thomas Chisholm). Feel: slow, lean at the start.
    Why: Grounds the service in God's character before anything else. Closes the year by naming what has been true all year.
    Transition: Let the congregation hold the last note. Keys come down slowly. Full breath before you move.
 
-2. [Goodness of God](/songs/goodness-of-god/) (Bethel Music, Jenn Johnson), Key of B, approx. 68 BPM
+2. [Goodness of God](/songs/goodness-of-god/) (Bethel Music, Jenn Johnson). Feel: slow, building.
    Why: Personal testimony layered with corporate declaration. The room names God's faithfulness in their own story, not just in the abstract.
    Transition: Strip to single piano and one voice on the final verse, then build back for the final chorus.
 
-3. [New Wine](/songs/new-wine/) (Hillsong Worship), Key of C, approx. 65 BPM
+3. [New Wine](/songs/new-wine/) (Hillsong Worship). Feel: slow and spare.
    Why: The confession movement. Gives the room permission to name that the year has been hard while holding that God's work was present in it.
    Transition: Hand back to the pastor here. Natural place for a pastoral acknowledgment before consecration begins.
 
-4. [Be Thou My Vision](/songs/be-thou-my-vision/) (traditional Irish, modern arrangement), Key of A, approx. 78 BPM
+4. [Be Thou My Vision](/songs/be-thou-my-vision/) (traditional Irish, modern arrangement). Feel: steady.
    Why: The consecration centerpiece. Every verse is a specific surrender. This is the theological heart of the service.
    Transition: Hold the tonic chord after the final chorus. Give the pastor space to lead a brief consecration prayer before the final movement.
 
-5. [Build Your Kingdom Here](/songs/build-your-kingdom-here-rend-collective/) (Rend Collective), Key of G, approx. 130 BPM
+5. [Build Your Kingdom Here](/songs/build-your-kingdom-here-rend-collective/) (Rend Collective). Feel: fast and full.
    Why: The vision movement. The consecration has cleared the ground. Now the room can celebrate what God is building. The energy lift is earned.
    Transition: Land the final chorus hard, then drop to acoustic guitar for the intro to the closing song.
 
-6. [Trust in God](/songs/trust-in-god-elevation-worship-chris-brown/) (Elevation Worship), Key of E, approx. 76 BPM
+6. [Trust in God](/songs/trust-in-god-elevation-worship-chris-brown/) (Elevation Worship). Feel: steady.
    Why: The sending. Holds the uncertainty of the year ahead while staking the claim that the One who holds it is trustworthy.
    Transition: None. Let the room carry the declaration out with them.
 

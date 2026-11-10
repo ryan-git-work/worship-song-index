@@ -663,10 +663,6 @@
     "metaTitle": "Holy Forever by Chris Tomlin – Key of D, 70 BPM",
     "metaDescription": "Holy Forever by Chris Tomlin: male key D, female key F, 70 BPM, 4/4. Themes: holiness, worthy, heavenly worship. What the song means and how to lead it."
   },
-  "gratitude": {
-    "metaTitle": "Gratitude by Brandon Lake – Key of G, 74 BPM",
-    "metaDescription": "Gratitude by Brandon Lake: male key G, female key Bb, 74 BPM, 6/8. Themes: gratitude, praise, testimony."
-  },
   "trust-in-god": {
     "metaTitle": "Trust In God by Elevation Worship – Key of A, 74 BPM",
     "metaDescription": "Trust In God by Elevation Worship: male key A, female key C, 74 BPM, 4/4. Themes: trust, faithfulness, providence. What the song means and how to lead it."
@@ -790,18 +786,6 @@
   "o-holy-night": {
     "metaTitle": "O Holy Night – Key of C, 68 BPM",
     "metaDescription": "O Holy Night: male key C, female key Eb, 68 BPM, 4/4. Themes: incarnation, awe, christmas. What the song means and how to lead it, with Luke 2:10-14."
-  },
-  "o-come-all-ye-faithful": {
-    "metaTitle": "O Come All Ye Faithful – Key of G, 100 BPM",
-    "metaDescription": "O Come All Ye Faithful: male key G, female key Bb, 100 BPM, 4/4. Themes: incarnation, adoration, christmas. What the song means and how to lead it."
-  },
-  "hark-the-herald-angels-sing": {
-    "metaTitle": "Hark! The Herald Angels Sing – Key of G, 108 BPM",
-    "metaDescription": "Hark! The Herald Angels Sing: male key G, female key Bb, 108 BPM, 4/4. Themes: incarnation, good news, christmas. What the song means and how to lead it."
-  },
-  "angels-we-have-heard-on-high": {
-    "metaTitle": "Angels We Have Heard on High – Key of G, 120 BPM",
-    "metaDescription": "Angels We Have Heard on High: male key G, female key Bb, 120 BPM, 4/4. Themes: christmas, praise, good news. What the song means and how to lead it."
   },
   "joy-to-the-world": {
     "metaTitle": "Joy to the World – Key of D, 120 BPM",
@@ -1663,17 +1647,9 @@
     "metaTitle": "O Come O Come Emmanuel – Key of E, 68 BPM",
     "metaDescription": "O Come O Come Emmanuel: male key E, female key G, 68 BPM, 4/4. Themes: advent, emmanuel, hope. What the song means and how to lead it, with Isaiah 7:14."
   },
-  "silent-night": {
-    "metaTitle": "Silent Night – Key of D, 68 BPM",
-    "metaDescription": "Silent Night: male key D, female key F, 68 BPM, 4/4. Themes: christmas, incarnation, peace. What the song means and how to lead it, with Luke 2:10-14."
-  },
   "away-in-a-manger": {
     "metaTitle": "Away In A Manger – Key of C, 76 BPM",
     "metaDescription": "Away In A Manger: male key C, female key Eb, 76 BPM, 4/4. Themes: christmas, incarnation, humility. What the song means and how to lead it, with Luke 2:7."
-  },
-  "o-little-town-of-bethlehem": {
-    "metaTitle": "O Little Town Of Bethlehem – Key of D, 72 BPM",
-    "metaDescription": "O Little Town Of Bethlehem: male key D, female key F, 72 BPM, 4/4. Themes: christmas, incarnation, hope. What the song means and how to lead it, with Micah 5:2."
   },
   "what-child-is-this": {
     "metaTitle": "What Child Is This – Key of E, 68 BPM",
@@ -3354,10 +3330,6 @@
   "day-by-day": {
     "metaTitle": "Day by Day – Key of D, 80 BPM",
     "metaDescription": "Day by Day: male key D, female key F, 80 BPM, 3/4. Themes: grace, daily provision, trust. What the song means and how to lead it, with Lamentations 3:22-23."
-  },
-  "go-tell-it-on-the-mountain": {
-    "metaTitle": "Go Tell It on the Mountain – Key of D, 92 BPM",
-    "metaDescription": "Go Tell It on the Mountain by Traditional Spiritual: male key D, female key F, 92 BPM, 4/4. Themes: proclamation, evangelism, Incarnation."
   },
   "grace-greater-than-our-sin": {
     "metaTitle": "Grace Greater Than Our Sin – Key of G, 84 BPM",
@@ -11074,10 +11046,6 @@
   "o-come-all-ye-faithful-frederick-oakeley": {
     "metaTitle": "O Come All Ye Faithful by Frederick Oakeley – Key of G, 70 BPM",
     "metaDescription": "O Come All Ye Faithful by Frederick Oakeley: male key G, female key D, 70 BPM, 4/4. Themes: hymn, advent, invitation. What the song means and how to lead it."
-  },
-  "the-first-noel-traditional": {
-    "metaTitle": "The First Noel – Key of G, 70 BPM",
-    "metaDescription": "The First Noel: male key G, female key D, 70 BPM, 4/4. Themes: hymn, nativity, noel. What the song means and how to lead it, with Matthew 2:1-12."
   },
   "joy-to-the-world-isaac-watts": {
     "metaTitle": "Joy to the World by Isaac Watts – Key of D, 86 BPM",

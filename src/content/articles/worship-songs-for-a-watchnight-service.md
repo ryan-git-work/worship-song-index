@@ -14,7 +14,7 @@ word_count: 2075
 
 Watchnight is one of the oldest traditions in American Christianity, and one of the least understood outside the communities that kept it alive.
 
-The original Watchnight services emerged from the Wesleyan Methodist movement in the 1740s, but the practice took on its deepest significance in Black churches on December 31, 1862. Enslaved communities gathered that night and watched through the hours until midnight, when the Emancipation Proclamation would take effect at the turn of January 1, 1863. They spent the night in prayer, testimony, singing, and waiting. At midnight, they were legally free.
+The original Watchnight services emerged from the Wesleyan Methodist movement in the 1740s, but the practice took on its deepest significance in Black churches on December 31, 1862. Black congregations, some of their members still legally enslaved, gathered that night and watched through the hours until midnight, when the Emancipation Proclamation would take effect at the turn of January 1, 1863. They spent the night in prayer, testimony, singing, and waiting. At midnight the proclamation declared free the people held in slavery in the states in rebellion. For many of them, freedom in practice came later, as Union armies advanced.
 
 That history is worth knowing before you plan a Watchnight set. You are not planning a church New Year's party. You are stepping into a tradition of watching through the night before something pivotal, of bringing the whole year before God, of singing into the dark before the dawn.
 
@@ -23,6 +23,8 @@ Honor that lineage out loud. A single sentence of framing from the platform, nam
 Modern Watchnight services build across multiple hours, from evening into midnight, weaving together worship, testimony, scripture, prayer, and community. The music is not incidental. It carries the congregation through the long hours and into the moment of crossing.
 
 Psalm 90:12 gives the theological frame: "Teach us to number our days, that we may gain a heart of wisdom." Watchnight is the one service each year when the congregation actually counts the hours. The music should honor that specificity.
+
+If you are planning a single service of about an hour on December 31 or January 1, use the [New Year's Eve guide](/articles/worship-songs-for-new-years-eve-service/). If you are planning the last Sunday morning of the year, use the [end of year guide](/articles/worship-songs-for-an-end-of-year-service/). This page is for the long vigil that ends at midnight.
 
 ## How to think about song selection for a Watchnight service
 
@@ -50,7 +52,7 @@ Watchnight services traditionally include extended times of testimony, corporate
 
 [In Christ Alone](/songs/in-christ-alone/) (Keith Getty and Stuart Townend) works as the theological ground beneath testimony time. Its four-verse sweep through the gospel gives the congregation the full frame before individual voices rise to testify.
 
-[It Is Well with My Soul](/songs/it-is-well-traditional/) (Horatio Spafford) is the right song for a prayer and testimony section at Watchnight because of its history. Spafford wrote it in the middle of devastating personal loss. Singing it at midnight on the last night of the year, in a room that has been through its own version of that loss, carries the lyric in a way it never quite does on an ordinary Sunday. Give the testimony section the time it needs after this song. The lyric opens doors in people that a tight schedule will slam shut.
+[It Is Well with My Soul](/songs/it-is-well-traditional/) (Horatio Spafford) is the right song for a prayer and testimony section at Watchnight because of its history. Spafford wrote it in the middle of devastating personal loss. Singing it on the last night of the year, in a room that has been through its own version of that loss, carries the lyric in a way it never quite does on an ordinary Sunday. Give the testimony section the time it needs after this song. The lyric opens doors in people that a tight schedule will slam shut.
 
 [Great Are You Lord](/songs/great-are-you-lord/) (All Sons and Daughters) works as underscore during prayer time, played quietly enough to not compete with the prayers being lifted. Its open texture and low-intensity delivery create the right acoustic environment for extended intercession.
 
@@ -82,25 +84,25 @@ Upbeat celebratory songs at the opening of the service, before the congregation 
 
 ## A complete sample set list
 
-This set is designed for a three-hour Watchnight service, structured in four sections across the evening. Songs can loop or return in abbreviated form as the service requires.
+This set is designed for a three-hour Watchnight service, structured in four sections across the evening. Songs can loop or return in abbreviated form as the service requires. Keys are left to you and your leader, and tempos are given as a feel, because the right key and the right number depend on your chart, your arrangement and your room.
 
-1. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/), Thomas O. Chisholm, Key of D, approx. 66 BPM
+1. [Great Is Thy Faithfulness](/songs/great-is-thy-faithfulness/), Thomas O. Chisholm. Feel: slow and steady.
    Why: Opens the evening with covenant faithfulness as the ground before anything else is named.
    Transition: Let the final chorus hold in the room. The pastoral team opens the service into the space that follows.
 
-2. [It Is Well with My Soul](/songs/it-is-well-traditional/), Horatio Spafford, Key of Bb, approx. 70 BPM
+2. [It Is Well with My Soul](/songs/it-is-well-traditional/), Horatio Spafford. Feel: unhurried.
    Why: Testimony and prayer section anchor. Name Spafford's context before beginning.
    Transition: Fade into prayer. Let the intercession rise out of what the song just opened.
 
-3. [Be Thou My Vision](/songs/be-thou-my-vision/), traditional Irish, Key of D, approx. 72 BPM
+3. [Be Thou My Vision](/songs/be-thou-my-vision/), traditional Irish. Feel: gentle and moving.
    Why: Consecration section. The petition for God to be the singular priority is the right posture before midnight.
    Transition: Move directly into Take My Life and Let It Be.
 
-4. [Take My Life and Let It Be](/songs/take-my-life-and-let-it-be/), Frances Ridley Havergal, Key of G, approx. 74 BPM
+4. [Take My Life and Let It Be](/songs/take-my-life-and-let-it-be/), Frances Ridley Havergal. Feel: slow enough to pray each verse.
    Why: The verse-by-verse surrender is the consecration prayer the congregation brings before midnight.
    Transition: Let the room sit in the quiet after the final verse. The clock turns in the silence.
 
-5. [Goodness of God](/songs/goodness-of-god/), Bethel Music, Key of B, approx. 68 BPM
+5. [Goodness of God](/songs/goodness-of-god/), Bethel Music. Feel: slow, building on the final chorus.
    Why: The midnight song. All my life you have been faithful. The congregation crosses into the new year carrying this declaration.
    Transition: None. Let the song carry the congregation out into the new year.
 

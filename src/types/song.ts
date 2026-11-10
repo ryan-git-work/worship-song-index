@@ -25,6 +25,12 @@ export interface Song {
   
   /** Time signature (e.g., "4/4", "6/8", "3/4") */
   time_signature: string | null;
+
+  /** Exact recording, tune or published chart to which the displayed meter applies. */
+  time_signature_scope?: string;
+
+  /** Source-review state; legacy unverified states suppress unsupported metadata. */
+  metadata_confidence?: string;
   
   /** Array of theme tags for categorization */
   themes: string[];

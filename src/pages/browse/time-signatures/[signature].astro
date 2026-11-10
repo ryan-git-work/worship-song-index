@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import BrowseSongGrid from '../../../components/BrowseSongGrid.astro';
 import BrowseOccasionGuides from '../../../components/BrowseOccasionGuides.astro';
 import BrowseBlogGuides from '../../../components/BrowseBlogGuides.astro';
+import { canonicalSongSelection } from '../../../lib/songSelection.mjs';
 import { songs } from '../../../lib/songs';
 import { timeSignatureToSlug } from '../../../lib/browseSlugs';
 import { timeSignatureArticleSchemas } from '../../../lib/timeSignatureArticleSchemas';
@@ -23,8 +24,9 @@ export async function getStaticPaths() {
 }
 
 const { signature } = Astro.props;
-const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted, ...Object.keys(songRedirects)]);
-const filteredSongs = songs.filter(s => s.time_signature === signature && (signature !== '6/8' || !hiddenSongs.has(s.slug))).sort((a, b) => a.title.localeCompare(b.title));
+const hiddenSongs = new Set([...catalogIntegrity.quarantined, ...catalogIntegrity.deleted]);
+const sourceMatches = songs.filter(s => s.time_signature === signature && (signature !== '6/8' || !hiddenSongs.has(s.slug))).sort((a, b) => a.title.localeCompare(b.title));
+const filteredSongs = canonicalSongSelection(sourceMatches, songs).filter(song => song.time_signature === signature).sort((a,b) => a.title.localeCompare(b.title));
 const signatureSlug = Astro.params.signature || '';
 const editorialEntry = (editorialsData as any)["time-signatures"]?.[signatureSlug];
 const editorialHtml = editorialEntry?.editorial_markdown ? marked.parse(editorialEntry.editorial_markdown) : null;

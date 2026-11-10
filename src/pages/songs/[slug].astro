@@ -23,7 +23,8 @@ export interface Props {
 }
 
 export async function getStaticPaths() {
-  return songs.map((song) => ({
+  const aliases = (await import('../../data/songRedirects.json')).default;
+  return songs.filter(song => !Object.hasOwn(aliases, song.slug)).map((song) => ({
     params: { slug: song.slug },
     props: { song },
   }));
@@ -294,7 +295,7 @@ const structuredData = [musicComposition, breadcrumb];
                 <dt style="color: var(--color-text-muted);">Time Signature</dt>
                 <dd>
                   <a href={`/browse/time-signatures/${timeSignatureToSlug(song.time_signature)}/`} class="font-medium text-primary-600 hover:text-primary-800 transition-colors">
-                    {song.time_signature}
+                    {song.time_signature}{song.time_signature_scope && <span class="block text-xs font-normal" style="color: var(--color-text-muted);">{song.time_signature_scope}</span>}
                   </a>
                 </dd>
               </div>

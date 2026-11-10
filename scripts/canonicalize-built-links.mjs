@@ -36,6 +36,8 @@ function files(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.is
 export function canonicalizeBuild(root='dist') {
   const paths=files(root),inventory=new Map();
   for(const path of paths){const html=readFileSync(path,'utf8'),href=html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1];if(!href)continue;const url=new URL(href);if(url.origin===ORIGIN&&url.pathname.endsWith('/'))inventory.set(url.pathname.replace(/\/$/,'')||'/',url.pathname);}
+  const aliases=JSON.parse(readFileSync(new URL('../src/data/songRedirects.json',import.meta.url),'utf8'));
+  for(const [from,to] of Object.entries(aliases)){const target=`/songs/${to}/`;if(!inventory.has(target.slice(0,-1)))throw new Error(`Missing alias target ${target}`);inventory.set(`/songs/${from}`,target);}
   let pages=0,changes=0;
   for(const path of paths){const html=readFileSync(path,'utf8'),page=html.match(/<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1]||ORIGIN+'/',next=canonicalizeHtml(html,inventory,page);if(next.changes){writeFileSync(path,next.html);pages++;changes+=next.changes;}}
   return {htmlPages:paths.length,knownCanonicalPaths:inventory.size,changedPages:pages,linkOrSchemaChanges:changes};
